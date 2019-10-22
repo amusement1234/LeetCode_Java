@@ -35,10 +35,46 @@
  */
 
 // @lc code=start
-class Solution {
+
+class Solution1 {
     public boolean isAnagram(String s, String t) {
-        
+        //解法：排序。把s和t排序，对比两个字符串是否相等。
+        //时间复杂度：O(nlogn)
+
+        if (s.length() != t.length()) {
+            return false;
+        }
+        char[] str1 = s.toCharArray();
+        char[] str2 = t.toCharArray();
+        Arrays.sort(str1);//array的排序用的是快排，快排的时间复杂度是O(nlogn)
+        Arrays.sort(str2);
+        return Arrays.equals(str1, str2);
+
     }
 }
-// @lc code=end
 
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        //解法：哈希表。计算两个字符串中每个字母的出现次数并进行比较。
+        //时间复杂度：O(n)
+
+        if (s.length() != t.length()) {
+            return false;
+        }
+
+        int[] conter = new int[26];// 字母出现的次数，从0开始
+        for (int i = 0; i < s.length(); i++) {
+            conter[s.charAt(i) - 'a']++;
+            conter[t.charAt(i) - 'a']--;
+        }
+        for (int count : conter) {
+            if (count != 0) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+}
+
+// @lc code=end
