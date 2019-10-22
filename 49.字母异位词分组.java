@@ -6,11 +6,11 @@
  * https://leetcode-cn.com/problems/group-anagrams/description/
  *
  * algorithms
- * Medium (58.69%)
- * Likes:    197
+ * Medium (58.64%)
+ * Likes:    198
  * Dislikes: 0
- * Total Accepted:    32.5K
- * Total Submissions: 55.4K
+ * Total Accepted:    32.6K
+ * Total Submissions: 55.5K
  * Testcase Example:  '["eat","tea","tan","ate","nat","bat"]'
  *
  * 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
