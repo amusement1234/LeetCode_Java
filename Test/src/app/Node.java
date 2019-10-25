@@ -1,7 +1,5 @@
 package app;
 
-import org.junit.Test;
-
 //单链表
 public class Node {
 	  Object value;//结点的数据值
@@ -32,9 +30,5 @@ public class Node {
 		return value.toString();
 	}
 
-	@Test
-	public void Test(){
-
-	}
 }
 
