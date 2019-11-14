@@ -1,3 +1,5 @@
+package lrucache;
+
 /**
  * 
  * 一个更简单实用的LRUCache方案，使用LinkedHashMap即可实现。

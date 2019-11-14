@@ -34,14 +34,33 @@
 // @lc code=start
 class Solution {
     public int maxArea(int[] height) {
-         //[1,8,6,2,5,4,8,3,7]
+        // [1,8,6,2,5,4,8,3,7]
 
+        //2.双指针法
         int maxarea = 0;
-        for (int i = 0; i < height.length; i++)
-            for (int j = i + 1; j < height.length; j++)
-                maxarea = Math.max(maxarea, Math.min(height[i], height[j]) * (j - i));
+        int start = 0;
+        int end = height.length - 1;
+        while (start < end) {
+            int thisArea = (end - start) * Math.min(height[start], height[end]);
+            maxarea = Math.max(maxarea, thisArea);
+
+            if (height[start] < height[end])
+                start++;
+            else
+                end--;
+        }
         return maxarea;
+
+        //1.暴力法
+        // int maxarea = 0;
+        // for (int i = 0; i < height.length; i++) {
+        //     for (int j = i + 1; j < height.length; j++) {
+        //         int thisArea = (j - i) * Math.min(height[i], height[j]);
+        //         maxarea = Math.max(maxarea, thisArea);
+        //     }
+        // }
+        // return maxarea;
+
     }
 }
 // @lc code=end
-

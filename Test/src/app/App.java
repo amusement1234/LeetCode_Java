@@ -1,6 +1,7 @@
-import app.Stack;
-
 package app;
+
+import stack.*;
+import queue.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
