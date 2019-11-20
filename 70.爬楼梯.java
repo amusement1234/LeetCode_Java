@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  * @lc app=leetcode.cn id=70 lang=java
  *
@@ -41,15 +44,71 @@
 
 // @lc code=start
 class Solution {
-    public int climbStairs(int n) {
-        int[] arr = new int[n + 1];
-        arr[0] = 1;
-        arr[1] = 1;
-        for (int i = 2; i <= n; i++) {
-            arr[i] = arr[i - 1] + arr[i - 2];
-        }
-        return arr[n];
+    Map<Integer, Integer> map = new HashMap();
 
+    public int climbStairs(int n) {
+
+        //4：斐波那契数
+        if (n == 1) {
+            return 1;
+        }
+        int first = 1;
+        int second = 2;
+        for (int i = 3; i <= n; i++) {
+            int third = first + second;
+            first = second;
+            second = third;
+        }
+        return second;
+
+        // // 3.动态规划 dp[i] = dp[i-1] + dp[i-2];
+        // if (n < 3) {
+        //     return n;
+        // }
+        // int[] dp = new int[n + 1];
+        // dp[1] = 1;
+        // dp[2] = 2;
+        // for (int i = 3; i <= n; i++) {
+        //     dp[i] = dp[i - 1] + dp[i - 2];
+        // }
+        // return dp[n];
+
+        // // 2.暴力法2 。其中 i 定义了当前阶数，而 n 定义了目标阶数。
+        // int memo[] = new int[n + 1];
+        // return climb_Stairs(0, n, memo);
+
+        // //1.暴力法，设置map存储
+        // if (n < 3) {
+        //     return n;
+        // }
+
+        // int result1 = 0;
+        // if (map.containsKey(n - 1)) {
+        //     result1 = map.get(n - 1);
+        // } else {
+        //     result1 = climbStairs(n - 1);
+        //     map.put(n - 1, result1);
+        // }
+
+        // int result2 = 0;
+        // if (map.containsKey(n - 2)) {
+        //     result2 = map.get(n - 2);
+        // } else {
+        //     result2 = climbStairs(n - 2);
+        //     map.put(n - 2, result2);
+        // }
+
+        // return result1 + result2;
+
+    }
+
+    public int climb_Stairs(int i, int n, int[] memo) {
+        if (i > n)
+            return 0;
+        if (i == n)
+            return 1;
+        memo[i] = climb_Stairs(i + 1, n, memo) + climb_Stairs(i + 2, n, memo);
+        return memo[i];
     }
 }
 // @lc code=end
