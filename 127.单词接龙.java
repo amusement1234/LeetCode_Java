@@ -67,7 +67,7 @@ class Solution {
         Set<String> beginSet = new HashSet<String>(), endSet = new HashSet<String>();
 
         int len = 1;
-        HashSet<String> visited = new HashSet<String>();
+        HashSet<String> visited = new HashSet<String>();//记录已访问的
 
         beginSet.add(beginWord);
         endSet.add(endWord);
@@ -80,13 +80,13 @@ class Solution {
 
             Set<String> temp = new HashSet<String>();
             for (String word : beginSet) {
-                char[] chs = word.toCharArray();
+                char[] thisWorld = word.toCharArray();
 
-                for (int i = 0; i < chs.length; i++) {
+                for (int i = 0; i < thisWorld.length; i++) {
                     for (char c = 'a'; c <= 'z'; c++) {
-                        char old = chs[i];
-                        chs[i] = c;
-                        String target = String.valueOf(chs);
+                        char old = thisWorld[i];
+                        thisWorld[i] = c;
+                        String target = String.valueOf(thisWorld);
 
                         if (endSet.contains(target)) {
                             return len + 1;
@@ -96,7 +96,7 @@ class Solution {
                             temp.add(target);
                             visited.add(target);
                         }
-                        chs[i] = old;
+                        thisWorld[i] = old;
                     }
                 }
             }

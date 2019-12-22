@@ -41,29 +41,29 @@ class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         // nums = [-1, 0, 1, 2, -1, -4]，
 
-        // 3、用指针 set
-        Set<List<Integer>> set = new HashSet<>();
-        if (nums == null || nums.length < 3) {
-            return new ArrayList<>(set);
-        }
+        // // 3、用指针 set
+        // Set<List<Integer>> set = new HashSet<>();
+        // if (nums == null || nums.length < 3) {
+        //     return new ArrayList<>(set);
+        // }
 
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length - 2; i++) {
-            int start = i + 1;
-            int end = nums.length - 1;
-            while (start < end) {
-                int sum = nums[i] + nums[start] + nums[end];
-                if (sum == 0) {
-                    set.add(Arrays.asList(nums[i], nums[start++], nums[end--]));
-                } else if (sum < 0) {
-                    start++;
-                } else {
-                    end--;
-                }
-            }
+        // Arrays.sort(nums);
+        // for (int i = 0; i < nums.length - 2; i++) {
+        //     int start = i + 1;
+        //     int end = nums.length - 1;
+        //     while (start < end) {
+        //         int sum = nums[i] + nums[start] + nums[end];
+        //         if (sum == 0) {
+        //             set.add(Arrays.asList(nums[i], nums[start++], nums[end--]));
+        //         } else if (sum < 0) {
+        //             start++;
+        //         } else {
+        //             end--;
+        //         }
+        //     }
 
-        }
-        return new ArrayList<>(set);
+        // }
+        // return new ArrayList<>(set);
 
         // // 2.双指针法
         // List<List<Integer>> arr = new ArrayList<>();
@@ -132,7 +132,20 @@ class Solution {
         //     arr.add(listt);
         // }
         // return arr;
-    }
 
+        //暴力2
+        List<List<Integer>> arr = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums.length; j++) {
+                for (int k = 0; k < nums.length; k++) {
+                    if (nums[i] + nums[j] == nums[k]) {
+                        arr.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                    }
+                }
+            }
+        }
+        return arr;
+
+    }
 }
 // @lc code=end
