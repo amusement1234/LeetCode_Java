@@ -58,16 +58,26 @@
 public class Solution {
     // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
-        int bits = 0;
-        int mask = 1;
-        for (int i = 0; i < 32; i++) {
-            if ((n & mask) != 0) {
-                bits++;
-            }
-            mask <<= 1;
-        }
-        return bits;
+        // //解法1：循环和位移动
+        // int count = 0;
+        // int mask = 1;
+        // for (int i = 0; i < 32; i++) {
+        //     if ((mask & n) != 0)
+        //         count++;
+        //     mask <<= 1;//mask乘以2
+        // }
+        // return count;
 
+        // //解法2：位操作的小技巧
+        // int count = 0;
+        // while (n != 0) {
+        //     n &= (n - 1);
+        //     count++;
+        // }
+        // return count;
+
+        //解法3：类库
+        return Integer.bitCount(n);
     }
 }
 // @lc code=end

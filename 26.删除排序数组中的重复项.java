@@ -57,16 +57,28 @@
 // @lc code=start
 class Solution {
     public int removeDuplicates(int[] nums) {
-        if (nums.length == 0)
+        // if (nums.length == 0)
+        //     return 0;
+        // int index = 0;//慢指针
+        // for (int j = 0; j < nums.length; j++) {
+        //     if (nums[j] != nums[index]) {
+        //         index++;
+        //         nums[index] = nums[j];
+        //     }
+        // }
+        // return index + 1;
+
+        if (nums == null || nums.length == 0)
             return 0;
-        int i = 0;
-        for (int j = 1; j < nums.length; j++) {
-            if (nums[j] != nums[i]) {
-                i++;
-                nums[i] = nums[j];
+        int p = 0;
+        int q = 1;
+        while (q < nums.length) {
+            if (nums[p] != nums[q]) {
+                nums[++p] = nums[q];
             }
+            q++;
         }
-        return i + 1;
+        return p + 1;
 
     }
 }
