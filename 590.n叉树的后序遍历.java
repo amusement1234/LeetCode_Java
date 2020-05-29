@@ -36,31 +36,73 @@ import java.util.List;
 // @lc code=start
 
 // Definition for a Node.
-class Node {
-    public int val;
-    public List<Node> children;
+// class Node {
+//     public int val;
+//     public List<Node> children;
 
-    public Node() {}
+//     public Node() {}
 
-    public Node(int _val,List<Node> _children) {
-        val = _val;
-        children = _children;
-    }
-};
+//     public Node(int _val,List<Node> _children) {
+//         val = _val;
+//         children = _children;
+//     }
+// };
 
 class Solution {
 
-    //{"$id":"1","children":[{"$id":"2","children":[{"$id":"5","children":[],"val":5},{"$id":"6","children":[],"val":6}],"val":3},{"$id":"3","children":[],"val":2},{"$id":"4","children":[],"val":4}],"val":1}
     public List<Integer> postorder(Node root) {
-        List<Integer> res = new ArrayList<Integer>();
+        // //方法一：递归法
+        // if (root == null)
+        //     return new ArrayList();
+        // List<Integer> res = new ArrayList<Integer>();
+        // helper(root, res);
+        // return res;
+
+        // //方法2；迭代法
+        // List<Integer> list = new ArrayList<>();
+        // if (root == null)
+        //     return list;
+
+        // Stack<Node> stack = new Stack<>();
+        // stack.add(root);
+
+        // while (!stack.isEmpty()) {
+        //     root = stack.pop();
+        //     list.add(root.val);
+        //     for (Node node : root.children)
+        //         stack.add(node);
+        // }
+        // Collections.reverse(list);
+        // return list;
+
+        //方法3：
+        LinkedList<Node> stack = new LinkedList<>();
+        LinkedList<Integer> output = new LinkedList<>();
+        if (root == null) {
+            return output;
+        }
+
+        stack.add(root);
+        while (!stack.isEmpty()) {
+            Node node = stack.pollLast();// 移除尾部的元素
+            output.addFirst(node.val);
+            for (Node item : node.children) {
+                if (item != null) {
+                    stack.add(item);
+                }
+            }
+        }
+        return output;
+
+    }
+
+    public void helper(Node root, List<Integer> res) {
         if (root == null)
-            return res;
-        for (Node cur : root.children) {
-            res.addAll(postorder(cur));
+            return;
+        for (Node node : root.children) {
+            helper(node, res);
         }
         res.add(root.val);
-        return res;
-
     }
 }
 // @lc code=end

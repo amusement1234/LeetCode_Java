@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Demo",
+            "request": "launch",
+            "mainClass": "oop.Demo",
+            "projectName": "Test"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - LRUCache",
             "request": "launch",
             "mainClass": "LRUCache.LRUCache",

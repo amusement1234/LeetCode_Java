@@ -68,45 +68,37 @@
 // @lc code=start
 class Solution {
     public int minMutation(String start, String end, String[] bank) {
-        if (start.equals(end))
-            return 0;
-
-        Set<String> bankSet = new HashSet<>();
-        for (String b : bank)
-            bankSet.add(b);
-
-        char[] charSet = new char[] { 'A', 'C', 'G', 'T' };
-
-        int level = 0;
-        Set<String> visited = new HashSet<>();
+        HashSet<String> set = new HashSet<>(Arrays.asList(bank));
+        if (!set.contains(end)) {
+            return -1;
+        }
+        char[] four = { 'A', 'C', 'G', 'T' };
         Queue<String> queue = new LinkedList<>();
         queue.offer(start);
-        visited.add(start);
-
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            while (size-- > 0) {
-                String curr = queue.poll();
-                if (curr.equals(end))
-                    return level;
-
-                char[] currArray = curr.toCharArray();
-                for (int i = 0; i < currArray.length; i++) {
-                    char old = currArray[i];
-                    for (char c : charSet) {
-                        currArray[i] = c;
-                        String next = new String(currArray);
-                        if (!visited.contains(next) && bankSet.contains(next)) {
-                            visited.add(next);
-                            queue.offer(next);
+        set.remove(start);
+        int step = 0;
+        while (queue.size() > 0) {
+            step++;
+            for (int count = queue.size(); count > 0; --count) {
+                char[] temStringChars = queue.poll().toCharArray();
+                for (int i = 0, len = temStringChars.length; i < len; ++i) {
+                    char oldChar = temStringChars[i];
+                    for (int j = 0; j < 4; ++j) {
+                        temStringChars[i] = four[j];
+                        String newGenetic = new String(temStringChars);
+                        if (end.equals(newGenetic)) {
+                            return step;
+                        } else if (set.contains(newGenetic)) {
+                            set.remove(newGenetic);
+                            queue.offer(newGenetic);
                         }
                     }
-                    currArray[i] = old;
+                    temStringChars[i] = oldChar;
                 }
             }
-            level++;
         }
         return -1;
+
     }
 }
 // @lc code=end

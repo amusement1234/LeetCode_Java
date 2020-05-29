@@ -2,27 +2,143 @@ package app;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
 import graph.Graph2;
+import huihui.MyQueue;
+import huihui.PriorityQueue;
+import huihui.sort.bucketSort;
+import huihui.sort.countSort;
+import huihui.MyBinaryTree;
+import huihui.MyLinkedList;
 import sort.HeapSort;
 import sort.MergeSort;
 import sort.QuickSort;
 import tree.Heap;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        int[] fun = { 0, 1, 2, 3, 4, 5, 6 };
-        System.arraycopy(fun, 0, fun, 3, 3);
 
-        // int a = (~5);
+    public static void main(String[] args) throws Exception {
+
+        double[] tte2 = bucketSort.bucketSort2(new double[] { 1.3, 23, 55, 2.4, 3 });
+        int[] ttt = countSort.countSort2(new int[] { 1, 23, 55, 2, 3 });
+
+        // char[][] board = new char[4][4];
+        // for (char[] chars : board)
+        //     Arrays.fill(chars, '.');
+
+        // boolean b = new App().isValid(board, 0, 0);
+
+        // String next_digits = "DV";
+        // String digit = next_digits.substring(0, 1);
+        // String digit2 = next_digits.substring(0);
+
+        // List<List<Integer>> output = new ArrayList();
+        // for (int k = 0; k < nums.length + 1; ++k) {
+        //     backtrack(k, 0, new ArrayList<Integer>(), nums, output);
+        // }
+
+        // int[] preorder = new int[] { 3, 9, 20, 15, 7 };
+        // int[] inorder = new int[] { 9, 3, 15, 20, 7 };
+        // TreeNode r = new App().buildTreeHelper(preorder, 0, preorder.length, inorder, 0, inorder.length);
+
+        // MyBinaryTree binaryTree = new MyBinaryTree();
+        // int[] arr = new int[] { 1, 3, 2, 6, 5, 7, 8, 9, 10, 0 };
+        // binaryTree.upAdjust(arr);
+
+        // int[] arr2 = new int[] { 7, 1, 3, 10, 5, 2, 8, 9, 6 };
+        // binaryTree.buildHeap(arr2);
+
+        // PriorityQueue priorityQueue = new PriorityQueue();
+        // priorityQueue.enQueue(10);
+        // priorityQueue.enQueue(5);
+        // priorityQueue.enQueue(3);
+        // priorityQueue.enQueue(2);
+        // priorityQueue.enQueue(7);
+
+        // priorityQueue.deQueue();
+        // priorityQueue.deQueue();
+
+        // MyLinkedList list = new MyLinkedList();
+        // list.insert(1, 0);
+        // list.insert(2, 1);
+        // list.insert(3, 2);
+        // list.oupPut();
+
+        // MyQueue myQueue = new MyQueue(5);
+        // myQueue.enQueue(1);
+        // myQueue.enQueue(2);
+        // myQueue.enQueue(3);
+        // myQueue.enQueue(4);
+        // myQueue.deQueue();
+        // myQueue.deQueue();
+        // myQueue.outPut();
+
+        // Integer[] arrTemp = new Integer[] { 3, 2, 9, null, null, 10, null, null, 8, null, 4 };
+        // LinkedList<Integer> linkedList = new LinkedList<>(Arrays.asList(arrTemp));
+        // MyBinaryTree myBinaryTree = new MyBinaryTree();
+        // TreeNode treenode = myBinaryTree.createBinaryTree(linkedList);
+        // System.out.println("前序遍历：");
+        // MyBinaryTree.preOrderTraversal(treenode);
+
+        // StringBuilder cur=new StringBuilder();
+        // cur.append("1234");
+        // cur.deleteCharAt(cur.length() - 1);
+
+        // LinkedList<Integer> queue = new LinkedList<>();//双端队列
+
+        // queue.push(11);
+        // queue.push(22);
+        // queue.pop();
+
+        // queue.add(1);
+        // queue.add(2);
+        // int ttt = queue.peek();//获取下标=0的值
+
+        // queue.add(11);
+        // boolean b23 = queue.add(22);//尾部添加
+        // boolean b33 = queue.offer(44);//尾部添加
+        // queue.push(33);//头部添加
+
+        // queue.pop();
+        // queue.remove();//移除头部
+        // queue.poll();//移除头部
+
+        // int t2 = queue.poll();
+
+        // TreeNode root = new TreeNode(1);
+        // root.left = new TreeNode(2);
+        // root.left.left = new TreeNode(4);
+        // root.left.right = new TreeNode(5);
+
+        // List<Integer> listsss = new App().preorderTraversal(root);
+
+        // App app = new App();
+        // app.push(1);
+        // app.push(2);
+        // app.push(3);
+
+        // App app2 = new App();
+        // app2.push2(1);
+        // app2.push2(2);
+        // app2.push2(3);
+
+        // boolean bb = new App().isValid2("(]");
+
+        // int[] fun = { 0, 1, 2, 3, 4, 5, 6 };
+        // System.arraycopy(fun, 0, fun, 2, 4);
+
+        int a = (~5);
         // int b = (456 >> 1) & 1;
         // boolean b1 = (12 & 1) == 1;
 
@@ -384,6 +500,94 @@ public class App {
         }
         return dummy.next;
 
+    }
+
+    // Hash table that takes care of the mappings.
+    private HashMap<Character, Character> mappings;
+
+    // Initialize hash map with mappings. This simply makes the code easier to read.
+    public App() {
+        this.mappings = new HashMap<Character, Character>();
+        this.mappings.put(')', '(');
+        this.mappings.put('}', '{');
+        this.mappings.put(']', '[');
+    }
+
+    public boolean isValid2(String s) {
+        Stack<Character> stack = new Stack<Character>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (this.mappings.containsKey(c)) {
+                if (stack.isEmpty())
+                    return false;
+
+                Character cc = stack.pop();
+                if (this.mappings.get(c) != cc)
+                    return false;
+
+            } else {
+                stack.push(c);
+            }
+        }
+        return stack.isEmpty();
+    }
+
+    Queue<Integer> q1 = new LinkedList<>();
+    Queue<Integer> q2 = new LinkedList<>();
+    int top;
+
+    /** Push element x onto stack. */
+    public void push(int x) {
+        q2.add(x);
+
+        top = x;
+        while (!q1.isEmpty()) {
+            q2.add(q1.remove());
+        }
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+
+    }
+
+    public void push2(int x) {
+
+        q1.add(x);
+        top = x;
+    }
+
+    /** Removes the element on top of the stack and returns that element. */
+    public int pop() {
+        q1.remove();
+        int res = top;
+        if (!q1.isEmpty()) {
+            top = q1.peek();
+        }
+        return res;
+    }
+
+    public int pop2() {
+
+        int t = top;
+        while (q1.size() > 1) {
+            top = q1.remove();
+            q2.add(top);
+        }
+        q1.remove();
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+        return t;
+    }
+
+    /** Get the top element. */
+    public int top() {
+        return top;
+    }
+
+    /** Returns whether the stack is empty. */
+    public boolean empty() {
+        return q1.isEmpty();
     }
 
 }

@@ -34,24 +34,8 @@
 // @lc code=start
 class Solution {
     public int maxArea(int[] height) {
-        // [1,8,6,2,5,4,8,3,7]
 
-        //2.双指针法
-        int maxarea = 0;
-        int start = 0;
-        int end = height.length - 1;
-        while (start < end) {
-            int thisArea = (end - start) * Math.min(height[start], height[end]);
-            maxarea = Math.max(maxarea, thisArea);
-
-            if (height[start] < height[end])
-                start++;
-            else
-                end--;
-        }
-        return maxarea;
-
-        //1.暴力法
+        // // 1.暴力法
         // int maxarea = 0;
         // for (int i = 0; i < height.length; i++) {
         //     for (int j = i + 1; j < height.length; j++) {
@@ -60,6 +44,34 @@ class Solution {
         //     }
         // }
         // return maxarea;
+
+        // //2.双指针法
+        // int maxarea = 0;
+        // int start = 0;
+        // int end = height.length - 1;
+        // while (start < end) {
+        //     int thisArea = (end - start) * Math.min(height[start], height[end]);
+        //     maxarea = Math.max(maxarea, thisArea);
+
+        //     if (height[start] < height[end])
+        //         start++;
+        //     else
+        //         end--;
+        // }
+        // return maxarea;
+
+        //3，双指针升级版
+        int water = 0;
+        int i = 0, j = height.length - 1;
+        while (i < j) {
+            int h = Math.min(height[i], height[j]);
+            water = Math.max(water, (j - i) * h);
+            while (height[i] <= h && i < j)
+                i++;
+            while (height[j] <= h && i < j)
+                j--;
+        }
+        return water;
 
     }
 }

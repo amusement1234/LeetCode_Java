@@ -36,28 +36,19 @@
 
 // @lc code=start
 
-class Solution1 {
-    public boolean isAnagram(String s, String t) {
-        //解法：排序。把s和t排序，对比两个字符串是否相等。
-        //时间复杂度：O(nlogn)
-
-        if (s.length() != t.length()) {
-            return false;
-        }
-        char[] str1 = s.toCharArray();
-        char[] str2 = t.toCharArray();
-        Arrays.sort(str1);//array的排序用的是快排，快排的时间复杂度是O(nlogn)
-        Arrays.sort(str2);
-        return Arrays.equals(str1, str2);
-
-    }
-}
-
 class Solution {
     public boolean isAnagram(String s, String t) {
-        //解法：哈希表。计算两个字符串中每个字母的出现次数并进行比较。
-        //时间复杂度：O(n)
+        // //方法一：排序
+        // if (s.length() != t.length()) {
+        //     return false;
+        // }
+        // char[] str1 = s.toCharArray();
+        // char[] str2 = t.toCharArray();
+        // Arrays.sort(str1);//array的排序用的是快排，快排的时间复杂度是O(nlogn)
+        // Arrays.sort(str2);
+        // return Arrays.equals(str1, str2);
 
+        //方法二：哈希表
         if (s.length() != t.length()) {
             return false;
         }

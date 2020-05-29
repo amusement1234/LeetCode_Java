@@ -58,25 +58,81 @@
  * }
  */
 class Solution {
+    long pre = Long.MIN_VALUE;
+
     public boolean isValidBST(TreeNode root) {
-        return helper(root, null, null);
+        // // 方法一: 递归
+        // return helper(root, null, null);
+
+        // // 方法二：中序遍历
+        // if (root == null)
+        //     return true;
+        // if (!isValidBST(root.left))
+        //     return false;
+        // if (root.val <= pre)
+        //     return false;
+        // pre = root.val;
+        // return isValidBST(root.right);
+
+        // //方法三：中序遍历（二叉搜索树中序遍历得到升序）
+        // if (root == null)
+        //     return true;
+        // inOrder(root);
+        // for (int i = 1; i < res.size(); i++) {
+        //     if (res.get(i) <= res.get(i - 1)) {
+        //         return false;
+        //     }
+        // }
+        // return true;
+
+        //方法四：中序遍历 迭代
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        TreeNode pre = null;
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+            curr = stack.pop();
+
+            if (pre != null && pre.val >= curr.val)
+                return false;
+            pre = curr;
+            curr = curr.right;
+        }
+        return true;
     }
 
     public boolean helper(TreeNode node, Integer lower, Integer upper) {
         if (node == null)
             return true;
 
-        int val = node.val;
-        if (lower != null && val <= lower)
+        int thisVal = node.val;
+        if (lower != null && lower >= thisVal)
             return false;
-        if (upper != null && val >= upper)
+        if (upper != null && upper <= thisVal)
             return false;
 
-        if (!helper(node.left, lower, val))
+        boolean b1 = helper(node.left, lower, thisVal);
+        if (!b1)
             return false;
-        if (!helper(node.right, val, upper))
+
+        boolean b2 = helper(node.right, thisVal, upper);
+        if (!b2)
             return false;
+
         return true;
+    }
+
+    List<Integer> res = new ArrayList<>();
+
+    private void inOrder(TreeNode root) {
+        if (root != null) {
+            inOrder(root.left);
+            res.add(root.val);
+            inOrder(root.right);
+        }
     }
 
 }

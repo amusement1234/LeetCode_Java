@@ -1,3 +1,8 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+import javax.swing.tree.TreeNode;
+
 /*
  * @lc app=leetcode.cn id=104 lang=java
  *
@@ -39,13 +44,49 @@
  */
 class Solution {
     public int maxDepth(TreeNode root) {
-        if (root == null) {
+
+        // // 方法一：递归
+        // if (root == null) {
+        //     return 0;
+        // }
+        // int left_height = maxDepth(root.left);
+        // int right_height = maxDepth(root.right);
+        // int max = Math.max(left_height, right_height) + 1;
+        // return max;
+
+        // // 方法二：递归
+        // if (root == null)
+        //     return 0;
+        // int m1 = maxDepth(root.left);
+        // int m2 = maxDepth(root.right);
+
+        // if (root.left == null || root.right == null)
+        //     return m1 + m2 + 1;
+        // else
+        //     return Math.max(m1, m2) + 1;
+ 
+        //方法三
+        if (root == null)
             return 0;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int maxDepth = 0;
+        while (!queue.isEmpty()) {
+            ++maxDepth;
+            int levelSize = queue.size();
+            for (int i = 0; i < levelSize; i++) {
+
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
         }
-        int left_height = maxDepth(root.left);
-        int right_height = maxDepth(root.right);
-        int max = Math.max(left_height, right_height) + 1;
-        return max;
+        return maxDepth;
+
     }
 }
 // @lc code=end

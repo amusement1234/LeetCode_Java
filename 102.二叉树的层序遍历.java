@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javax.swing.tree.TreeNode;
-
 /*
  * @lc app=leetcode.cn id=102 lang=java
  *
@@ -52,17 +50,43 @@ import javax.swing.tree.TreeNode;
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        if (root == null)
-            return levels;
-        helper(root, 0);
-        return levels;
+
+        List<List<Integer>> res = new ArrayList<>();
+
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        if (root != null) {
+            queue.add(root);
+        }
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            List<Integer> level = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                level.add(node.val);
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+            res.add(level);
+        }
+
+        return res;
+
+        // if (root == null)
+        //     return levels;
+        // helper(root, 0);
+        // return levels;
     }
 
     List<List<Integer>> levels = new ArrayList<>();
 
     public void helper(TreeNode node, int level) {
-        if (levels.size() == level)
+        if (levels.size() == level) {
             levels.add(new ArrayList<>());
+        }
         levels.get(level).add(node.val);
         if (node.left != null)
             helper(node.left, level + 1);

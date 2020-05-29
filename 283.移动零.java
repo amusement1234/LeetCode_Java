@@ -32,19 +32,45 @@
 // @lc code=start
 class Solution {
     public void moveZeroes(int[] nums) {
-        // [0,1,0,3,12]
 
-        // 4.不为0
-        int notZeroIndex = 0;
+        //1.暴力法
+        int endZeroIndex = nums.length - 1;
+
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != 0) {
-                nums[notZeroIndex++] = nums[i];
+            if (nums[i] == 0 && i < endZeroIndex) {
+                //把i到endZeroIndex的数，往前移动一位
+                for (int j = i; j < endZeroIndex; j++) {
+                    nums[j] = nums[j + 1];
+                }
+                nums[endZeroIndex] = 0;
+                --endZeroIndex;
+                i = -1;
             }
+
         }
 
-        for (int i = notZeroIndex; i < nums.length; i++) {
-            nums[i] = 0;
-        }
+        // int notZeroIndex = 0;
+        // for (int i = 0; i < nums.length; i++) {
+        //     if (nums[i] != 0) {
+        //         nums[notZeroIndex] = nums[i];
+        //         nums[i] = 0;
+        //         ++notZeroIndex;
+        //     }
+        // }
+
+        // // [0,1,0,3,12]
+
+        // // 4.不为0
+        // int notZeroIndex = 0;
+        // for (int i = 0; i < nums.length; i++) {
+        //     if (nums[i] != 0) {
+        //         nums[notZeroIndex++] = nums[i];
+        //     }
+        // }
+
+        // for (int i = notZeroIndex; i < nums.length; i++) {
+        //     nums[i] = 0;
+        // }
 
         // // 3.单指针 是0的
         // int zeroindex = 0;
@@ -68,21 +94,6 @@ class Solution {
         //         }
         //         notZeroIndex++;
         //     }
-        // }
-
-        // //1.暴力法
-        // int endZero = nums.length - 1;
-
-        // for (int i = 0; i < nums.length; i++) {
-        //     if (nums[i] == 0 && i < endZero) {
-        //         for (int j = i; j < endZero; j++) {
-        //             nums[j] = nums[j + 1];
-        //         }
-        //         nums[endZero] = 0;
-        //         --endZero;
-        //         i = -1;
-        //     }
-
         // }
 
     }

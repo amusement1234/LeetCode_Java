@@ -44,11 +44,28 @@ import java.util.Map;
 
 // @lc code=start
 class Solution {
-    Map<Integer, Integer> map = new HashMap();
 
     public int climbStairs(int n) {
+        // // 方法一：暴力法
+        // return climb_Stairs(0, n);
 
-        //4：斐波那契数
+        // // 方法二：记忆化递归
+        // int memo[] = new int[n + 1];
+        // return climb_Stairs(0, n, memo);
+
+        // // 方法三：动态规划
+        // if (n == 1) {
+        //     return 1;
+        // }
+        // int[] dp = new int[n + 1];
+        // dp[1] = 1;
+        // dp[2] = 2;
+        // for (int i = 3; i <= n; i++) {
+        //     dp[i] = dp[i - 1] + dp[i - 2];
+        // }
+        // return dp[n];
+
+        //方法四：斐波那契数
         if (n == 1) {
             return 1;
         }
@@ -61,27 +78,12 @@ class Solution {
         }
         return second;
 
-        // // 3.动态规划 dp[i] = dp[i-1] + dp[i-2];
-        // if (n < 3) {
-        //     return n;
-        // }
-        // int[] dp = new int[n + 1];
-        // dp[1] = 1;
-        // dp[2] = 2;
-        // for (int i = 3; i <= n; i++) {
-        //     dp[i] = dp[i - 1] + dp[i - 2];
-        // }
-        // return dp[n];
-
-        // // 2.暴力法2 。其中 i 定义了当前阶数，而 n 定义了目标阶数。
-        // int memo[] = new int[n + 1];
-        // return climb_Stairs(0, n, memo);
-
         // //1.暴力法，设置map存储
         // if (n < 3) {
         //     return n;
         // }
 
+        // Map<Integer, Integer> map = new HashMap();
         // int result1 = 0;
         // if (map.containsKey(n - 1)) {
         //     result1 = map.get(n - 1);
@@ -99,7 +101,16 @@ class Solution {
         // }
 
         // return result1 + result2;
+    }
 
+    public int climb_Stairs(int i, int n) {
+        if (i > n) {
+            return 0;
+        }
+        if (i == n) {
+            return 1;
+        }
+        return climb_Stairs(i + 1, n) + climb_Stairs(i + 2, n);
     }
 
     public int climb_Stairs(int i, int n, int[] memo) {
