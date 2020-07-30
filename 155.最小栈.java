@@ -38,51 +38,112 @@
 
 // @lc code=start
 class MinStack {
-    // 数据栈
-    private Stack<Integer> data;
-    // 辅助栈
-    private Stack<Integer> helper;
 
-    /**
-     * initialize your data structure here.
-     */
-    public MinStack() {
-        data = new Stack<>();
-        helper = new Stack<>();
-    }
-
-    // 思路 1：数据栈和辅助栈在任何时候都同步
+    // 解法3： https://leetcode.com/problems/min-stack/discuss/49010/Clean-6ms-Java-solution
+    private Node head;
 
     public void push(int x) {
-        // 数据栈和辅助栈一定会增加元素
-        data.add(x);
-        if (helper.isEmpty() || helper.peek() >= x) {
-            helper.add(x);
-        }
+        if (head == null)
+            head = new Node(x, x);
+        else
+            head = new Node(x, Math.min(x, head.min), head);
     }
 
     public void pop() {
-        // 两个栈都得 pop
-        if (!data.isEmpty()) {
-            int pop = data.pop();
-            if (pop == helper.peek())
-                helper.pop();
-        }
+        head = head.next;
     }
 
     public int top() {
-        if (!data.isEmpty()) {
-            return data.peek();
-        }
-        throw new RuntimeException("栈中元素为空，此操作非法");
+        return head.val;
     }
 
     public int getMin() {
-        if (!helper.isEmpty()) {
-            return helper.peek();
-        }
-        throw new RuntimeException("栈中元素为空，此操作非法");
+        return head.min;
     }
+
+    private class Node {
+        int val;
+        int min;
+        Node next;
+
+        private Node(int val, int min) {
+            this(val, min, null);
+        }
+
+        private Node(int val, int min, Node next) {
+            this.val = val;
+            this.min = min;
+            this.next = next;
+        }
+    }
+
+    // 解法2：一个栈
+    // int min;
+    // Stack<Integer> stack;
+
+    // /** initialize your data structure here. */
+    // public MinStack() {
+    //     min = Integer.MAX_VALUE;
+    //     stack = new Stack();
+    // }
+
+    // public void push(int x) {
+    //     if (x <= min) {
+    //         stack.push(min);
+    //         min = x;
+    //     }
+    //     stack.push(x);
+    // }
+
+    // public void pop() {
+    //     if (stack.pop() == min)
+    //         min = stack.pop();
+    // }
+
+    // public int top() {
+    //     return stack.peek();
+    // }
+
+    // public int getMin() {
+    //     return min;
+    // }
+
+    // 解法1：2个栈
+
+    // private Stack<Integer> data;// 数据栈
+    // private Stack<Integer> helper;// 最小栈
+
+    // /**
+    //  * initialize your data structure here.
+    //  */
+    // public MinStack() {
+    //     data = new Stack<>();
+    //     helper = new Stack<>();
+    // }
+
+    // public void push(int x) {
+    //     // 数据栈和辅助栈一定会增加元素
+    //     data.add(x);
+    //     if (helper.isEmpty() || helper.peek() >= x) {
+    //         helper.add(x);
+    //     }
+    // }
+
+    // public void pop() {
+    //     if (!data.isEmpty()) {
+    //         int pop = data.pop();
+    //         if (pop == helper.peek())
+    //             helper.pop();
+    //     }
+    // }
+
+    // public int top() {
+    //     return data.peek();
+    // }
+
+    // public int getMin() {
+    //     return helper.peek();
+    // }
 
 }
 

@@ -38,15 +38,6 @@
 
 class Solution {
     public boolean isAnagram(String s, String t) {
-        // //方法一：排序
-        // if (s.length() != t.length()) {
-        //     return false;
-        // }
-        // char[] str1 = s.toCharArray();
-        // char[] str2 = t.toCharArray();
-        // Arrays.sort(str1);//array的排序用的是快排，快排的时间复杂度是O(nlogn)
-        // Arrays.sort(str2);
-        // return Arrays.equals(str1, str2);
 
         //方法二：哈希表
         if (s.length() != t.length()) {
@@ -65,6 +56,15 @@ class Solution {
         }
         return true;
 
+        // //方法一：排序
+        // if (s.length() != t.length()) {
+        //     return false;
+        // }
+        // char[] str1 = s.toCharArray();
+        // char[] str2 = t.toCharArray();
+        // Arrays.sort(str1);//array的排序用的是快排，快排的时间复杂度是O(nlogn)
+        // Arrays.sort(str2);
+        // return Arrays.equals(str1, str2);
     }
 }
 

@@ -28,37 +28,41 @@
 
 // @lc code=start
 /**
- * Definition for singly-linked list. public class ListNode { int val; ListNode
- * next; ListNode(int x) { val = x; } }
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
 
-        // 2、递归
-        if (head == null || head.next == null) {
+        // 解法2：迭代。替换指针。偶数的值，与下一个换。
+        if (head == null || head.next == null)
             return head;
+        ListNode temp = head;
+        int index = 0;
+        while (temp != null) {
+            if (index % 2 == 0 && temp.next != null) {
+                int val = temp.val;
+                temp.val = temp.next.val;//同步更改head
+                temp.next.val = val;//同步更改head
+            }
+            temp = temp.next;//不会同步更改head
+            index++;
         }
-        ListNode next = head.next;
-        head.next = swapPairs(next.next);
-        next.next = head;
-        return next;
+        return head;
 
-        // // 1、替换指针。偶数的值，与下一个换。
-        // ListNode temp = head;
-        // int index = 0;
-        // while (temp != null) {
-        //     if (index % 2 == 0) {
-        //         if (temp.next != null) {
-        //             int val = temp.val;
-        //             temp.val = temp.next.val;
-        //             temp.next.val = val;
-        //         }
-        //     }
-
-        //     temp = temp.next;
-        //     index++;
+        // // 解法1：递归 a.next=b.next; b.next=a
+        // if (head == null || head.next == null) {
+        //     return head;
         // }
-        // return head;
+        // ListNode next = head.next;
+        // head.next = swapPairs(next.next);//a.next=b.next
+        // next.next = head;//b.next=a
+        // return next;
+
     }
 }
 // @lc code=end

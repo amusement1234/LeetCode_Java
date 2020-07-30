@@ -34,18 +34,46 @@
 // @lc code=start
 class Solution {
     public int minPathSum(int[][] grid) {
+        // // 方法一：暴力 
+        // return calculate(grid, 0, 0);
+
+        // 方法二
+        // for (int i = grid.length - 1; i >= 0; i--) {
+        //     for (int j = grid[0].length - 1; j >= 0; j--) {
+        //         if (i == grid.length - 1 && j != grid[0].length - 1)
+        //             grid[i][j] = grid[i][j] + grid[i][j + 1];
+        //         else if (j == grid[0].length - 1 && i != grid.length - 1)
+        //             grid[i][j] = grid[i][j] + grid[i + 1][j];
+        //         else if (j != grid[0].length - 1 && i != grid.length - 1)
+        //             grid[i][j] = grid[i][j] + Math.min(grid[i + 1][j], grid[i][j + 1]);
+        //     }
+        // }
+        // return grid[0][0];
+
+        // 方法三
+        int[] dp = new int[grid[0].length];
         for (int i = grid.length - 1; i >= 0; i--) {
             for (int j = grid[0].length - 1; j >= 0; j--) {
                 if (i == grid.length - 1 && j != grid[0].length - 1)
-                    grid[i][j] = grid[i][j] + grid[i][j + 1];
+                    dp[j] = grid[i][j] + dp[j + 1];
                 else if (j == grid[0].length - 1 && i != grid.length - 1)
-                    grid[i][j] = grid[i][j] + grid[i + 1][j];
+                    dp[j] = grid[i][j] + dp[j];
                 else if (j != grid[0].length - 1 && i != grid.length - 1)
-                    grid[i][j] = grid[i][j] + Math.min(grid[i + 1][j], grid[i][j + 1]);
+                    dp[j] = grid[i][j] + Math.min(dp[j], dp[j + 1]);
+                else
+                    dp[j] = grid[i][j];
             }
         }
-        return grid[0][0];
+        return dp[0];
 
+    }
+
+    public int calculate(int[][] grid, int i, int j) {
+        if (i == grid.length || j == grid[0].length)
+            return Integer.MAX_VALUE;
+        if (i == grid.length - 1 && j == grid[0].length - 1)
+            return grid[i][j];
+        return grid[i][j] + Math.min(calculate(grid, i + 1, j), calculate(grid, i, j + 1));
     }
 }
 // @lc code=end

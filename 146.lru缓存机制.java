@@ -68,110 +68,110 @@ import java.util.LinkedHashMap;
 
 import java.util.Hashtable;
 
-public class LRUCache {
-
-    class DLinkedNode {
-        int key;
-        int value;
-        DLinkedNode prev;
-        DLinkedNode next;
-    }
-
-    private void addNode(DLinkedNode node) {
-        /**
-         * Always add the new node right after head.
-         */
-        node.prev = head;
-        node.next = head.next;
-
-        head.next.prev = node;
-        head.next = node;
-    }
-
-    private void removeNode(DLinkedNode node) {
-        /**
-         * Remove an existing node from the linked list.
-         */
-        DLinkedNode prev = node.prev;
-        DLinkedNode next = node.next;
-
-        prev.next = next;
-        next.prev = prev;
-    }
-
-    private void moveToHead(DLinkedNode node) {
-        /**
-         * Move certain node in between to the head.
-         */
-        removeNode(node);
-        addNode(node);
-    }
-
-    private DLinkedNode popTail() {
-        /**
-         * Pop the current tail.
-         */
-        DLinkedNode res = tail.prev;
-        removeNode(res);
-        return res;
-    }
-
-    private Hashtable<Integer, DLinkedNode> cache = new Hashtable<Integer, DLinkedNode>();
-    private int size;
-    private int capacity;
-    private DLinkedNode head, tail;
+class LRUCache {
+    private HashMap<Integer, Node> map;
+    // Node(k1, v1) <-> Node(k2, v2)...
+    private DoubleList cache;
+    // 最大容量
+    private int cap;
+     
 
     public LRUCache(int capacity) {
-        this.size = 0;
-        this.capacity = capacity;
-
-        head = new DLinkedNode();
-        // head.prev = null;
-
-        tail = new DLinkedNode();
-        // tail.next = null;
-
-        head.next = tail;
-        tail.prev = head;
+        this.cap = capacity;
+        map = new HashMap<>();
+        cache = new DoubleList();
     }
-
+    
     public int get(int key) {
-        DLinkedNode node = cache.get(key);
-        if (node == null)
+        if (!map.containsKey(key))
             return -1;
-
-        // move the accessed node to the head;
-        moveToHead(node);
-
-        return node.value;
+        int val = map.get(key).val;
+        // 利用 put 方法把该数据提前
+        put(key, val);
+        return val;
     }
-
-    public void put(int key, int value) {
-        DLinkedNode node = cache.get(key);
-
-        if (node == null) {
-            DLinkedNode newNode = new DLinkedNode();
-            newNode.key = key;
-            newNode.value = value;
-
-            cache.put(key, newNode);
-            addNode(newNode);
-
-            ++size;
-
-            if (size > capacity) {
-                // pop the tail
-                DLinkedNode tail = popTail();
-                cache.remove(tail.key);
-                --size;
-            }
+    
+    public void put(int key, int val) {
+        // 先把新节点 x 做出来
+        Node x = new Node(key, val);
+        
+        if (map.containsKey(key)) {
+            // 删除旧的节点，新的插到头部
+            cache.remove(map.get(key));
+            cache.addFirst(x);
+            // 更新 map 中对应的数据
+            map.put(key, x);
         } else {
-            // update the value.
-            node.value = value;
-            moveToHead(node);
+            if (cap == cache.size()) {
+                // 删除链表最后一个数据
+                Node last = cache.removeLast();
+                map.remove(last.key);
+            }
+            // 直接添加到头部
+            cache.addFirst(x);
+            map.put(key, x);
         }
     }
 }
+
+class DoubleList {  
+    private Node head, tail; // 头尾虚节点
+    private int size; // 链表元素数
+
+    public DoubleList() {
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+        head.next = tail;
+        tail.prev = head;
+        size = 0;
+    }
+
+    // 在链表头部添加节点 x
+    public void addFirst(Node x) {
+        x.next = head.next;
+        x.prev = head;
+        head.next.prev = x;
+        head.next = x;
+        size++;
+    }
+
+    // 删除链表中的 x 节点（x 一定存在）
+    public void remove(Node x) {
+        x.prev.next = x.next;
+        x.next.prev = x.prev;
+        size--;
+    }
+    
+    // 删除链表中最后一个节点，并返回该节点
+    public Node removeLast() {
+        if (tail.prev == head)
+            return null;
+        Node last = tail.prev;
+        remove(last);
+        return last;
+    }
+    
+    // 返回链表长度
+    public int size() { return size; }
+}
+
+class Node{
+    int key;
+    int val;
+    public Node next, prev;
+    public Node(int k,int v){
+        this.key=k;
+        this.val=v;
+    }
+}
+
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
 
 /**
  * Your LRUCache object will be instantiated and called as such:

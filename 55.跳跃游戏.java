@@ -38,18 +38,30 @@
 // @lc code=start
 class Solution {
     public boolean canJump(int[] nums) {
-        if (nums == null)
-            return false;
-        int endReachable = nums.length - 1;
+        // 方法一
+        int rightMost = 0;
         for (int i = 0; i < nums.length; i++) {
-            int thisIndex = nums.length - 1 - i;
-            int thisNum = nums[thisIndex];
-            if (thisNum + thisIndex >= endReachable) {
-                endReachable = thisIndex;
+            if (rightMost >= i) {
+                rightMost = Math.max(rightMost, i + nums[i]);
+                if (rightMost >= nums.length - 1)
+                    return true;
             }
-
         }
-        return endReachable == 0;
+        return false;
+
+        // // 方法二
+        //         if (nums == null)
+        //             return false;
+        //         int endReachable = nums.length - 1;
+        //         for (int i = 0; i < nums.length; i++) {
+        //             int thisIndex = nums.length - 1 - i;
+        //             int thisNum = nums[thisIndex];
+        //             if (thisNum + thisIndex >= endReachable) {
+        //                 endReachable = thisIndex;
+        //             }
+
+        //         }
+        //         return endReachable == 0;
     }
 }
 // @lc code=end

@@ -48,30 +48,56 @@
 class Solution {
 
     public ListNode reverseKGroup(ListNode head, int k) {
-        Deque<ListNode> stack = new ArrayDeque<ListNode>();
-        ListNode dummy = new ListNode(0);
-        ListNode p = dummy;
-        while (true) {
-            int count = 0;
-            ListNode tmp = head;
-            while (tmp != null && count < k) {
-                stack.add(tmp);
-                tmp = tmp.next;
-                count++;
-            }
-            if (count != k) {
-                p.next = head;
-                break;
-            }
-            while (!stack.isEmpty()){
-                p.next = stack.pollLast();
-                p = p.next;
-            }
-            p.next = tmp;
-            head = tmp;
+        //1. test weather we have more then k node left, if less then k node left we just return head 
+        ListNode node = head;
+        int count = 0;
+        while (count < k) {
+            if (node == null)
+                return head;
+            node = node.next;
+            count++;
         }
-        return dummy.next;
- 
+        // 2.reverse k node at current level    
+             
+        //pre=k到end反转之后的节点
+        ListNode pre = reverseKGroup(node, k); //pre node point to the the answer of sub-problem 
+
+        //pre 添加0-k的反转节点
+        while (count > 0) {
+            ListNode next = head.next;
+            head.next = pre;
+            pre = head;
+            head = next;
+            count--;
+        }
+        return pre;
+
+        // // 解法3
+        // Deque<ListNode> stack = new ArrayDeque<ListNode>();
+        // ListNode dummy = new ListNode(0);
+        // ListNode p = dummy;
+        // while (true) {
+        //     int count = 0;
+        //     ListNode tmp = head;
+        //     while (tmp != null && count < k) {
+        //         stack.add(tmp);
+        //         tmp = tmp.next;
+        //         count++;
+        //     }
+        //     if (count != k) {
+        //         p.next = head;
+        //         break;
+        //     }
+        //     while (!stack.isEmpty()){
+        //         p.next = stack.pollLast();
+        //         p = p.next;
+        //     }
+        //     p.next = tmp;
+        //     head = tmp;
+        // }
+        // return dummy.next;
+
+        // 解法2
         // if (head == null)
         //     return null;
         // // 区间 [a, b) 包含 k 个待反转元素

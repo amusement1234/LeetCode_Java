@@ -80,7 +80,7 @@ class Solution {
                     return false;
                 five--;
                 ten++;
-            } else {
+            } else if (bill == 20) {
                 if (five > 0 && ten > 0) {
                     five--;
                     ten--;

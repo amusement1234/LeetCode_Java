@@ -38,8 +38,39 @@
 // @lc code=start
 class Solution {
     public int[] countBits(int num) {
-        
+        // // 解法一
+        // int[] ans = new int[num + 1];
+        // for (int i = 0; i <= num; ++i)
+        //     ans[i] = popcount(i);
+        // return ans;
+
+        // //  解法二
+        // int[] res = new int[num + 1];
+        // res[0] = 0;
+
+        // for (int i = 1; i <= num; i++) {
+        //     if ((i & 1) == 0) {
+        //         res[i] = res[i >> 1];
+        //     } else {
+        //         res[i] = res[i - 1] + 1;
+        //     }
+        // }
+
+        // return res;
+
+        // 解法三
+        int[] res = new int[num + 1];
+        for (int i = 1; i <= num; i++) {
+            res[i] = res[i & (i - 1)] + 1;
+        }
+        return res;
+    }
+
+    private int popcount(int x) {
+        int count;
+        for (count = 0; x != 0; ++count)
+            x &= x - 1; //zeroing out the least significant nonzero bit
+        return count;
     }
 }
 // @lc code=end
-

@@ -1,3 +1,6 @@
+import java.util.Deque;
+import java.util.List;
+
 /*
  * @lc app=leetcode.cn id=239 lang=java
  *
@@ -56,49 +59,41 @@
 // @lc code=start
 class Solution {
 
-    ArrayDeque<Integer> deq = new ArrayDeque<Integer>();
-    int[] nums;
-
-    public void clean_deque(int i, int k) {
-        // remove indexes of elements not from sliding window
-        if (!deq.isEmpty() && deq.getFirst() == i - k)
-            deq.removeFirst();
-
-        // remove from deq indexes of all elements 
-        // which are smaller than current element nums[i]
-        while (!deq.isEmpty() && nums[i] > nums[deq.getLast()])
-            deq.removeLast();
-    }
-
     public int[] maxSlidingWindow(int[] nums, int k) {
+
+        // 解法3：queue https://leetcode.com/problems/sliding-window-maximum/discuss/65884/Java-O(n)-solution-using-deque-with-explanation
+        if (nums == null || k <= 0)
+            return null;
         int n = nums.length;
-        if (n * k == 0)
-            return new int[0];
-        if (k == 1)
-            return nums;
-
-        // init deque and output
-        this.nums = nums;
-        int max_idx = 0;
-        for (int i = 0; i < k; i++) {
-            clean_deque(i, k);
-            deq.addLast(i);
-            // compute max in nums[:k]
-            if (nums[i] > nums[max_idx])
-                max_idx = i;
+        int[] res = new int[n - k + 1];
+        Deque<Integer> queue = new ArrayDeque();//store index
+        for (int i = 0; i < n; i++) {
+            while (!queue.isEmpty() && queue.peek() < i - k + 1)
+                queue.poll();
+            while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i])
+                queue.pollLast();
+            queue.offer(i);
+            if (i - k + 1 >= 0)
+                res[i - k + 1] = nums[queue.peek()];
         }
-        int[] output = new int[n - k + 1];
-        output[0] = nums[max_idx];
+        return res;
 
-        // build output
-        for (int i = k; i < n; i++) {
-            clean_deque(i, k);
-            deq.addLast(i);
-            output[i - k + 1] = nums[deq.getFirst()];
-        }
-        return output;
+        // // 解法2：queue
+        // MonotonicQueue window = new MonotonicQueue();
+        // int n = nums.length;
+        // List<Integer> res = new ArrayList();
+        // for (int i = 0; i < nums.length; i++) {
+        //     if (i < k - 1) {
+        //         window.push(nums[i]);
+        //     } else {
+        //         window.push(nums[i]);
+        //         res.add(window.max());
+        //         window.pop(nums[i - k + 1]);
+        //     }
+        // }
+        // return res.stream().mapToInt(s -> s).toArray();
 
-        //1、暴力法
+        // 解法1：暴力法
         // int[] arr = new int[nums.length - k + 1];
         // for (int i = 0; i < nums.length - k + 1; i++) {
         //     int thisMax = nums[i];
@@ -110,5 +105,26 @@ class Solution {
         // return arr;
     }
 
+}
+
+//单调队列：从大到小。队首大，队尾小
+public class MonotonicQueue {
+    private Deque<Integer> data = new LinkedList<Integer>();
+
+    public void push(Integer n) {
+        //移除比当前小的元素
+        while (!data.isEmpty() && data.peekLast() < n) //peek 获取队首元素
+            data.pollLast();//移除队尾
+        data.add(n);//队尾添加
+    }
+
+    public int max() {
+        return data.peek();
+    }
+
+    public void pop(int n) {
+        if (!data.isEmpty() && data.peek() == n)
+            data.poll();//移除队首
+    }
 }
 // @lc code=end

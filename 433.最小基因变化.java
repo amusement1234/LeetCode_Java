@@ -68,36 +68,61 @@
 // @lc code=start
 class Solution {
     public int minMutation(String start, String end, String[] bank) {
-        HashSet<String> set = new HashSet<>(Arrays.asList(bank));
-        if (!set.contains(end)) {
-            return -1;
-        }
-        char[] four = { 'A', 'C', 'G', 'T' };
-        Queue<String> queue = new LinkedList<>();
-        queue.offer(start);
-        set.remove(start);
-        int step = 0;
-        while (queue.size() > 0) {
-            step++;
-            for (int count = queue.size(); count > 0; --count) {
-                char[] temStringChars = queue.poll().toCharArray();
-                for (int i = 0, len = temStringChars.length; i < len; ++i) {
-                    char oldChar = temStringChars[i];
-                    for (int j = 0; j < 4; ++j) {
-                        temStringChars[i] = four[j];
-                        String newGenetic = new String(temStringChars);
-                        if (end.equals(newGenetic)) {
-                            return step;
-                        } else if (set.contains(newGenetic)) {
-                            set.remove(newGenetic);
-                            queue.offer(newGenetic);
-                        }
-                    }
-                    temStringChars[i] = oldChar;
-                }
+        // 解法一：bfs
+        // HashSet<String> set = new HashSet<>(Arrays.asList(bank));
+        // if (!set.contains(end)) {
+        //     return -1;
+        // }
+        // char[] four = { 'A', 'C', 'G', 'T' };
+        // Queue<String> queue = new LinkedList<>();
+        // queue.offer(start);
+        // set.remove(start);
+        // int step = 0;
+        // while (queue.size() > 0) {
+        //     step++;
+        //     for (int count = queue.size(); count > 0; --count) {
+        //         char[] temp = queue.poll().toCharArray();
+        //         for (int i = 0, len = temp.length; i < len; ++i) {
+        //             char oldChar = temp[i];
+        //             for (int j = 0; j < 4; ++j) {
+        //                 temp[i] = four[j];
+        //                 String newGenetic = new String(temp);
+        //                 if (end.equals(newGenetic)) {
+        //                     return step;
+        //                 } else if (set.contains(newGenetic)) {
+        //                     set.remove(newGenetic);
+        //                     queue.offer(newGenetic);
+        //                 }
+        //             }
+        //             temp[i] = oldChar;
+        //         }
+        //     }
+        // }
+        // return -1;
+
+        //解法二：dfs
+        dfs(start, end, bank, 0, new HashSet<String>());
+        return min == Integer.MAX_VALUE ? -1 : min;
+    }
+
+    int min = Integer.MAX_VALUE;
+
+    public void dfs(String start, String end, String[] bank, int step, HashSet<String> set) {
+        if (set.contains(end))
+            min = Math.min(step, min);
+        for (String str : bank) {
+            int diff = 0;
+            for (int i = 0; i < str.length(); i++) {
+                if (start.charAt(i) != str.charAt(i))
+                    diff++;
+            }
+
+            if (diff == 1 && !set.contains(str)) {
+                set.add(str);
+                dfs(str, end, bank, step + 1, set);
+                set.remove(str);
             }
         }
-        return -1;
 
     }
 }

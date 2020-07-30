@@ -46,10 +46,34 @@ import java.util.List;
  */
 class Solution {
     public List<Integer> largestValues(TreeNode root) {
+        // //方法一：深度优先
+        // if (root == null)
+        //     return list;
+        // helper(root, 0);
+        // return list;
+
+        // 方法二：广度优先
+        List<Integer> result = new LinkedList<>();
         if (root == null)
-            return list;
-        helper(root, 0);
-        return list;
+            return result;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int max = Integer.MIN_VALUE;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = queue.poll();
+                max = Math.max(max, cur.val);
+                if (cur.left != null)
+                    queue.offer(cur.left);
+                if (cur.right != null)
+                    queue.offer(cur.right);
+            }
+            result.add(max);
+            max = Integer.MIN_VALUE;
+        }
+        return result;
+
     }
 
     List<Integer> list = new ArrayList<>();
@@ -67,5 +91,6 @@ class Solution {
         if (node.right != null)
             helper(node.right, level + 1);
     }
+
 }
 // @lc code=end

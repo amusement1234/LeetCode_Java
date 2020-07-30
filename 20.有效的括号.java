@@ -71,20 +71,33 @@ class Solution {
 
     public boolean isValid(String s) {
         Stack<Character> stack = new Stack<Character>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (this.mappings.containsKey(c)) {
-                if (stack.isEmpty())
-                    return false;
-                Character cc = stack.pop();
-                if (this.mappings.get(c) != cc)
-                    return false;
-
-            } else {
-                stack.push(c);
-            }
+        for (char c : s.toCharArray()) {
+            if (c == '(')
+                stack.push(')');
+            else if (c == '{')
+                stack.push('}');
+            else if (c == '[')
+                stack.push(']');
+            else if (stack.isEmpty() || stack.pop() != c)
+                return false;
         }
         return stack.isEmpty();
+
+        // Stack<Character> stack = new Stack<Character>();
+        // for (int i = 0; i < s.length(); i++) {
+        //     char c = s.charAt(i);
+        //     if (this.mappings.containsKey(c)) {
+        //         if (stack.isEmpty())
+        //             return false;
+        //         Character cc = stack.pop();
+        //         if (this.mappings.get(c) != cc)
+        //             return false;
+
+        //     } else {
+        //         stack.push(c);
+        //     }
+        // }
+        // return stack.isEmpty();
     }
 }
 // @lc code=end

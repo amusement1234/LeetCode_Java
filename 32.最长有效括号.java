@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /*
  * @lc app=leetcode.cn id=32 lang=java
  *
@@ -34,30 +36,82 @@
 // @lc code=start
 class Solution {
     public int longestValidParentheses(String s) {
-        int count = 0;
-        int max = 0;
-        for (int i = 0; i < s.length(); i++) {
-            count = 0;
-            for (int j = i; j < s.length(); j++) {
-                if (s.charAt(j) == '(') {
-                    count++;
-                } else {
-                    count--;
-                }
-                // count < 0 说明右括号多了，此时无论后边是什么，一定是非法字符串了，所以可以提前结束循环
-                if (count < 0) {
-                    break;
 
-                }
-                // 当前是合法序列，更新最长长度
-                if (count == 0) {
-                    if (j - i + 1 > max) {
-                        max = j - i + 1;
-                    }
-                }
+        //方法4：dp
+        int[] dp = new int[s.length()];
+        int max = 0;
+        int leftCount = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(')
+                leftCount++;
+            else if (leftCount > 0) {
+                dp[i] = dp[i - 1] + 2;
+                dp[i] += (i - dp[i]) >= 0 ? dp[i - dp[i]] : 0;
+                max = Math.max(max, dp[i]);
+                leftCount--;
             }
         }
         return max;
+
+        // // 方法3：栈
+        // Stack<Integer> stack = new Stack();
+        // stack.push(-1);
+        // int max = 0;
+        // for (int i = 0; i < s.length(); i++) {
+        //     if (s.charAt(i) == ')' && stack.size() > 1 && s.charAt(stack.peek()) == '(') {
+        //         stack.pop();
+        //         max = Math.max(max, i - stack.peek());
+        //     } else
+        //         stack.push(i);
+        // }
+        // return max;
+
+        // 方法2：栈
+        // Stack<Integer> stack = new Stack<Integer>();
+        // int max = 0;
+        // int left = -1;
+        // for (int i = 0; i < s.length(); i++) {
+        //     if (s.charAt(i) == '(') {
+        //         stack.push(i);
+        //         continue;
+        //     }
+
+        //     if (stack.isEmpty())
+        //         left = i;
+        //     else {
+        //         stack.pop();
+        //         if (stack.isEmpty())
+        //             max = Math.max(max, i - left);
+        //         else
+        //             max = Math.max(max, i - stack.peek());
+        //     }
+        // }
+        // return max;
+
+        // // 方法1
+        // int max = 0;
+        // for (int i = 0; i < s.length(); i++) {
+        //     int count = 0;
+        //     for (int j = i; j < s.length(); j++) {
+        //         if (s.charAt(j) == '(') {
+        //             count++;
+        //         } else {
+        //             count--;
+        //         }
+        //         // count < 0 说明右括号多了，此时无论后边是什么，一定是非法字符串了，所以可以提前结束循环
+        //         if (count < 0) {
+        //             break;
+
+        //         }
+        //         // 当前是合法序列，更新最长长度
+        //         if (count == 0) {
+        //             if (j - i + 1 > max) {
+        //                 max = j - i + 1;
+        //             }
+        //         }
+        //     }
+        // }
+        // return max;
 
     }
 }

@@ -120,9 +120,5 @@ class trieNode {
     public String val;
     public trieNode[] child = new trieNode[26];
     public boolean isLeaf = false;
-
-    trieNode() {
-
-    }
 }
 // @lc code=end

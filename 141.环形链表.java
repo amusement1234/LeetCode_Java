@@ -70,15 +70,29 @@ import java.util.HashSet;
  */
 public class Solution {
     public boolean hasCycle(ListNode head) {
-        Set<ListNode> list = new HashSet<>();
-        while (head != null) {
-            if (list.contains(head))
+
+        // 解法2：双指针
+        if (head == null)
+            return false;
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (slow != null && fast != null && fast.next != null) {
+            if (slow == fast)
                 return true;
-            else
-                list.add(head);
-            head = head.next;
+            slow = slow.next;
+            fast = fast.next.next;
         }
         return false;
+
+        // // 解法1：哈希
+        // Set<ListNode> list = new HashSet<>();
+        // while (head != null) {
+        //     if (list.contains(head))
+        //         return true;
+        //     list.add(head);
+        //     head = head.next;
+        // }
+        // return false;
     }
 }
 // @lc code=end

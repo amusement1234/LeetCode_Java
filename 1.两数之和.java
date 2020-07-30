@@ -33,29 +33,8 @@ import java.util.Map;
 // @lc code=start
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        // //方法一：暴力法
-        // for (int i = 0; i < nums.length; i++) {
-        //     for (int j = i + 1; j < nums.length; j++) {
-        //         if (nums[i] + nums[j] == target) {
-        //             return new int[] { i, j };
-        //         }
-        //     }
-        // }
-        // return null;
 
-        // //方法二：两遍哈希表
-        // Map<Integer, Integer> map = new HashMap<>();
-        // for (int i = 0; i < nums.length; i++) {
-        //     map.put(nums[i], i);
-        // }
-        // for (int i = 0; i < nums.length; i++) {
-        //     int temp = target - nums[i];
-        //     if (map.containsKey(temp) && map.get(temp) != i)
-        //         return new int[] { i, map.get(temp) };
-        // }
-        // return null;
-
-        //方法三：一遍哈希表
+        //方法2：一遍哈希表
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
             int temp = target - nums[i];
@@ -64,6 +43,16 @@ class Solution {
             map.put(nums[i], i);
         }
         return null;
+        
+        // //方法1：暴力法
+        // for (int i = 0; i < nums.length; i++) {
+        //     for (int j = i + 1; j < nums.length; j++) {
+        //         if (nums[i] + nums[j] == target) {
+        //             return new int[] { i, j };
+        //         }
+        //     }
+        // }
+        // return null;
 
     }
 }

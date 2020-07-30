@@ -38,13 +38,15 @@
 // @lc code=start
 class Solution {
     public int mySqrt(int x) {
+
+        // 方法一
         if (x == 0 || x == 1)
             return x;
         int left = 1;
         int right = x;
-        while (left < right) {
+        while (left <= right) {
             int mid = left + (right - left) / 2;
-            if (mid * mid > x)
+            if ((long) mid * mid > x)
                 right = mid - 1;
             else
                 left = mid + 1;
@@ -52,7 +54,7 @@ class Solution {
 
         return right;
 
-        //方法1
+        //方法2
         // // 注意：针对特殊测试用例，例如 2147395599
         // // 要把搜索的范围设置成长整型
         // // 为了照顾到 0 把左边界设置为 0

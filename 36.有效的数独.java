@@ -76,8 +76,52 @@
 // @lc code=start
 class Solution {
     public boolean isValidSudoku(char[][] board) {
-        
+
+        // //解法一：哈希
+        // HashMap<Integer, Integer>[] rows = new HashMap[9];
+        // HashMap<Integer, Integer>[] cols = new HashMap[9];
+        // HashMap<Integer, Integer>[] boxs = new HashMap[9];
+
+        // for (int i = 0; i < 9; i++) {
+        //     rows[i] = new HashMap();
+        //     cols[i] = new HashMap();
+        //     boxs[i] = new HashMap();
+        // }
+
+        // for (int i = 0; i < 9; i++) {
+        //     for (int j = 0; j < 9; j++) {
+        //         if (board[i][j] == '.')
+        //             continue;
+        //         int box = (i / 3) * 3 + j / 3;
+        //         int val = (int) board[i][j];
+        //         rows[i].put(val, rows[i].getOrDefault(val, 0) + 1);
+        //         cols[j].put(val, cols[j].getOrDefault(val, 0) + 1);
+        //         boxs[box].put(val, boxs[box].getOrDefault(val, 0) + 1);
+
+        //         if (rows[i].get(val) > 1 || cols[j].get(val) > 1 || boxs[box].get(val) > 1)
+        //             return false;
+        //     }
+        // }
+        // return true;
+
+        // 解法二
+        char[][][] arr = new char[9][9][3];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.')
+                    continue;
+                int box = (i / 3) * 3 + j / 3;
+                int val = (int) (board[i][j] - '1');
+
+                if (arr[i][val][0] == 1 || arr[j][val][1] == 1 || arr[box][val][2] == 1)
+                    return false;
+
+                arr[i][val][0] = 1;
+                arr[j][val][1] = 1;
+                arr[box][val][2] = 1;
+            }
+        }
+        return true;
     }
 }
 // @lc code=end
-

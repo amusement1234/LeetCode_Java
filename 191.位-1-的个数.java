@@ -68,16 +68,16 @@ public class Solution {
         // }
         // return count;
 
-        // //解法2：位操作的小技巧
-        // int count = 0;
-        // while (n != 0) {
-        //     n &= (n - 1);
-        //     count++;
-        // }
-        // return count;
+        //解法2：位操作的小技巧
+        int count = 0;
+        while (n != 0) {
+            n = n & (n - 1);//消除最低位的1
+            count++;
+        }
+        return count;
 
-        //解法3：类库
-        return Integer.bitCount(n);
+        // //解法3：类库
+        // return Integer.bitCount(n);
     }
 }
 // @lc code=end

@@ -45,20 +45,14 @@
 // @lc code=start
 class Solution {
     public void rotate(int[] nums, int k) {
-        // //方法1：暴力
-        // int thisVal;
-        // int prev;
-        // for (int j = 0; j < k; j++) {
-        //     prev = nums[nums.length - 1];
-        //     for (int i = 0; i < nums.length; i++) {
-        //         thisVal = nums[i];
-        //         nums[i] = prev;
-        //         prev = thisVal;
 
-        //     }
-        // }
+        // //解法3：使用反转
+        // k = k % nums.length;
+        // reverse(nums, 0, nums.length - 1);
+        // reverse(nums, 0, k - 1);
+        // reverse(nums, k, nums.length - 1);
 
-        // //方法 2：使用额外的数组
+        // //解法2：使用额外的数组
         // int[] arr = new int[nums.length];
         // for (int i = 0; i < nums.length; i++) {
         //     arr[(k + i) % nums.length] = nums[i];
@@ -69,25 +63,19 @@ class Solution {
 
         // }
 
-        //方法 3：使用环状替换
-
-        //方法 4：使用反转
-        if (nums == null || nums.length <= 1)
-            return;
-        if (nums.length == 2 && k == 1) {
-            int temp = nums[0];
-            nums[0] = nums[1];
-            nums[1] = temp;
-            return;
-        }
-        k = k % nums.length;
-        rev(nums, 0, nums.length - 1);
-        rev(nums, 0, k - 1);
-        rev(nums, k, nums.length - 1);
-
+        // //解法1：暴力
+        // k = k % nums.length;
+        // for (int i = 0; i < k; i++) {
+        //     int end = nums[nums.length - 1];
+        //     for (int j = 0; j < nums.length; j++) {
+        //         int temp = nums[j];
+        //         nums[j] = end;
+        //         end = temp;
+        //     }
+        // }
     }
 
-    public void rev(int[] nums, int start, int end) {
+    public void reverse(int[] nums, int start, int end) {
         while (start < end) {
             int temp = nums[start];
             nums[start] = nums[end];

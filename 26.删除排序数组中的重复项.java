@@ -57,28 +57,25 @@
 // @lc code=start
 class Solution {
     public int removeDuplicates(int[] nums) {
-        // if (nums.length == 0)
-        //     return 0;
-        // int index = 0;//慢指针
-        // for (int j = 0; j < nums.length; j++) {
-        //     if (nums[j] != nums[index]) {
-        //         index++;
-        //         nums[index] = nums[j];
-        //     }
-        // }
-        // return index + 1;
 
-        if (nums == null || nums.length == 0)
-            return 0;
-        int p = 0;
-        int q = 1;
-        while (q < nums.length) {
-            if (nums[p] != nums[q]) {
-                nums[++p] = nums[q];
-            }
-            q++;
+        // 解法2： https://leetcode.com/problems/remove-duplicates-from-sorted-array/discuss/11780/5-lines-C%2B%2BJava-nicer-loops
+        int index = 0;
+        for (int n : nums) {
+            if (index == 0 || n > nums[index - 1])
+                nums[index++] = n;
         }
-        return p + 1;
+        return index;
+
+        // 解法1： Time O(n), Space O(1) https://leetcode.com/problems/remove-duplicates-from-sorted-array/discuss/11757/My-Solution-%3A-Time-O(n)-Space-O(1)
+
+        // int n = nums.length;
+        // if (n < 2)
+        //     return n;
+        // int index = 1;
+        // for (int i = 1; i < n; ++i)
+        //     if (nums[i] != nums[i - 1])
+        //         nums[index++] = nums[i];
+        // return index;
 
     }
 }

@@ -42,7 +42,7 @@
 class Solution {
 
     public int largestRectangleArea(int[] heights) {
-
+        // 解法2：stack
         Stack<Integer> stack = new Stack<>();
         stack.push(-1);
         int maxarea = 0;
@@ -55,31 +55,7 @@ class Solution {
             maxarea = Math.max(maxarea, heights[stack.pop()] * (heights.length - stack.peek() - 1));
         return maxarea;
 
-        // int maxarea = 0;
-        // for (int i = 0; i < heights.length; i++) {
-        //     for (int j = i; j < heights.length; j++) {
-        //         int minheight = Integer.MAX_VALUE;
-        //         for (int k = i; k <= j; k++)
-        //             minheight = Math.min(minheight, heights[k]);
-        //         maxarea = Math.max(maxarea, minheight * (j - i + 1));
-        //     }
-        // }
-        // return maxarea;
-
-        // //栈
-        // Stack<Integer> stack = new Stack<>();
-        // stack.push(-1);
-        // int maxarea = 0;
-        // for (int i = 0; i < heights.length; ++i) {
-        //     while (stack.peek() != -1 && heights[stack.peek()] >= heights[i])
-        //         maxarea = Math.max(maxarea, heights[stack.pop()] * (i - stack.peek() - 1));
-        //     stack.push(i);
-        // }
-        // while (stack.peek() != -1)
-        //     maxarea = Math.max(maxarea, heights[stack.pop()] * (heights.length - stack.peek() - 1));
-        // return maxarea;
-
-        // //2.优化的暴力法
+        // 解法1：优化的暴力法
         // int maxarea = 0;
         // for (int i = 0; i < heights.length; i++) {
         //     int minheight = Integer.MAX_VALUE;
@@ -89,19 +65,6 @@ class Solution {
         //     }
         // }
         // return maxarea;
-
-        // //1.暴力法
-        // int maxarea = 0;
-        // for (int i = 0; i < heights.length; i++) {
-        //     for (int j = i; j < heights.length; j++) {
-        //         int minheight = Integer.MAX_VALUE;
-        //         for (int k = i; k <= j; k++)
-        //             minheight = Math.min(minheight, heights[k]);
-        //         maxarea = Math.max(maxarea, minheight * (j - i + 1));
-        //     }
-        // }
-        // return maxarea;
-
     }
 }
 // @lc code=end

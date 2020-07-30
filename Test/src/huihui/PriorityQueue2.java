@@ -2,11 +2,11 @@ package huihui;
 
 import java.util.Arrays;
 
-public class PriorityQueue {
+public class PriorityQueue2 {
     private int[] array;
     private int size;
 
-    public PriorityQueue() {
+    public PriorityQueue2() {
         array = new int[32];
     }
 

@@ -69,18 +69,39 @@
  */
 public class Solution {
     public ListNode detectCycle(ListNode head) {
-        Set<ListNode> visited = new HashSet<ListNode>();
 
-        ListNode node = head;
-        while (node != null) {
-            if (visited.contains(node)) {
-                return node;
+        // 解法2：双指针
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+
+            if (fast == slow) {//如果快慢指针相遇，慢指针多跑了一圈，需要减去一圈。
+                ListNode entry = head;
+                while (entry != slow) {
+                    slow = slow.next;
+                    entry = entry.next;
+                }
+                return entry;
             }
-            visited.add(node);
-            node = node.next;
         }
-
         return null;
+
+        // 解法1：哈希
+        // Set<ListNode> visited = new HashSet<ListNode>();
+
+        // ListNode node = head; //直接用head也可以的
+        // while (node != null) {
+        //     if (visited.contains(node)) {
+        //         return node;
+        //     }
+        //     visited.add(node);
+        //     node = node.next;
+        // }
+
+        // return null;
 
     }
 }

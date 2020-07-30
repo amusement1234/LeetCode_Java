@@ -2,7 +2,9 @@ package app;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
+import java.net.InetAddress;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,22 +15,234 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import graph.Graph2;
 import huihui.MyQueue;
-import huihui.PriorityQueue;
+import huihui.PriorityQueue2;
 import huihui.sort.bucketSort;
 import huihui.sort.countSort;
+import huihui.sort.quickSort;
+import labuladong.kmp;
+import labuladong.feibolaqie;
+import oop.temp_test;
+import queue.MonotonicQueue;
 import huihui.MyBinaryTree;
 import huihui.MyLinkedList;
 import sort.HeapSort;
 import sort.MergeSort;
 import sort.QuickSort;
 import tree.Heap;
+import tree.UF;
+import tree.wordTrie;
+import java.util.Map.Entry;
 
 public class App {
 
+    //单调队列：从大到小。队首大，队尾小
+    public class MonotonicQueue {
+        private Deque<Integer> data = new LinkedList<Integer>();
+
+        public void push(Integer n) {
+            //移除比当前小的元素
+            while (!data.isEmpty() && data.peekLast() < n) //peek 获取队首元素
+                data.pollLast();//移除队尾
+            data.add(n);//队尾添加
+        }
+
+        public int max() {
+            return data.peek();
+        }
+
+        public void pop(int n) {
+            if (!data.isEmpty() && data.peek() == n)
+                data.poll();//移除队首
+        }
+    }
+
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+
+        // 解法1：递归
+        if (l1 == null)
+            return l2;
+        if (l2 == null)
+            return l1;
+        if (l1.val < l2.val) {
+            l1.next = mergeTwoLists(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = mergeTwoLists(l1, l2.next);
+            return l2;
+        }
+
+    }
+
+    public static ListNode reverseKGroup2(ListNode head, int k) {
+        //1. test weather we have more then k node left, if less then k node left we just return head 
+        ListNode node = head;
+        int count = 0;
+        while (count < k) {
+            if (node == null)
+                return head;
+            node = node.next;
+            count++;
+        }
+        // 2.reverse k node at current level 
+        ListNode pre = reverseKGroup(node, k); //pre node point to the the answer of sub-problem 
+        while (count > 0) {
+            ListNode next = head.next;
+            head.next = pre;
+            pre = head;
+            head = next;
+            count--;
+        }
+        return pre;
+    }
+
     public static void main(String[] args) throws Exception {
+        App.MonotonicQueue queue2 = new App().new MonotonicQueue();
+        queue2.push(4);
+        queue2.push(3);
+        queue2.push(2);
+        queue2.push(1);
+        queue2.push(4);
+        queue2.push(2);
+
+        ListNode head1 = new ListNode(1);
+        head1.next = new ListNode(2);
+        head1.next.next = new ListNode(4);
+
+        ListNode head2 = new ListNode(1);
+        head2.next = new ListNode(3);
+        head2.next.next = new ListNode(4);
+        ListNode r4 = mergeTwoLists(head1, head2);
+
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
+        ListNode r3 = reverseKGroup2(head, 2);
+
+        ListNode temp = head;
+        temp.val = 3;
+        temp = temp.next;
+
+        // //解法2：迭代 
+        // ListNode temp=head;
+        // int index=0;
+        // while(temp!=null){
+        //     if(index%2==0 && temp.next!=null){
+        //         int val=temp.val;
+        //         temp.val=temp.next.val;
+        //         temp.next.val=val;
+        //     }
+        //     temp=temp.next;
+        //     index++;
+        // }
+
+        int tdd = findKthLargest(new int[] { 3, 2, 1, 5, 6, 4 }, 2);
+
+        String s1 = "abc";
+        String s2 = "bac";
+        char[] c11 = s1.toCharArray();
+        char[] c12 = s2.toCharArray();
+        Arrays.sort(c11);
+        Arrays.sort(c12);
+        boolean s34 = String.valueOf(c11).equals(String.valueOf(c12));
+        String s_1 = "abab";
+        String s_2 = "ab";
+        List<Integer> i233 = findAnagrams(s_1, s_2);
+
+        String s33 = reverseWords("Let's take LeetCode contest");
+
+        String s22 = "abcdefg";
+        String temp33 = reverseStr(s22, 2);
+
+        int ssfs = longestValidParentheses("()");
+
+        Map<Integer, Integer> map222 = new TreeMap();
+        map222.put(1, 2);
+        map222.put(0, 0);
+        Set<Entry<Integer, Integer>> dd = map222.entrySet();
+        Set<Integer> keyset = map222.keySet();
+        for (int n : map222.keySet()) {
+
+        }
+        String aaa2 = "abc";
+        String baaa = change(aaa2, 1, 2);
+
+        char[][] board = new char[9][9];
+        board[0][0] = 9;
+        board[0][1] = 3;
+        App.isValidSudoku(board);
+
+        UF uf = new UF(3);
+        uf.union(0, 0);
+        uf.union(0, 1);
+        uf.union(2, 2);
+
+        LinkedList<Integer> list3 = new LinkedList<>();
+        list3.add(1);
+        list3.add(2);
+        list3.add(1);
+
+        Integer ddd3 = list3.remove(1);
+
+        wordTrie trie = new wordTrie();
+        trie.insert("oath");
+        trie.insert("pea");
+        trie.insert("eat");
+        trie.insert("rain");
+
+        MonotonicQueue monotonicQueue = new App().new MonotonicQueue();
+        monotonicQueue.push(1);
+        monotonicQueue.push(2);
+        monotonicQueue.push(3);
+        monotonicQueue.push(4);
+        monotonicQueue.push(4);
+        monotonicQueue.push(3);
+        monotonicQueue.push(2);
+        monotonicQueue.push(1);
+
+        int m1 = monotonicQueue.max();
+        monotonicQueue.pop(4);
+
+        ListNode l = new ListNode(1);
+        l.next = new ListNode(2);
+        l.next.next = new ListNode(3);
+        l.next.next.next = new ListNode(4);
+        l.next.next.next.next = new ListNode(5);
+        l.next.next.next.next.next = new ListNode(6);
+
+        ListNode lll = reverseBetween(l, 2, 4);
+        int[] nums2 = new int[] { 3, 0, 1, 4, 5 };
+        int rrr = MissNumber(nums2);
+        int aaa = 27 % 10;
+        int bbb = 15 / 10;
+        int ccc = 4 ^ 4 ^ 4 ^ 4;
+
+        Character c2 = ('b' | ' ');
+        Character c3 = ('B' | ' ');
+
+        Character c4 = ('b' & '_');
+        Character c5 = ('B' & '_');
+
+        Arrays.asList("Hello", "Java8", "Java7").stream().map(s -> s.toUpperCase());
+
+        int[] commands = new int[] { 4, -1, 3 };
+        int[][] obstacles = new int[0][0];
+        int rob = App.robotSim(commands, obstacles);
+
+        int sum = new feibolaqie().feb(10);
+        int sum2 = new feibolaqie().feb2(10);
+        int sum3 = new feibolaqie().feb3(10);
+        int sum4 = new feibolaqie().feb4(10);
+
+        int searIndex = new kmp("cab").search("abcabc");
+
+        int[] coins = new int[] { 1, 2, 5 };
+        int coin = new temp_test().coinChange(coins, 11);
 
         double[] tte2 = bucketSort.bucketSort2(new double[] { 1.3, 23, 55, 2.4, 3 });
         int[] ttt = countSort.countSort2(new int[] { 1, 23, 55, 2, 3 });
@@ -590,4 +804,205 @@ public class App {
         return q1.isEmpty();
     }
 
+    public static int robotSim(int[] commands, int[][] obstacles) {
+        Set<String> set = new HashSet<>();
+        for (int[] obs : obstacles) {
+            set.add(obs[0] + " " + obs[1]);
+        }
+        int[][] dirs = new int[][] { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+        int d = 0, x = 0, y = 0, result = 0;
+        for (int c : commands) {
+            if (c == -1) {
+                d++;
+                if (d == 4)
+                    d = 0;
+
+            } else if (c == -2) {
+                d--;
+                if (d == -1) {
+                    d = 3;
+                }
+            } else {
+                while (c-- > 0 && !set.contains((x + dirs[d][0]) + " " + (y + dirs[d][1]))) {
+                    x += dirs[d][0];
+                    y += dirs[d][1];
+                }
+            }
+            result = Math.max(result, x * x + y * y);
+        }
+        return result;
+    }
+
+    public static int MissNumber(int[] nums) {
+        int n = nums.length;
+        int res = 0;
+        res ^= n;
+        for (int i = 0; i < nums.length; i++) {
+            res ^= i ^ nums[i];
+        }
+        return res;
+    }
+
+    public static ListNode reverseBetween(ListNode head, int m, int n) {
+        if (m == 1)
+            return reverseN(head, n);
+        head.next = reverseBetween(head.next, m - 1, n - 1);
+        return head;
+
+    }
+
+    static ListNode successor = null;
+
+    private static ListNode reverseN(ListNode head, int n) {
+        if (n == 1) {
+            successor = head.next;
+            return head;
+        }
+
+        ListNode last = reverseN(head.next, n - 1);
+        head.next.next = head;
+        head.next = successor;
+        return last;
+    }
+
+    public static boolean isValidSudoku(char[][] board) {
+        char[][][] arr = new char[10][10][3];
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.')
+                    continue;
+                int box = (i / 3) * 3 + j / 3;
+                int val = (int) board[i][j];
+                arr[i][val][0] += 1;
+                arr[j][val][1] += 1;
+                arr[box][val][2] += 1;
+
+                if (arr[i][val][0] > 1 || arr[j][val][1] > 1 || arr[box][val][2] > 1)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public static String change(String s, int a, int b) {
+        char[] chars = s.toCharArray();
+        char temp = chars[a];
+        chars[a] = chars[b];
+        chars[b] = temp;
+        return Arrays.toString(chars).replaceAll("[\\[\\]\\s,]", "");
+    }
+
+    public static int longestValidParentheses(String s) {
+        int[] dp = new int[s.length()];
+        int result = 0;
+        int leftCount = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                leftCount++;
+            } else if (leftCount > 0) {
+                dp[i] = dp[i - 1] + 2;
+                dp[i] += (i - dp[i]) >= 0 ? dp[i - dp[i]] : 0;
+                result = Math.max(result, dp[i]);
+                leftCount--;
+            }
+        }
+        return result;
+    }
+
+    public static String reverseStr(String s, int k) {
+        char[] arr = s.toCharArray();
+        int n = arr.length;
+        int i = 0;
+        while (i < n) {
+            int j = Math.min(i + k - 1, n - 1);
+            swap(arr, i, j);
+            i += 2 * k;
+        }
+        return String.valueOf(arr);
+    }
+
+    private static void swap(char[] arr, int l, int r) {
+        while (l < r) {
+            char temp = arr[l];
+            arr[l++] = arr[r];
+            arr[r--] = temp;
+        }
+    }
+
+    public static String reverseWords(String s) {
+        s = s.trim();
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        int j = 0;
+        while (i < s.length()) {
+            while (i < s.length() && s.charAt(i) != ' ')
+                i++;
+            String temp = s.substring(j, i);
+            String s2 = swap(temp) + " ";
+            sb.append(s2);
+
+            while (i < s.length() && s.charAt(i) == ' ')
+                i++;
+            j = i;
+        }
+        return sb.toString().trim();
+    }
+
+    private static String swap(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+        char[] chars = s.toCharArray();
+        while (left < right) {
+            char c = chars[left];
+            chars[left] = chars[right];
+            chars[right] = c;
+            left++;
+            right--;
+        }
+        return String.valueOf(chars);
+    }
+
+    public static List<Integer> findAnagrams(String s, String p) {
+        char[] chars_s = s.toCharArray();
+        char[] chars_p = p.toCharArray();
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < chars_s.length - chars_p.length + 1; i++) {
+            if (isContain(chars_s, chars_p, i))
+                res.add(i);
+        }
+        return res;
+    }
+
+    public static boolean isContain(char[] c1, char[] c2, int index) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < c2.length; i++) {
+            map.put(c2[i], map.getOrDefault(c2[i], 0) + 1);
+        }
+
+        for (int i = index; i < index + c2.length; i++) {
+            if (!map.containsKey(c1[i]))
+                return false;
+            map.remove(c1[i]);
+        }
+
+        return map.isEmpty();
+    }
+
+    public static int findKthLargest(int[] nums, int k) {
+        // 解法2：
+        PriorityQueue<Integer> queue = new PriorityQueue<>();//小顶堆
+        for (int val : nums) {
+            queue.offer(val);
+            if (queue.size() > k)
+                queue.poll();
+        }
+        return queue.peek();
+
+    }
+    //  public class ListNode {
+    //          int val;
+    //          ListNode next;
+    //          ListNode(int x) { val = x; }
+    //     }    
 }

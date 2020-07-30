@@ -38,51 +38,39 @@ import app.ListNode;
 class Solution {
     public ListNode reverseList(ListNode head) {
 
-        // 3、递归。
-        if (head == null || head.next == null) {
-            return head;
+        // 解法3：迭代 时间复杂度：O(n)，空间复杂度：O(1)
+        ListNode pre = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = pre;//指向前一个结点
+            pre = curr;
+            curr = next;
         }
+        return pre;
 
-        ListNode list = reverseList(head.next);
-        head.next.next = head;// 下一个结点，指向自己
-        head.next = null;// 清空
-        return list;
-
-        // // 2、双指针迭代
-        // ListNode curr = head;
-        // ListNode pre = null;
-        // ListNode temp = null;
-        // while (curr != null) {
-        //     temp = curr.next;
-        //     curr.next = pre;
-        //     pre = curr;
-        //     curr = temp;
-        // }
-        // return pre;
-
-        // // 1 暴力法
-        // if (head == null || head.next == null)
+        // // 解法2：递归（当前方法）时间复杂度：O(n)，空间复杂度：O(n)
+        // if (head == null || head.next == null) {
         //     return head;
-
-        // ListNode head2 = head;
-        // ListNode tmp2 = head2;
-
-        // // 获取结点列表
-        // List<Integer> list = new ArrayList<>();
-        // while (head != null) {
-        //     list.add(head.val);
-        //     head = head.next;
-
-        // }
-        // // 反过来赋值
-        // int index = list.size() - 1;
-        // while (tmp2 != null) {
-        //     tmp2.val = list.get(index--);
-        //     tmp2 = tmp2.next;
         // }
 
-        // return head2;
+        // ListNode list = reverseList(head.next);
 
+        // head.next.next = head;// 下一个结点，指向自己
+        // head.next = null;// 清空
+        // return list;
+
+        // // 解法1：递归
+        // return reverseListInt(head, null);
+
+    }
+
+    private ListNode reverseListInt(ListNode head, ListNode newHead) {
+        if (head == null)
+            return newHead;
+        ListNode next = head.next;
+        head.next = newHead;
+        return reverseListInt(next, head);
     }
 }
 // @lc code=end

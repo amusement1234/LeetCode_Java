@@ -35,28 +35,64 @@
 // @lc code=start
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int memo[][] = new int[nums.length + 1][nums.length];
-        for (int[] l : memo) {
-            Arrays.fill(l, -1);
+
+        // 解法一：递归
+        // int memo[][] = new int[nums.length + 1][nums.length];
+        // for (int[] l : memo) {
+        //     Arrays.fill(l, -1);
+        // }
+        // return lengthofLIS(nums, -1, 0, memo);
+
+        // // 解法二：dp
+        // if (nums.length == 0)
+        //     return 0;
+        // int[] dp = new int[nums.length];
+        // for (int i = 0; i < nums.length; i++) {
+        //     dp[i] = 1;
+        // }
+        // int res = 0;
+        // for (int i = 0; i < nums.length; i++) {
+        //     for (int j = 0; j < i; j++) {
+        //         if (nums[i] > nums[j])
+        //             dp[i] = Math.max(dp[i], dp[j] + 1);
+        //     }
+        //     res = Math.max(res, dp[i]);
+        // }
+        // return res;
+
+        // 解法三：dp+二分
+        int[] tails = new int[nums.length];
+        int size = 0;
+        for (int x : nums) {
+            int i = 0, j = size;
+            while (i != j) {
+                int m = (i + j) / 2;
+                if (tails[m] < x)
+                    i = m + 1;
+                else
+                    j = m;
+            }
+            tails[i] = x;
+            if (i == size)
+                ++size;
         }
-        return lengthofLIS(nums, -1, 0, memo);
+        return size;
     }
 
-    public int lengthofLIS(int[] nums, int previndex, int curpos, int[][] memo) {
-        if (curpos == nums.length) {
+    public int lengthofLIS(int[] nums, int pre, int cur, int[][] memo) {
+        if (cur == nums.length)
             return 0;
-        }
-        if (memo[previndex + 1][curpos] >= 0) {
-            return memo[previndex + 1][curpos];
-        }
-        int taken = 0;
-        if (previndex < 0 || nums[curpos] > nums[previndex]) {
-            taken = 1 + lengthofLIS(nums, curpos, curpos + 1, memo);
-        }
 
-        int nottaken = lengthofLIS(nums, previndex, curpos + 1, memo);
-        memo[previndex + 1][curpos] = Math.max(taken, nottaken);
-        return memo[previndex + 1][curpos];
+        if (memo[pre + 1][cur] >= 0)
+            return memo[pre + 1][cur];
+
+        int taken = 0;
+        if (pre < 0 || nums[cur] > nums[pre])
+            taken = 1 + lengthofLIS(nums, cur, cur + 1, memo);
+
+        int nottaken = lengthofLIS(nums, pre, cur + 1, memo);
+        memo[pre + 1][cur] = Math.max(taken, nottaken);
+        return memo[pre + 1][cur];
     }
 }
 // @lc code=end

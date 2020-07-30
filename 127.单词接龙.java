@@ -64,48 +64,134 @@ import java.util.Set;
 // @lc code=start
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> beginSet = new HashSet<String>(), endSet = new HashSet<String>();
+        // //解法一
+        // int L = beginWord.length();
+        // Map<String, List<String>> allComboDict = new HashMap<>();
 
-        int len = 1;
-        HashSet<String> visited = new HashSet<String>();//记录已访问的
+        // wordList.forEach(word -> {
+        //     for (int i = 0; i < L; i++) {
+        //         String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
+        //         List<String> transformations = allComboDict.getOrDefault(newWord, new ArrayList<>());
+        //         transformations.add(word);
+        //         allComboDict.put(newWord, transformations);
+        //     }
+        // });
 
-        beginSet.add(beginWord);
-        endSet.add(endWord);
-        while (!beginSet.isEmpty() && !endSet.isEmpty()) {
-            if (beginSet.size() > endSet.size()) {
-                Set<String> set = beginSet;
-                beginSet = endSet;
-                endSet = set;
-            }
+        // Queue<Pair<String, Integer>> Q = new LinkedList<>();
+        // Q.add(new Pair(beginWord, 1));
 
-            Set<String> temp = new HashSet<String>();
-            for (String word : beginSet) {
-                char[] thisWorld = word.toCharArray();
+        // Map<String, Boolean> visited = new HashMap<>();
+        // visited.put(beginWord, true);
 
-                for (int i = 0; i < thisWorld.length; i++) {
-                    for (char c = 'a'; c <= 'z'; c++) {
-                        char old = thisWorld[i];
-                        thisWorld[i] = c;
-                        String target = String.valueOf(thisWorld);
+        // while (!Q.isEmpty()) {
+        //     Pair<String, Integer> node = Q.remove();
+        //     String word = node.getKey();
+        //     int level = node.getValue();
+        //     for (int i = 0; i < L; i++) {
+        //         String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
+        //         for (String adjacentWord : allComboDict.getOrDefault(newWord, new ArrayList<>())) {
+        //             if (adjacentWord.equals(endWord)) {
+        //                 return level + 1;
+        //             }
+        //             if (!visited.containsKey(adjacentWord)) {
+        //                 visited.put(adjacentWord, true);
+        //                 Q.add(new Pair(adjacentWord, level + 1));
+        //             }
+        //         }
+        //     }
+        // }
+        // return 0;
 
-                        if (endSet.contains(target)) {
-                            return len + 1;
-                        }
+        //解法2
+        // Set<String> beginSet = new HashSet<String>(), endSet = new HashSet<String>();
 
-                        if (!visited.contains(target) && wordList.contains(target)) {
-                            temp.add(target);
-                            visited.add(target);
-                        }
-                        thisWorld[i] = old;
-                    }
+        // int len = 1;
+        // HashSet<String> visited = new HashSet<String>();//记录已访问的
+
+        // beginSet.add(beginWord);
+        // endSet.add(endWord);
+        // while (!beginSet.isEmpty() && !endSet.isEmpty()) {
+        //     if (beginSet.size() > endSet.size()) {
+        //         Set<String> set = beginSet;
+        //         beginSet = endSet;
+        //         endSet = set;
+        //     }
+
+        //     Set<String> temp = new HashSet<String>();
+        //     for (String word : beginSet) {
+        //         char[] thisWorld = word.toCharArray();
+
+        //         for (int i = 0; i < thisWorld.length; i++) {
+        //             for (char c = 'a'; c <= 'z'; c++) {
+        //                 char old = thisWorld[i];
+        //                 thisWorld[i] = c;
+        //                 String target = String.valueOf(thisWorld);
+
+        //                 if (endSet.contains(target)) {
+        //                     return len + 1;
+        //                 }
+
+        //                 if (!visited.contains(target) && wordList.contains(target)) {
+        //                     temp.add(target);
+        //                     visited.add(target);
+        //                 }
+        //                 thisWorld[i] = old;
+        //             }
+        //         }
+        //     }
+
+        //     beginSet = temp;
+        //     len++;
+        // }
+
+        // return 0;
+
+        // 解法三
+        if (beginWord.length() == 0 || endWord.length() == 0 || wordList.size() == 0)
+            return 0;
+
+        Queue<Pair> q = new LinkedList<>();
+        q.offer(new Pair(1, beginWord));
+
+        while (!q.isEmpty()) {
+            Pair cur = q.poll();
+            Iterator<String> itr = wordList.iterator();
+            while (itr.hasNext()) {
+                String b = itr.next();
+                if (checkNext(cur.str, b)) {
+                    itr.remove();
+                    if (b.equals(endWord))
+                        return cur.len + 1;
+                    q.offer(new Pair(cur.len + 1, b));
                 }
             }
+        }
+        return 0;
+    }
 
-            beginSet = temp;
-            len++;
+
+    private boolean checkNext(String a, String b) {
+        int count = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i)) {//相同位置，不同的单词
+                count++;
+                if (count > 1)
+                    return false;
+
+            }
+        }
+        return count <= 1;
+    }
+
+    class Pair {
+        int len;
+        String str;
+
+        public Pair(int len, String str) {
+            this.len = len;
+            this.str = str;
         }
 
-        return 0;
     }
 }
 // @lc code=end

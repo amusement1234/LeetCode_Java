@@ -38,21 +38,22 @@
 // @lc code=start
 class Solution {
     public int[] plusOne(int[] digits) {
-        for (int i = digits.length - 1; i >= 0; i--) {
-            if (digits[i] == 9) {
-                digits[i] = 0;
-                continue;
-            } else {
+
+        // 解法1： https://leetcode.com/problems/plus-one/discuss/24082/My-Simple-Java-Solution
+        int n = digits.length;
+        for (int i = n - 1; i >= 0; i--) {
+            if (digits[i] < 9) {
                 digits[i]++;
-                break;
+                return digits;
             }
+            digits[i] = 0;
         }
-        if (digits[0] == 0) {
-            int[] temp = new int[digits.length + 1];
-            temp[0] = 1;
-            return temp;
-        }
-        return digits;
+
+        //如果都是9
+        int[] newNumber = new int[n + 1];
+        newNumber[0] = 1;
+
+        return newNumber;
     }
 }
 // @lc code=end

@@ -56,6 +56,19 @@
 
 // @lc code=start
 class MyCircularDeque {
+
+    //front 指向前当前节点，
+    //rear 指向下一个节点
+
+    //insertFront 先前移front-1，然后赋值
+    //insertLast 先赋值，然后后移rear+1
+    //deleteFront front+1
+    //deleteLast rear-1
+    //getFront =arr[front]
+    //getRear =arr[rear-1]
+    //isEmpty rear==front
+    //isFull (rear+1)==front
+    
     private int capacity;
     private int[] arr;
     private int front;

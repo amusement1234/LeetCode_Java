@@ -42,41 +42,34 @@ import java.util.Arrays;
 // @lc code=start
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        // //方法二 : 双指针 / 从前往后
-        // int[] nums1_copy = new int[m];
-        // System.arraycopy(nums1, 0, nums1_copy, 0, m);
-        // int nums1_index = 0;
-        // int nums2_index = 0;
-        // int nums1_copy_index = 0;
-        // while (nums1_copy_index < m && nums2_index < n) {
-        //     nums1[nums1_index++] = nums1_copy[nums1_copy_index] > nums2[nums2_index] ? nums2[nums2_index++]
-        //             : nums1_copy[nums1_copy_index++];
-        // }
-        // if (nums1_copy_index < m) {
-        //     System.arraycopy(nums1_copy, nums1_copy_index, nums1, nums1_copy_index + nums2_index,
-        //             m + n - (nums1_copy_index + nums2_index));
-        // }
-        // if (nums2_index < n) {
-        //     System.arraycopy(nums2, nums2_index, nums1, nums1_copy_index + nums2_index,
-        //             m + n - (nums1_copy_index + nums2_index));
 
+        // 解法2：双指针,从后往前 https://leetcode.com/problems/merge-sorted-array/discuss/29522/This-is-my-AC-code-may-help-you
+        int i = m - 1;
+        int j = n - 1;
+        int k = m + n - 1;
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] > nums2[j])
+                nums1[k--] = nums1[i--];
+            else
+                nums1[k--] = nums2[j--];
+        }
+        while (j >= 0)
+            nums1[k--] = nums2[j--];
+
+        // // 解法1：双指针,从后往前
+        // int index1 = m - 1;
+        // int index2 = n - 1;
+        // int mergeIndex = m + n - 1;
+        // while (index1 >= 0 || index2 >= 0) {
+        //     if (index1 < 0)
+        //         nums1[mergeIndex--] = nums2[index2--];
+        //     else if (index2 < 0)
+        //         nums1[mergeIndex--] = nums1[index1--];
+        //     else if (nums1[index1] > nums2[index2])
+        //         nums1[mergeIndex--] = nums1[index1--];
+        //     else
+        //         nums1[mergeIndex--] = nums2[index2--];
         // }
-        
-        //方法三 : 双指针 / 从后往前
-        // two get pointers for nums1 and nums2
-        int p1 = m - 1;
-        int p2 = n - 1;
-        // set pointer for nums1
-        int p = m + n - 1;
-
-        // while there are still elements to compare
-        while ((p1 >= 0) && (p2 >= 0))
-            // compare two elements from nums1 and nums2 
-            // and add the largest one in nums1 
-            nums1[p--] = (nums1[p1] < nums2[p2]) ? nums2[p2--] : nums1[p1--];
-
-        // add missing elements from nums2
-        System.arraycopy(nums2, 0, nums1, 0, p2 + 1);
 
     }
 }

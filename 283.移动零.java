@@ -32,68 +32,27 @@
 // @lc code=start
 class Solution {
     public void moveZeroes(int[] nums) {
-
-        //1.暴力法
-        int endZeroIndex = nums.length - 1;
-
+        // 解法二：不为0
+        int j = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == 0 && i < endZeroIndex) {
-                //把i到endZeroIndex的数，往前移动一位
-                for (int j = i; j < endZeroIndex; j++) {
-                    nums[j] = nums[j + 1];
-                }
-                nums[endZeroIndex] = 0;
-                --endZeroIndex;
-                i = -1;
+            if (nums[i] != 0) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                j++;
             }
-
         }
 
-        // int notZeroIndex = 0;
+        // // 解法一：
+        // if (nums == null || nums.length == 0)
+        //     return;
+        // int index = 0;
         // for (int i = 0; i < nums.length; i++) {
-        //     if (nums[i] != 0) {
-        //         nums[notZeroIndex] = nums[i];
-        //         nums[i] = 0;
-        //         ++notZeroIndex;
-        //     }
+        //     if (nums[i] != 0)
+        //         nums[index++] = nums[i];
         // }
-
-        // // [0,1,0,3,12]
-
-        // // 4.不为0
-        // int notZeroIndex = 0;
-        // for (int i = 0; i < nums.length; i++) {
-        //     if (nums[i] != 0) {
-        //         nums[notZeroIndex++] = nums[i];
-        //     }
-        // }
-
-        // for (int i = notZeroIndex; i < nums.length; i++) {
-        //     nums[i] = 0;
-        // }
-
-        // // 3.单指针 是0的
-        // int zeroindex = 0;
-        // for (int i = 0; i < nums.length; i++) {
-        //     if (nums[i] == 0) {
-        //         zeroindex++;
-        //     } else {
-        //         int temp = nums[i];
-        //         nums[i] = nums[i - zeroindex];
-        //         nums[i - zeroindex] = temp;
-        //     }
-        // }
-
-        // // 2.单指针 不是0的
-        // int notZeroIndex = 0;
-        // for (int i = 0; i < nums.length; i++) {
-        //     if (nums[i] != 0) {
-        //         if (i > notZeroIndex) {
-        //             nums[notZeroIndex] = nums[i];
-        //             nums[i] = 0;
-        //         }
-        //         notZeroIndex++;
-        //     }
+        // while (index < nums.length) {
+        //     nums[index++] = 0;
         // }
 
     }
