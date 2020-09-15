@@ -34,37 +34,25 @@
 // @lc code=start
 class Solution {
     public int minPathSum(int[][] grid) {
-        // // 方法一：暴力 
+        // // 方法一：暴力 超时
         // return calculate(grid, 0, 0);
 
-        // 方法二
-        // for (int i = grid.length - 1; i >= 0; i--) {
-        //     for (int j = grid[0].length - 1; j >= 0; j--) {
-        //         if (i == grid.length - 1 && j != grid[0].length - 1)
-        //             grid[i][j] = grid[i][j] + grid[i][j + 1];
-        //         else if (j == grid[0].length - 1 && i != grid.length - 1)
-        //             grid[i][j] = grid[i][j] + grid[i + 1][j];
-        //         else if (j != grid[0].length - 1 && i != grid.length - 1)
-        //             grid[i][j] = grid[i][j] + Math.min(grid[i + 1][j], grid[i][j + 1]);
-        //     }
-        // }
-        // return grid[0][0];
-
-        // 方法三
-        int[] dp = new int[grid[0].length];
-        for (int i = grid.length - 1; i >= 0; i--) {
-            for (int j = grid[0].length - 1; j >= 0; j--) {
-                if (i == grid.length - 1 && j != grid[0].length - 1)
-                    dp[j] = grid[i][j] + dp[j + 1];
-                else if (j == grid[0].length - 1 && i != grid.length - 1)
-                    dp[j] = grid[i][j] + dp[j];
-                else if (j != grid[0].length - 1 && i != grid.length - 1)
-                    dp[j] = grid[i][j] + Math.min(dp[j], dp[j + 1]);
+        // 解法2：
+        int m = grid.length;
+        int n = grid[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j != 0)
+                    grid[i][j] += grid[i][j - 1];
+                else if (i != 0 && j == 0)
+                    grid[i][j] += grid[i - 1][j];
+                else if (i == 0 && j == 0)
+                    grid[i][j] = grid[i][j];
                 else
-                    dp[j] = grid[i][j];
+                    grid[i][j] += Math.min(grid[i][j - 1], grid[i - 1][j]);
             }
         }
-        return dp[0];
+        return grid[m - 1][n - 1];
 
     }
 

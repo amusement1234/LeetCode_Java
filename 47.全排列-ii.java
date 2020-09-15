@@ -37,37 +37,37 @@ import java.util.Stack;
 // @lc code=start
 class Solution {
 
-    List<List<Integer>> res = new LinkedList<>();
-
     public List<List<Integer>> permuteUnique(int[] nums) {
         if (nums == null || nums.length == 0)
-            return res;
+            return null;
 
         Arrays.sort(nums);
-        boolean[] used = new boolean[nums.length];
-        LinkedList<Integer> list = new LinkedList();
-        helper(nums, nums.length, 0, used, list);
+
+        List<List<Integer>> res = new ArrayList();
+        boolean[] visited = new boolean[nums.length];
+
+        helper(nums, 0, visited, new ArrayList(), res);
         return res;
     }
 
-    public void helper(int[] nums, int len, int depth, boolean[] used, LinkedList<Integer> list) {
-        if (depth == len) {
+    public void helper(int[] nums, int level, boolean[] visited, List<Integer> list, List<List<Integer>> res) {
+        if (level == nums.length) {
             res.add(new ArrayList(list));
             return;
         }
 
-        for (int i = 0; i < len; ++i) {
-            if (used[i])
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i])
                 continue;
-            if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
+            if (i > 0 && !visited[i - 1] && nums[i] == nums[i - 1])
                 continue;
-            list.addLast(nums[i]);
-            used[i] = true;
+            list.add(nums[i]);
+            visited[i] = true;
 
-            helper(nums, len, depth + 1, used, list);
-            used[i] = false;
-            list.removeLast();
+            helper(nums, level + 1, visited, list, res);
 
+            visited[i] = false;
+            list.remove(list.size() - 1);
         }
     }
 

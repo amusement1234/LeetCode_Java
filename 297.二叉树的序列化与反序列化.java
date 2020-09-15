@@ -57,57 +57,28 @@ public class Codec {
 
   // Encodes a tree to a single string.
   public String serialize(TreeNode root) {
-    return rserialize(root, "");
-
-    // //方法一
-    // if (root == null)
-    //     return "";
-    // Queue<TreeNode> queue = new LinkedList<>();
-    // queue.offer(root);
-    // List<Integer> list = new ArrayList<>();
-    // while (!queue.isEmpty()) {
-    //     int levelSize = queue.size();
-    //     for (int i = 0; i < levelSize; i++) {
-    //         TreeNode node = queue.poll();
-    //         list.add(node != null ? node.val : null);
-
-    //         if (node.left != null)
-    //             queue.offer(node.left); 
-
-    //         if (node.right != null)
-    //             queue.offer(node.right); 
-
-    //     }
-    // }
-    // return list.toString();
+    return serialize(root, "");
   }
 
   // Decodes your encoded data to tree.
   public TreeNode deserialize(String data) {
-    // String[] data_array = data.replace("[", "").replace("]", "").trim().split(",");
-    // LinkedList<String> list = new LinkedList<String>(Arrays.asList(data_array));
-    // return createBinaryTree(list);
-
-    String[] data_array = data.split(",");
-    List<String> data_list = new LinkedList<String>(Arrays.asList(data_array));
-    return rdeserialize(data_list);
-
+    String[] arr = data.split(",");
+    List<String> list = new LinkedList<String>(Arrays.asList(arr));
+    return deserialize(list);
   }
 
-  public String rserialize(TreeNode root, String str) {
-    // Recursive serialization.
+  public String serialize(TreeNode root, String str) {
     if (root == null) {
       str += "null,";
-    } else {
-      str += str.valueOf(root.val) + ",";
-      str = rserialize(root.left, str);
-      str = rserialize(root.right, str);
+      return str;
     }
+    str += str.valueOf(root.val) + ",";
+    str = serialize(root.left, str);
+    str = serialize(root.right, str);
     return str;
   }
 
-  public TreeNode rdeserialize(List<String> list) {
-    // Recursive deserialization.
+  public TreeNode deserialize(List<String> list) {
     if (list.get(0).equals("null")) {
       list.remove(0);
       return null;
@@ -115,23 +86,9 @@ public class Codec {
 
     TreeNode root = new TreeNode(Integer.valueOf(list.get(0)));
     list.remove(0);
-    root.left = rdeserialize(list);
-    root.right = rdeserialize(list);
-
+    root.left = deserialize(list);
+    root.right = deserialize(list);
     return root;
-  }
-
-  public static TreeNode createBinaryTree(LinkedList<String> inputList) {
-    if (inputList == null || inputList.isEmpty())
-      return null;
-
-    Integer data = Integer.valueOf(inputList.removeFirst().trim());
-    if (data == null)
-      return null;
-    TreeNode node = new TreeNode(data);
-    node.left = createBinaryTree(inputList);
-    node.right = createBinaryTree(inputList);
-    return node;
   }
 }
 

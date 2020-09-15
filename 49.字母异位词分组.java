@@ -42,9 +42,9 @@ import java.util.HashMap;
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
 
-        //方法2：字符计数
-        if (strs.length == 0)
-            return new ArrayList();
+        // 解法2：字符数组计数
+        if (strs == null || strs.length == 0)
+            return null;
         Map<String, List<String>> map = new HashMap();
         for (String s : strs) {
             char[] ca = new char[26];
@@ -57,20 +57,20 @@ class Solution {
         }
         return new ArrayList(map.values());
 
-        // //方法1：排序数组分类
+        // // 解法1：字符串排序
         // if (strs == null || strs.length == 0)
         //     return null;
 
-        // Map<String, List> ans = new HashMap();
+        // Map<String, List> map = new HashMap();
         // for (int i = 0; i < strs.length; i++) {
         //     char[] ca = strs[i].toCharArray();
         //     Arrays.sort(ca);
         //     String key = String.valueOf(ca);
-        //     if (!ans.containsKey(key))
-        //         ans.put(key, new ArrayList());
-        //     ans.get(key).add(strs[i]);
+        //     if (!map.containsKey(key))
+        //         map.put(key, new ArrayList());
+        //     map.get(key).add(strs[i]);
         // }
-        // return new ArrayList(ans.values());
+        // return new ArrayList(map.values());
     }
 }
 // @lc code=end

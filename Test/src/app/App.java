@@ -39,27 +39,6 @@ import java.util.Map.Entry;
 
 public class App {
 
-    //单调队列：从大到小。队首大，队尾小
-    public class MonotonicQueue {
-        private Deque<Integer> data = new LinkedList<Integer>();
-
-        public void push(Integer n) {
-            //移除比当前小的元素
-            while (!data.isEmpty() && data.peekLast() < n) //peek 获取队首元素
-                data.pollLast();//移除队尾
-            data.add(n);//队尾添加
-        }
-
-        public int max() {
-            return data.peek();
-        }
-
-        public void pop(int n) {
-            if (!data.isEmpty() && data.peek() == n)
-                data.poll();//移除队首
-        }
-    }
-
     public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 
         // 解法1：递归
@@ -99,14 +78,143 @@ public class App {
         return pre;
     }
 
+    public static List<String> generateParenthesis(int n) {
+        // 解法2：dp
+        List<List<String>> lists = new ArrayList<>();
+        lists.add(Collections.singletonList(""));
+
+        for (int i = 1; i <= n; ++i) {
+            List<String> list = new ArrayList<>();
+            for (int j = 0; j < i; ++j) {
+                for (String first : lists.get(j)) {
+                    for (String second : lists.get(i - 1 - j)) {
+                        System.out.println("(" + first + ")" + second + "—————first:" + first + ",second:" + second
+                                + ",i:" + i + ",j:" + j);
+                        list.add("(" + first + ")" + second);
+                    }
+                }
+            }
+            lists.add(list);
+        }
+
+        return lists.get(lists.size() - 1);
+    }
+
+    public static int largestRectangleArea(int[] heights) {
+
+        // 解法3：stack 来自：https://leetcode.com/problems/largest-rectangle-in-histogram/discuss/28900/Short-and-Clean-O(n)-stack-based-JAVA-solution
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = 0;
+        for (int i = 0; i <= heights.length; i++) {
+            int height = (i == heights.length ? 0 : heights[i]);
+            if (stack.isEmpty() || height >= heights[stack.peek()]) {
+                stack.push(i);
+            } else {
+                int pop = stack.pop();
+                int width = stack.isEmpty() ? i : (i - 1 - stack.peek());
+                int thisArea = heights[pop] * width;
+                maxArea = Math.max(maxArea, thisArea);
+                i--;
+            }
+        }
+        return maxArea;
+    }
+
+    public static int[] maxSlidingWindow(int[] nums, int k) {
+
+        // 解法3：queue https://leetcode.com/problems/sliding-window-maximum/discuss/65884/Java-O(n)-solution-using-deque-with-explanation
+        if (nums == null || k <= 0)
+            return null;
+        int n = nums.length;
+        int[] res = new int[n - k + 1];
+        Deque<Integer> queue = new ArrayDeque();//store index
+        for (int i = 0; i < n; i++) {
+            // remove numbers out of range k
+            //i=4 k=3
+            while (!queue.isEmpty() && queue.peek() < i - k + 1)
+                queue.poll();
+            // remove smaller numbers in k range as they are useless
+            while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i])
+                queue.pollLast();
+            // q contains index... r contains content
+            queue.offer(i);
+            if (i - k + 1 >= 0)
+                res[i - k + 1] = nums[queue.peek()];
+        }
+        return res;
+    }
+
+    public static int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 1; i <= m; i++)
+            dp[i][0] = i;
+        for (int i = 1; i <= n; i++)
+            dp[0][i] = i;
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1))
+                    dp[i][j] = dp[i - 1][j - 1];
+                else
+                    dp[i][j] = Math.min(dp[i - 1][j], Math.min(dp[i][j - 1], dp[i - 1][j - 1])) + 1;
+            }
+        }
+        return dp[m][n];
+    }
+
+    public static int numDecodings(String s) {
+        if (s.length() == 0)
+            return 0;
+        int n = s.length();
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = s.charAt(0) != '0' ? 1 : 0;
+        for (int i = 2; i <= n; i++) {
+            int first = Integer.valueOf(s.substring(i - 1, i));
+            int second = Integer.valueOf(s.substring(i - 2, i));
+            if (first >= 1 && first <= 9)
+                dp[i] += dp[i - 1];
+            if (second >= 10 && second <= 26)
+                dp[i] += dp[i - 2];
+        }
+        return dp[n];
+    }
+
+    public static int leastInterval(char[] tasks, int n) {
+        // 解法1：排序
+        int[] map = new int[26];
+        for (char c : tasks)
+            map[c - 'A']++;
+        Arrays.sort(map);
+        int time = 0;
+        while (map[25] > 0) {
+            int i = 0;
+            while (i <= n) {
+                if (map[25] == 0)
+                    break;
+                if (i < 26 && map[25 - i] > 0)
+                    map[25 - i]--;
+                time++;
+                i++;
+            }
+            Arrays.sort(map);
+        }
+        return time;
+
+    }
+
     public static void main(String[] args) throws Exception {
-        App.MonotonicQueue queue2 = new App().new MonotonicQueue();
-        queue2.push(4);
-        queue2.push(3);
-        queue2.push(2);
-        queue2.push(1);
-        queue2.push(4);
-        queue2.push(2);
+        int r_4 = leastInterval(new char[] { 'A', 'A', 'A', 'B', 'B', 'B' }, 2);
+        int r_3 = numDecodings("12");
+
+        String word1 = "horse", word2 = "ros";
+        int ttt2 = minDistance(word1, word2);
+        int r_1 = largestRectangleArea(new int[] { 2, 1, 5, 6, 2, 3 });
+        int[] r_2 = maxSlidingWindow(new int[] { 1, 3, -1, -3, 5, 3, 6, 7 }, 3);
+
+        List<String> r388 = generateParenthesis(3);
 
         ListNode head1 = new ListNode(1);
         head1.next = new ListNode(2);
@@ -195,7 +303,7 @@ public class App {
         trie.insert("eat");
         trie.insert("rain");
 
-        MonotonicQueue monotonicQueue = new App().new MonotonicQueue();
+        MonotonicQueue monotonicQueue = new MonotonicQueue();
         monotonicQueue.push(1);
         monotonicQueue.push(2);
         monotonicQueue.push(3);

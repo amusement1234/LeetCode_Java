@@ -51,49 +51,30 @@ import java.util.List;
 class Solution {
 
     public List<Integer> postorder(Node root) {
+
+        //方法2；迭代法
+        List<Integer> list = new ArrayList<>();
+        if (root == null)
+            return list;
+
+        Stack<Node> stack = new Stack<>();
+        stack.add(root);
+
+        while (!stack.isEmpty()) {
+            root = stack.pop();
+            list.add(root.val);
+            for (Node node : root.children)
+                stack.add(node);
+        }
+        Collections.reverse(list);
+        return list;
+
         // //方法一：递归法
         // if (root == null)
         //     return new ArrayList();
         // List<Integer> res = new ArrayList<Integer>();
         // helper(root, res);
         // return res;
-
-        // //方法2；迭代法
-        // List<Integer> list = new ArrayList<>();
-        // if (root == null)
-        //     return list;
-
-        // Stack<Node> stack = new Stack<>();
-        // stack.add(root);
-
-        // while (!stack.isEmpty()) {
-        //     root = stack.pop();
-        //     list.add(root.val);
-        //     for (Node node : root.children)
-        //         stack.add(node);
-        // }
-        // Collections.reverse(list);
-        // return list;
-
-        //方法3：
-        LinkedList<Node> stack = new LinkedList<>();
-        LinkedList<Integer> output = new LinkedList<>();
-        if (root == null) {
-            return output;
-        }
-
-        stack.add(root);
-        while (!stack.isEmpty()) {
-            Node node = stack.pollLast();// 移除尾部的元素
-            output.addFirst(node.val);
-            for (Node item : node.children) {
-                if (item != null) {
-                    stack.add(item);
-                }
-            }
-        }
-        return output;
-
     }
 
     public void helper(Node root, List<Integer> res) {

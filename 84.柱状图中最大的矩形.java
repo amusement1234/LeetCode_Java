@@ -42,29 +42,47 @@
 class Solution {
 
     public int largestRectangleArea(int[] heights) {
-        // 解法2：stack
+
+        // 解法3：stack 来自：https://leetcode.com/problems/largest-rectangle-in-histogram/discuss/28900/Short-and-Clean-O(n)-stack-based-JAVA-solution
         Stack<Integer> stack = new Stack<>();
-        stack.push(-1);
-        int maxarea = 0;
-        for (int i = 0; i < heights.length; ++i) {
-            while (stack.peek() != -1 && heights[stack.peek()] >= heights[i])
-                maxarea = Math.max(maxarea, heights[stack.pop()] * (i - stack.peek() - 1));
-            stack.push(i);
+        int maxArea = 0;
+        for (int i = 0; i <= heights.length; i++) {
+            int height = (i == heights.length ? 0 : heights[i]);
+            if (stack.isEmpty() || height >= heights[stack.peek()]) {
+                stack.push(i);
+            } else {
+                int pop = stack.pop();
+                int width = stack.isEmpty() ? i : (i - 1 - stack.peek());
+                int thisArea = heights[pop] * width;
+                maxArea = Math.max(maxArea, thisArea);
+                i--;
+            }
         }
-        while (stack.peek() != -1)
-            maxarea = Math.max(maxarea, heights[stack.pop()] * (heights.length - stack.peek() - 1));
-        return maxarea;
+        return maxArea;
+
+        // // 解法2：stack 难
+        // Stack<Integer> stack = new Stack<>();
+        // stack.push(-1);
+        // int maxArea = 0;
+        // for (int i = 0; i < heights.length; ++i) {
+        //     while (stack.peek() != -1 && heights[stack.peek()] >= heights[i])
+        //         maxArea = Math.max(maxArea, heights[stack.pop()] * (i - stack.peek() - 1));
+        //     stack.push(i);
+        // }
+        // while (stack.peek() != -1)
+        //     maxArea = Math.max(maxArea, heights[stack.pop()] * (heights.length - stack.peek() - 1));
+        // return maxArea;
 
         // 解法1：优化的暴力法
-        // int maxarea = 0;
+        // int maxArea = 0;
         // for (int i = 0; i < heights.length; i++) {
         //     int minheight = Integer.MAX_VALUE;
         //     for (int j = i; j < heights.length; j++) {
         //         minheight = Math.min(minheight, heights[j]);
-        //         maxarea = Math.max(maxarea, minheight * (j - i + 1));
+        //         maxArea = Math.max(maxArea, minheight * (j - i + 1));
         //     }
         // }
-        // return maxarea;
+        // return maxArea;
     }
 }
 // @lc code=end

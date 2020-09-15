@@ -61,6 +61,5 @@ class Solution {
             track.removeLast();
         }
     }
-
 }
 // @lc code=end

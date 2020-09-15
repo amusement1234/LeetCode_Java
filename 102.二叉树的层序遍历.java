@@ -50,48 +50,45 @@ import java.util.ArrayList;
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
+        // // 解法1：递归
+        // List<List<Integer>> res = new ArrayList<List<Integer>>();
+        // if (root == null)
+        //     return res;
+        // backtrack(root, 0, res);
+        // return res;
 
+        // 解法2：迭代
         List<List<Integer>> res = new ArrayList<>();
+        if (root == null)
+            return res;
 
-        Queue<TreeNode> queue = new ArrayDeque<>();
-        if (root != null) {
-            queue.add(root);
-        }
+        Queue<TreeNode> queue = new LinkedList();
+        queue.offer(root);
         while (!queue.isEmpty()) {
-            int n = queue.size();
+            int size = queue.size();
             List<Integer> level = new ArrayList<>();
-            for (int i = 0; i < n; i++) {
-                TreeNode node = queue.poll();
-                level.add(node.val);
-                if (node.left != null) {
-                    queue.add(node.left);
-                }
-                if (node.right != null) {
-                    queue.add(node.right);
-                }
+            for (int i = 0; i < size; i++) {
+                TreeNode curr = queue.poll();
+                level.add(curr.val);
+                if (curr.left != null)
+                    queue.offer(curr.left);
+                if (curr.right != null)
+                    queue.offer(curr.right);
             }
             res.add(level);
         }
-
         return res;
 
-        // if (root == null)
-        //     return levels;
-        // helper(root, 0);
-        // return levels;
     }
 
-    List<List<Integer>> levels = new ArrayList<>();
-
-    public void helper(TreeNode node, int level) {
-        if (levels.size() == level) {
-            levels.add(new ArrayList<>());
-        }
-        levels.get(level).add(node.val);
-        if (node.left != null)
-            helper(node.left, level + 1);
-        if (node.right != null)
-            helper(node.right, level + 1);
+    public void backtrack(TreeNode root, int level, List<List<Integer>> res) {
+        if (root == null)
+            return;
+        if (res.size() == level)
+            res.add(new ArrayList<Integer>());
+        res.get(level).add(root.val);
+        backtrack(root.left, level + 1, res);
+        backtrack(root.right, level + 1, res);
     }
 
 }

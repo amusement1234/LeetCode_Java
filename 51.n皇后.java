@@ -46,23 +46,59 @@
 class Solution {
 
     public List<List<String>> solveNQueens(int n) {
-        // this.n = n;
-        // rows = new int[n];
-        // hills = new int[4 * n - 1];
-        // dales = new int[2 * n - 1];
-        // queens = new int[n];
-
-        // backtrack(0);
-        // return output;
-
-        //解法2
-        if (n <= 0)
-            return null;
-        res = new LinkedList<>();
+        // 解法1：回溯 https://leetcode.com/problems/n-queens/discuss/19805/My-easy-understanding-Java-Solution
         char[][] board = new char[n][n];
-        for (char[] chars : board)
-            Arrays.fill(chars, '.');
-        backtrack(board, 0);
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                board[i][j] = '.';
+        List<List<String>> res = new ArrayList<List<String>>();
+        dfs(board, 0, res);
+        return res;
+
+        // // 解法2：回溯
+        // if (n <= 0)
+        //     return null;
+        // res = new LinkedList<>();
+        // char[][] board = new char[n][n];
+        // for (char[] chars : board)
+        //     Arrays.fill(chars, '.');
+        // backtrack(board, 0);
+        // return res;
+    }
+
+    private void dfs(char[][] board, int colIndex, List<List<String>> res) {
+        if (colIndex == board.length) {
+            res.add(construct(board));
+            return;
+        }
+
+        for (int i = 0; i < board.length; i++) {
+            if (validate(board, i, colIndex)) {
+                board[i][colIndex] = 'Q';
+                dfs(board, colIndex + 1, res);
+                board[i][colIndex] = '.';
+            }
+        }
+    }
+
+    private boolean validate(char[][] board, int x, int y) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < y; j++) {
+                // Math.abs(x-i) == Math.abs(y-j)》》x + j == y + i || x + y == i + j
+                if (board[i][j] == 'Q' && (Math.abs(x-i) == Math.abs(y-j) || x == i))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private List<String> construct(char[][] board) {
+        List<String> res = new LinkedList<String>();
+        for (int i = 0; i < board.length; i++) {
+            String s = new String(board[i]);
+            res.add(s);
+        }
         return res;
     }
 
@@ -111,72 +147,12 @@ class Solution {
     }
 
     private static List<String> charToString(char[][] array) {
-        List<String> result = new LinkedList<>();
+        List<String> result = new LinkedList<>();//换成ArrayList也可以
         for (char[] chars : array) {
             result.add(String.valueOf(chars));
         }
         return result;
     }
-    // int rows[];
-    // // "hill" diagonals
-    // int hills[];
-    // // "dale" diagonals
-    // int dales[];
-    // int n;
-    // // output
-    // List<List<String>> output = new ArrayList();
-    // // queens positions
-    // int queens[];
-    // public void backtrack(int row) {
-    //     for (int col = 0; col < n; col++) {
-    //         if (isNotUnderAttack(row, col)) {
-    //             placeQueen(row, col);
-    //             // if n queens are already placed
-    //             if (row + 1 == n)
-    //                 addSolution();
-    //             // if not proceed to place the rest
-    //             else
-    //                 backtrack(row + 1);
-    //             // backtrack
-    //             removeQueen(row, col);
-    //         }
-    //     }
-    // }
-
-    // public boolean isNotUnderAttack(int row, int col) {
-    //     int res = rows[col] + hills[row - col + 2 * n] + dales[row + col];
-    //     return (res == 0) ? true : false;
-    // }
-
-    // public void placeQueen(int row, int col) {
-    //     queens[row] = col;
-    //     rows[col] = 1;
-    //     hills[row - col + 2 * n] = 1; // "hill" diagonals
-    //     dales[row + col] = 1; //"dale" diagonals
-    // }
-
-    // public void addSolution() {
-    //     List<String> solution = new ArrayList<String>();
-    //     for (int i = 0; i < n; ++i) {
-    //         int col = queens[i];
-    //         StringBuilder sb = new StringBuilder();
-    //         for (int j = 0; j < col; ++j)
-    //             sb.append(".");
-    //         sb.append("Q");
-    //         for (int j = 0; j < n - col - 1; ++j)
-    //             sb.append(".");
-    //         solution.add(sb.toString());
-    //     }
-    //     output.add(solution);
-    // }
-
-    // public void removeQueen(int row, int col) {
-    //     queens[row] = 0;
-    //     rows[col] = 0;
-    //     hills[row - col + 2 * n] = 0;
-    //     dales[row + col] = 0;
-    // }
-
 }
 
 // @lc code=end

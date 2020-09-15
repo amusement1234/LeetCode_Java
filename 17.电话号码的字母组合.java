@@ -40,45 +40,19 @@ import java.util.Map;
 class Solution {
 
     public List<String> letterCombinations(String digits) {
-
-        // // 方法一：回溯
+        // // 解法1：回溯
+        // List<String> res = new ArrayList();
         // if (digits.length() == 0)
-        //     return output;
-        // backtrack("", digits);
-        // return output;
+        //     return res;
+        // backtrack("", digits, res);
+        // return res;
 
-        // 方法二：回溯
-        if (digits == null || digits.length() == 0)
-            return new ArrayList<>();
-
-        Map<Character, String> map = new HashMap<Character, String>() {
-            {
-                put('2', "abc");
-                put('3', "def");
-                put('4', "ghi");
-                put('5', "jkl");
-                put('6', "mno");
-                put('7', "pqrs");
-                put('8', "tuv");
-                put('9', "wxyz");
-            }
-        };
-        List<String> res = new LinkedList<>();
-
-        search("", 0, digits, res, map);
+        // // 解法2：回溯
+        if (digits.length() == 0)
+            return new ArrayList<String>();
+        List<String> res = new ArrayList();
+        backtrack2("", digits, 0, res);
         return res;
-    }
-
-    private void search(String thisStr, int thisIndex, String digits, List<String> res, Map<Character, String> map) {
-        if (thisIndex == digits.length()) {
-            res.add(thisStr);
-            return;
-        }
-
-        String letters = map.get(digits.charAt(thisIndex));
-        for (int j = 0; j < letters.length(); j++) {
-            search(thisStr + letters.charAt(j), thisIndex + 1, digits, res, map);
-        }
     }
 
     Map<String, String> phone = new HashMap<String, String>() {
@@ -94,22 +68,39 @@ class Solution {
         }
     };
 
-    List<String> output = new ArrayList<String>();
-
-    public void backtrack(String combination, String next_digits) {
-        if (next_digits.length() == 0) {
-            output.add(combination);
+    public void backtrack(String combination, String next, List<String> res) {
+        if (next.length() == 0) {
+            res.add(combination);
             return;
         }
-
-        String digit = next_digits.substring(0, 1);//2
-        String letters = phone.get(digit);//abc
+        String letters = phone.get(next.substring(0, 1));
         for (int i = 0; i < letters.length(); i++) {
-            String letter = letters.substring(i, i + 1);
-            backtrack(combination + letter, next_digits.substring(1));
+            backtrack(combination + letters.substring(i, i + 1), next.substring(1, next.length()), res);
         }
-
     }
 
+    Map<Character, String> map = new HashMap<Character, String>() {
+        {
+            put('2', "abc");
+            put('3', "def");
+            put('4', "ghi");
+            put('5', "jkl");
+            put('6', "mno");
+            put('7', "pqrs");
+            put('8', "tuv");
+            put('9', "wxyz");
+        }
+    };
+
+    public void backtrack2(String combition, String digits, int thisIndex, List<String> res) {
+        if (thisIndex == digits.length()) {
+            res.add(combition);
+            return;
+        }
+        String letters = map.get(digits.charAt(thisIndex));
+        for (int i = 0; i < letters.length(); i++) {
+            backtrack2(combition + letters.charAt(i), digits, thisIndex + 1, res);
+        }
+    }
 }
 // @lc code=end

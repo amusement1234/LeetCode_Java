@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /*
  * @lc app=leetcode.cn id=77 lang=java
  *
@@ -35,50 +38,38 @@ class Solution {
     List<List<Integer>> result = new ArrayList();
 
     public List<List<Integer>> combine(int n, int k) {
+        //// 解法1：回溯
+        // List<List<Integer>> res = new ArrayList();
+        // helper(n, k, 1, new ArrayList<Integer>(), res);
+        // return res;
 
-        // // 方法一 : 回溯法 
-        // if (n <= 0 || k <= 0 || n < k) {
-        //     return result;
-        // }
-
-        // helper(n, k, 1, new Stack<>());
-        // return result;
-
-        // 方法二: 字典序 (二进制排序) 组合
-        // init first combination
-        LinkedList<Integer> nums = new LinkedList<Integer>();
-        for (int i = 1; i < k + 1; ++i)
-            nums.add(i);
-        nums.add(n + 1);
-
-        List<List<Integer>> output = new ArrayList<List<Integer>>();
-        int j = 0;
-        while (j < k) {
-            // add current combination
-            output.add(new LinkedList(nums.subList(0, k)));
-            // increase first nums[j] by one
-            // if nums[j] + 1 != nums[j + 1]
-            j = 0;
-            while ((j < k) && (nums.get(j + 1) == nums.get(j) + 1))
-                nums.set(j, j++ + 1);
-            nums.set(j, nums.get(j) + 1);
+        // 解法2：
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        int i = 0;
+        int[] p = new int[k];
+        while (i >= 0) {
+            p[i]++;
+            if (p[i] > n) --i;
+            else if (i == k - 1) result.add(Arrays.stream(p).boxed().collect(Collectors.toList()));
+            else {
+                ++i;
+                p[i] = p[i - 1];
+            }
         }
-        return output;
-
+        return result;
     }
 
-    public void helper(int n, int k, int begin, Stack<Integer> pre) {
-        if (pre.size() == k) {
-            result.add(new ArrayList<>(pre));
+    public void helper(int n, int k, int start, List<Integer> val, List<List<Integer>> res) {
+        if (k == 0) {
+            res.add(new ArrayList<Integer>(val));
             return;
         }
-        for (int i = begin; i <= n; i++) {
-            pre.add(i);
 
-            helper(n, k, i + 1, pre);
-            pre.pop();
+        for (int i = start; i <= n; i++) {
+            val.add(i);
+            helper(n, k - 1, i + 1, val, res);
+            val.remove(val.size() - 1);
         }
-
     }
 }
 // @lc code=end

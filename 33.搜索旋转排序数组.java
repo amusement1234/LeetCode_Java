@@ -68,13 +68,13 @@ class Solution {
             //[0-mid]有序
             if (nums[0] <= nums[mid]) {
                 //target在[0-mid]之间，在前半部分
-                if (nums[0] <= target && target < nums[mid])
+                if (nums[0] <= target && target <= nums[mid])
                     right = mid - 1;
                 else
                     left = mid + 1;
             } else {
                 //target在[mid-right]之间，在后半部分
-                if (nums[mid] < target && target <= nums[right])
+                if (nums[mid] <= target && target <= nums[right])
                     left = mid + 1;
                 else
                     right = mid - 1;

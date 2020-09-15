@@ -61,45 +61,21 @@ class Solution {
         // return output;
 
         // 方法二：回溯
-        for (int k = 0; k < nums.length + 1; ++k) {
-            backtrack(k, 0, new ArrayList<Integer>(), nums);
-        }
-        return output;
 
-        // 方法三：回溯
-        // List<List<Integer>> list = new ArrayList<>();
-        // if (nums == null)
-        //     return list;
+        List<List<Integer>> res = new ArrayList();
+        Arrays.sort(nums);
+        backtrack(nums, 0, new ArrayList(), res);
+        return res;
 
-        // dfs(list, nums, new ArrayList<Integer>(), 0);
-        // return list;
     }
 
-    public void dfs(List<List<Integer>> result, int[] nums, List<Integer> thisList, int index) {
-        if (nums.length == index) {
-            result.add(new ArrayList<>(thisList));
-            return;
-        }
-
-        dfs(result, nums, thisList, index + 1);//不取
-        thisList.add(nums[index]);
-        dfs(result, nums, thisList, index + 1);//取
-
-        thisList.remove(thisList.size() - 1);//去掉最后一个数
-    }
-
-    public void backtrack(int k, int start, ArrayList<Integer> curr, int[] nums) {
-        if (curr.size() == k) {
-            output.add(new ArrayList(curr));
-            return;
-        }
-
+    public void backtrack(int[] nums, int start, List<Integer> list, List<List<Integer>> res) {
+        res.add(new ArrayList(list));
         for (int i = start; i < nums.length; i++) {
-            curr.add(nums[i]);
-            backtrack(k, i + 1, curr, nums);
-            curr.remove(curr.size() - 1);
+            list.add(nums[i]);
+            backtrack(nums, i + 1, list, res);
+            list.remove(list.size() - 1);
         }
-
     }
 
 }

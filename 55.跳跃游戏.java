@@ -39,11 +39,11 @@
 class Solution {
     public boolean canJump(int[] nums) {
         // 方法一
-        int rightMost = 0;
+        int max = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (rightMost >= i) {
-                rightMost = Math.max(rightMost, i + nums[i]);
-                if (rightMost >= nums.length - 1)
+            if (max >= i) {
+                max = Math.max(max, i + nums[i]);
+                if (max >= nums.length - 1)
                     return true;
             }
         }

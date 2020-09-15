@@ -45,71 +45,41 @@ import java.util.ArrayList;
  */
 class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
-        // //方法一：递归
-        // List<Integer> res = new ArrayList<>();
-        // helper(root, res);
-        // return res;
 
-        // // 方法二：基于栈的遍历
-        // if (root == null)
-        //     return new ArrayList();
-        // List<Integer> res = new ArrayList<>();
-        // Stack<TreeNode> stack = new Stack();
-        // stack.push(root);
-        // while (!stack.isEmpty()) {
-        //     TreeNode cur = stack.pop();
-        //     res.add(cur.val);
+        // // 解法3：基于栈的遍历 
+        List<Integer> res = new LinkedList<Integer>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        while (root != null) {
+            res.add(root.val);
+            if (root.right != null) {
+                stack.push(root.right);
+            }
+            root = root.left;
+            if (root == null && !stack.isEmpty()) {
+                root = stack.pop();
+            }
+        }
+        return res;
 
-        //     if (cur.right != null)
-        //         stack.push(cur.right);
-        //     if (cur.left != null)
-        //         stack.push(cur.left);
-        // }
-        // return res;
-
-        // // // 方法3：基于栈的遍历
-        // List<Integer> list = new LinkedList<Integer>();
-        // Stack<TreeNode> rights = new Stack<TreeNode>();
-        // while (root != null) {
-        //     list.add(root.val);
-        //     if (root.right != null) {
-        //         rights.push(root.right);
-        //     }
-        //     root = root.left;
-        //     if (root == null && !rights.isEmpty()) {
-        //         root = rights.pop();
-        //     }
-        // }
-        // return list;
-
-        // // // 方法4：基于栈的遍历
+        // // 解法2：基于栈的遍历
         // List<Integer> result = new LinkedList<>();
         // Deque<TreeNode> stack = new LinkedList<>();
-        // stack.push(root);
-        // while (!stack.isEmpty()) {
-        //     TreeNode node = stack.pop();
+        // TreeNode node = root;
+        // while (node != null || !stack.isEmpty()) {
         //     if (node != null) {
         //         result.add(node.val);
         //         stack.push(node.right);
-        //         stack.push(node.left);
+        //         node = node.left;
+        //     } else {
+        //         node = stack.pop();
         //     }
         // }
         // return result;
 
-        // 方法5：基于栈的遍历
-        List<Integer> result = new LinkedList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode node = root;
-        while (node != null || !stack.isEmpty()) {
-            if (node != null) {
-                result.add(node.val);
-                stack.push(node.right);
-                node = node.left;
-            } else {
-                node = stack.pop();
-            }
-        }
-        return result;
+        // // 解法1：递归
+        // List<Integer> res = new ArrayList<>();
+        // helper(root, res);
+        // return res;
     }
 
     public void helper(TreeNode root, List<Integer> res) {

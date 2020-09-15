@@ -41,70 +41,31 @@ class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         // nums = [-1, 0, 1, 2, -1, -4]，
 
-        // 3、用指针 set
-        Set<List<Integer>> set = new HashSet<>();
-        if (nums == null || nums.length < 3) {
-            return new ArrayList<>(set);
-        }
-
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length - 2; i++) {
-            int start = i + 1;
-            int end = nums.length - 1;
-            while (start < end) {
-                int sum = nums[i] + nums[start] + nums[end];
-                if (sum == 0) {
-                    set.add(Arrays.asList(nums[i], nums[start++], nums[end--]));
-                } else if (sum < 0) {
-                    start++;
-                } else {
-                    end--;
+        // 解法2：双指针法
+        Arrays.sort(num);
+        List<List<Integer>> res = new LinkedList<>();
+        for (int i = 0; i < num.length - 2; i++) {
+            if (i == 0 || (i > 0 && num[i] != num[i - 1])) {
+                int lo = i + 1, hi = num.length - 1, sum = 0 - num[i];
+                while (lo < hi) {
+                    if (num[lo] + num[hi] == sum) {
+                        res.add(Arrays.asList(num[i], num[lo], num[hi]));
+                        while (lo < hi && num[lo] == num[lo + 1])
+                            lo++;
+                        while (lo < hi && num[hi] == num[hi - 1])
+                            hi--;
+                        lo++;
+                        hi--;
+                    } else if (num[lo] + num[hi] < sum)
+                        lo++;
+                    else
+                        hi--;
                 }
             }
-
         }
-        return new ArrayList<>(set);
+        return res;
 
-        // // 2.双指针法
-        // List<List<Integer>> arr = new ArrayList<>();
-        // if (nums == null || nums.length < 3)
-        //     return arr;
-
-        // Arrays.sort(nums);// 排序
-
-        // for (int i = 0; i < nums.length; i++) {
-        //     if (nums[i] > 0)
-        //         break;
-
-        //     if (i > 0 && nums[i] == nums[i - 1])
-        //         continue; // 去重
-
-        //     int start = i + 1;
-        //     int end = nums.length - 1;
-        //     while (start < end) {
-        //         int sum = nums[i] + nums[start] + nums[end];
-        //         if (sum < 0)
-        //             start++;
-        //         else if (sum > 0)
-        //             end--;
-        //         else if (sum == 0) {
-        //             List<Integer> tempList = Arrays.asList(nums[i], nums[start], nums[end]);
-        //             arr.add(tempList);
-
-        //             while (start < end && nums[start] == nums[start + 1])
-        //                 start++; // 去重
-        //             while (start < end && nums[end] == nums[end - 1])
-        //                 end--; // 去重
-
-        //             start++;
-        //             end--;
-        //         }
-        //     }
-        // }
-
-        // return arr;
-
-        // // 1.暴力法
+        // // 解法1：暴力法
         // List<List<Integer>> arr = new ArrayList<>();
         // Set<Set<Integer>> set = new HashSet<>();
         // if (nums == null || nums.length < 3)
@@ -132,8 +93,6 @@ class Solution {
         //     arr.add(listt);
         // }
         // return arr;
-
-       
 
     }
 }

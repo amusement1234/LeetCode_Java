@@ -51,60 +51,33 @@ class Solution {
     HashMap<Integer, Integer> idx_map = new HashMap<Integer, Integer>();
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        // // 解法一 递归
-        // this.preorder = preorder;
-        // this.inorder = inorder;
-
-        // // build a hashmap value -> its index
-        // int idx = 0;
-        // for (Integer val : inorder)
-        //     idx_map.put(val, idx++);
-        // return helper(0, inorder.length);
-
-        // // 解法二 递归 
-        // HashMap<Integer, Integer> map = new HashMap<>();
-        // for (int i = 0; i < inorder.length; i++) {
-        //     map.put(inorder[i], i);
-        // }
-        // return buildTreeHelper(preorder, 0, preorder.length, inorder, 0, inorder.length, map);
-
-        // 解法三
-        return buildTreeHelper(preorder, inorder, (long) Integer.MAX_VALUE + 1);
-    }
-
-    public TreeNode helper(int in_left, int in_right) {
-        // if there is no elements to construct subtrees
-        if (in_left == in_right)
-            return null;
-
-        // pick up pre_idx element as a root
-        int root_val = preorder[pre_idx];
-        TreeNode root = new TreeNode(root_val);
-
-        // root splits inorder list
-        // into left and right subtrees
-        int index = idx_map.get(root_val);
-
-        // recursion 
-        pre_idx++;
-        // build left subtree
-        root.left = helper(in_left, index);
-        // build right subtree
-        root.right = helper(index + 1, in_right);
-        return root;
-    }
-
-    private TreeNode buildTreeHelper(int[] preorder, int p_start, int p_end, int[] inorder, int i_start, int i_end,
-            HashMap<Integer, Integer> map) {
-        if (p_start == p_end) {
-            return null;
+        // 解法1：递归
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i], i);
         }
-        int root_val = preorder[p_start];
-        TreeNode root = new TreeNode(root_val);
-        int i_root_index = map.get(root_val);
-        int leftNum = i_root_index - i_start;
-        root.left = buildTreeHelper(preorder, p_start + 1, p_start + leftNum + 1, inorder, i_start, i_root_index, map);
-        root.right = buildTreeHelper(preorder, p_start + leftNum + 1, p_end, inorder, i_root_index + 1, i_end, map);
+        return buildTreeHelper(preorder, 0, preorder.length, inorder, 0, inorder.length, map);
+
+        // // 解法三
+        // return buildTreeHelper(preorder, inorder, (long) Integer.MAX_VALUE + 1);
+    }
+
+    public TreeNode buildTreeHelper(int[] preorder, int p_start, int p_end, int[] inorder, int i_start, int i_end,
+            HashMap<Integer, Integer> map) {
+        if (p_start == p_end)
+            return null;
+
+        int rootVal = preorder[p_start];
+        TreeNode root = new TreeNode(rootVal);
+
+        int i_root_Index = map.get(rootVal);
+        int leftNum = i_root_Index - i_start;
+
+        //[p_start+1,p_start+leftNum+1] [i_start,i_root_Index-1]
+        root.left = buildTreeHelper(preorder, p_start + 1, p_start + i_root_Index - i_start + 1, inorder, i_start, i_root_Index-1, map);
+
+        //[p_start+leftNum+1,p_end]  [i_root_Index+1,i_end]
+        root.right = buildTreeHelper(preorder, p_start + i_root_Index - i_start + 1, p_end, inorder, i_root_Index + 1, i_end, map);
         return root;
     }
 

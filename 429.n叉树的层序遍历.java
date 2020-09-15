@@ -69,50 +69,31 @@ class Node {
 
 class Solution {
     public List<List<Integer>> levelOrder(Node root) {
-       
 
-        // //方法一：利用队列实现广度优先搜索
-        // Queue<Node> queue = new LinkedList<>();
-        // queue.add(root);
-        // List<List<Integer>> result = new ArrayList<>();
-        // while (!queue.isEmpty()) {
-        //     List<Integer> level = new ArrayList<>();
-        //     int size = queue.size();//要单独存size，size在for里面会变化
-        //     for (int i = 0; i < size; i++) {
-        //         Node node = queue.poll();
-        //         level.add(node.val);
-        //         queue.addAll(node.children);
-        //     }
-        //     result.add(level);
-        // }
-        // return result;
-
-        // //方法二：简化的广度优先搜索
-        // List<List<Integer>> result = new ArrayList<>();
-        // if (root == null)
-        //     return result;
-
-        // List<Node> previousLayer = Arrays.asList(root);
-
-        // while (!previousLayer.isEmpty()) {
-        //     List<Node> currentLayer = new ArrayList<>();
-        //     List<Integer> previousVals = new ArrayList<>();
-        //     for (Node node : previousLayer) {
-        //         previousVals.add(node.val);
-        //         currentLayer.addAll(node.children);
-        //     }
-        //     result.add(previousVals);
-        //     previousLayer = currentLayer;
-        // }
-
-        // return result;
-
-         //方法三：递归
+        // 解法2：利用队列实现广度优先搜索
         if (root == null)
             return new ArrayList();
-        List<List<Integer>> list = new ArrayList();
-        helper(root, list, 0);
-        return list;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        List<List<Integer>> result = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            List<Integer> level = new ArrayList<>();
+            int size = queue.size();//要单独存size，size在for里面会变化
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+                level.add(node.val);
+                queue.addAll(node.children);
+            }
+            result.add(level);
+        }
+        return result;
+
+        // // 解法1：递归
+        // if (root == null)
+        //     return new ArrayList();
+        // List<List<Integer>> list = new ArrayList();
+        // helper(root, list, 0);
+        // return list;
 
     }
 

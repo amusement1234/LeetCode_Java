@@ -66,38 +66,39 @@ class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         // //解法一
         // int L = beginWord.length();
-        // Map<String, List<String>> allComboDict = new HashMap<>();
-
-        // wordList.forEach(word -> {
-        //     for (int i = 0; i < L; i++) {
-        //         String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
-        //         List<String> transformations = allComboDict.getOrDefault(newWord, new ArrayList<>());
-        //         transformations.add(word);
-        //         allComboDict.put(newWord, transformations);
+        // Map<String, List<String>> map = new HashMap();
+        // for (int i = 0; i < wordList.size(); i++) {
+        //     String word = wordList.get(i);
+        //     for (int j = 0; j < L; j++) {
+        //         String newWord = word.substring(0, j) + "*" + word.substring(j + 1, L);
+        //         List<String> temp = map.getOrDefault(newWord, new ArrayList<>());
+        //         temp.add(word);
+        //         map.put(newWord, temp);
         //     }
-        // });
+        // }
 
-        // Queue<Pair<String, Integer>> Q = new LinkedList<>();
-        // Q.add(new Pair(beginWord, 1));
+        // Queue<Pair<String, Integer>> queue = new LinkedList();
+        // queue.add(new Pair(beginWord, 1));
 
-        // Map<String, Boolean> visited = new HashMap<>();
+        // Map<String, Boolean> visited = new HashMap();
         // visited.put(beginWord, true);
 
-        // while (!Q.isEmpty()) {
-        //     Pair<String, Integer> node = Q.remove();
+        // while (!queue.isEmpty()) {
+        //     Pair<String, Integer> node = queue.poll();
         //     String word = node.getKey();
         //     int level = node.getValue();
+
         //     for (int i = 0; i < L; i++) {
-        //         String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
-        //         for (String adjacentWord : allComboDict.getOrDefault(newWord, new ArrayList<>())) {
-        //             if (adjacentWord.equals(endWord)) {
+        //         String newWord = word.substring(0, i) + "*" + word.substring(i + 1, L);
+        //         for (String str : map.getOrDefault(newWord, new ArrayList<>())) {
+        //             if (str.equals(endWord))
         //                 return level + 1;
-        //             }
-        //             if (!visited.containsKey(adjacentWord)) {
-        //                 visited.put(adjacentWord, true);
-        //                 Q.add(new Pair(adjacentWord, level + 1));
+        //             if (!visited.containsKey(str)) {
+        //                 visited.put(str, true);
+        //                 queue.add(new Pair(str, level + 1));
         //             }
         //         }
+
         //     }
         // }
         // return 0;
@@ -168,7 +169,6 @@ class Solution {
         }
         return 0;
     }
-
 
     private boolean checkNext(String a, String b) {
         int count = 0;

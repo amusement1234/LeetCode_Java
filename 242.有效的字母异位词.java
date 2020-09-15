@@ -39,24 +39,43 @@
 class Solution {
     public boolean isAnagram(String s, String t) {
 
-        //方法二：哈希表
-        if (s.length() != t.length()) {
+        // 解法3：hash
+        if (s.length() != t.length())
             return false;
+        HashMap<Character, Integer> map = new HashMap();
+
+        char[] chars = s.toCharArray();
+        char[] chars2 = t.toCharArray();
+
+        for (char c : chars) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
 
-        int[] conter = new int[26];// 字母出现的次数，从0开始
-        for (int i = 0; i < s.length(); i++) {
-            conter[s.charAt(i) - 'a']++;
-            conter[t.charAt(i) - 'a']--;
-        }
-        for (int count : conter) {
-            if (count != 0) {
+        for (char c : chars2) {
+            if (map.get(c) == null || map.get(c) == 0)
                 return false;
-            }
+            map.put(c, map.get(c) - 1);
         }
         return true;
 
-        // //方法一：排序
+        // // 解法2：字符数组计数
+        // if (s.length() != t.length()) {
+        //     return false;
+        // }
+
+        // int[] conter = new int[26];// 字母出现的次数，从0开始
+        // for (int i = 0; i < s.length(); i++) {
+        //     conter[s.charAt(i) - 'a']++;
+        //     conter[t.charAt(i) - 'a']--;
+        // }
+        // for (int count : conter) {
+        //     if (count != 0) {
+        //         return false;
+        //     }
+        // }
+        // return true;
+
+        // // 解法1：排序
         // if (s.length() != t.length()) {
         //     return false;
         // }

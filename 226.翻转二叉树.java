@@ -57,16 +57,7 @@ import javax.swing.tree.TreeNode;
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-        // 方法一 （递归） 
-        if (root == null)
-            return null;
-        TreeNode left = invertTree(root.right);
-        TreeNode right = invertTree(root.left);
-        root.left = left;
-        root.right = right;
-        return root;
-
-        // // 方法二 （迭代）
+        // // 方法二 bfs
         // if (root == null)
         //     return null;
 
@@ -83,6 +74,15 @@ class Solution {
         //         queue.offer(node.right);
         // }
         // return root;
+
+        // 方法一 （递归） 
+        if (root == null)
+            return null;
+        TreeNode left = invertTree(root.right);
+        TreeNode right = invertTree(root.left);
+        root.left = left;
+        root.right = right;
+        return root;
 
     }
 }

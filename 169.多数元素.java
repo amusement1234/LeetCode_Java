@@ -39,49 +39,36 @@ import java.util.Map;
 // @lc code=start
 class Solution {
     public int majorityElement(int[] nums) {
-        // //方法一：哈希表
-        // Map<Integer, Integer> map = new HashMap<>();
-        // int maxNum = 0;
-        // int maxCount = 0;
-        // for (int num : nums) {
-        //     int count = map.getOrDefault(num, 0) + 1;
-        //     map.put(num, count);
-        //     if (count > maxCount) {
-        //         maxCount = count;
-        //         maxNum = num;
-        //     }
-        // }
-        // return maxNum;
 
-        // // 方法二：排序
-        //         Arrays.sort(nums);
-        //         return nums[nums.length / 2];
+        // // 解法2：排序
+        // if(nums.length==0) return 0;
+        // Arrays.sort(nums);
+        // return nums[nums.length/2];
 
-        // // 方法三：摩尔投票法
-        // int thisVal = nums[0];
-        // int count = 0;
-        // for (int i = 0; i < nums.length; i++) {
-        //     if (count == 0) {
-        //         thisVal = nums[i];
-        //     }
-
-        //     if (thisVal == nums[i])
-        //         count++;
-        //     else
-        //         count--;
-        // }
-        // return thisVal;
-
-        //方法四：栈
-        Stack<Integer> stack = new Stack<>();
-        for (int i : nums) {
-            if (stack.empty() || i == stack.peek()) {
-                stack.push(i);
-            } else {
-                stack.pop();
+        // 解法1：hash
+        Map<Integer, Integer> map = new HashMap();
+        int maxCount = 0;
+        int val = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int count = map.getOrDefault(nums[i], 0) + 1;
+            map.put(nums[i], count);
+            if (count > maxCount) {
+                maxCount = count;
+                val = nums[i];
             }
         }
-        return stack.peek();
+        return val;
+
+        // //方法四：栈
+        // Stack<Integer> stack = new Stack<>();
+        // for (int i : nums) {
+        //     if (stack.empty() || i == stack.peek())
+        //         stack.push(i);
+        //     else
+        //         stack.pop();
+
+        // }
+        // return stack.peek();
 
     }
 

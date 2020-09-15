@@ -62,12 +62,16 @@
 // @lc code=start
 class Solution {
     public int robotSim(int[] commands, int[][] obstacles) {
-        Set<String> set = new HashSet<>();
-        for (int[] obs : obstacles) {
+        Set<String> set = new HashSet();
+        for (int[] obs : obstacles)
             set.add(obs[0] + " " + obs[1]);
-        }
-        int[][] dirs = new int[][] { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
-        int d = 0, x = 0, y = 0, result = 0;
+        int[] dx = { 0, 1, 0, -1 };
+        int[] dy = { 1, 0, -1, 0 };
+
+        int d = 0;
+        int x = 0;
+        int y = 0;
+        int result = 0;
         for (int c : commands) {
             if (c == -1) {
                 d++;
@@ -78,12 +82,13 @@ class Solution {
                 if (d == -1)
                     d = 3;
             } else {
-                while (c-- > 0 && !set.contains((x + dirs[d][0]) + " " + (y + dirs[d][1]))) {
-                    x += dirs[d][0];
-                    y += dirs[d][1];
+                while (c-- > 0 && !set.contains((x + dx[d] + " " + (y + dy[d])))) {
+                    x += dx[d];
+                    y += dy[d];
                 }
+                result = Math.max(result, x * x + y * y);
             }
-            result = Math.max(result, x * x + y * y);
+
         }
         return result;
     }

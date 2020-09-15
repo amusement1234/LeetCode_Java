@@ -30,17 +30,48 @@
 // @lc code=start
 class Solution {
     public int trap(int[] height) {
-
-        // 解法3：双指针
-        int left = 0, right = height.length - 1, level = 0, water = 0;
+        int left = 0, right = height.length - 1;
+        int ans = 0;
+        int left_max = 0, right_max = 0;
         while (left < right) {
-            int lower = height[height[left] < height[right] ? left++ : right--];
-            level = Math.max(level, lower);
-            water += level - lower;
+            if (height[left] < height[right]) {
+                if (height[left] >= left_max)
+                    left_max = height[left];
+                else
+                    ans += (left_max - height[left]);
+                ++left;
+            } else {
+                if (height[right] >= right_max)
+                    right_max = height[right];
+                else
+                    ans += (right_max - height[right]);
+                --right;
+            }
         }
-        return water;
+        return ans;
 
-        // //方法 3：栈的应用
+        // // 解法3：双指针
+        // int left = 0, right = height.length - 1;
+        // int res = 0;
+        // int left_max = 0, right_max = 0;
+        // while (left < right) {
+        //     if (height[left] < height[right]) {
+        //         if (height[left] >= left_max)
+        //             left_max = height[left];
+        //         else
+        //             res += (left_max - height[left]);
+        //         left++;
+        //     } else {
+        //         if (height[right] >= right_max)
+        //             right_max = height[right];
+        //         else
+        //             res += (right_max - height[right]);
+        //         right--;
+        //     }
+        // }
+        // return res;
+
+        // //方法 3：栈的应用 忽略
         // int ans = 0, current = 0;
         // Stack<Integer> st = new Stack<Integer>();
         // while (current < height.length) {
@@ -57,7 +88,7 @@ class Solution {
         // }
         // return ans;
 
-        // //方法 2：动态编程
+        // //方法 2：动态编程 忽略
         // if (height.length == 0)
         //     return 0;
         // int res = 0;

@@ -45,7 +45,7 @@ import javax.swing.tree.TreeNode;
 class Solution {
     public int maxDepth(TreeNode root) {
 
-        // // 方法一：递归
+        // // 解法1：递归
         // if (root == null) {
         //     return 0;
         // }
@@ -53,17 +53,6 @@ class Solution {
         // int right_height = maxDepth(root.right);
         // int max = Math.max(left_height, right_height) + 1;
         // return max;
-
-        // // 方法二：递归
-        // if (root == null)
-        //     return 0;
-        // int m1 = maxDepth(root.left);
-        // int m2 = maxDepth(root.right);
-
-        // if (root.left == null || root.right == null)
-        //     return m1 + m2 + 1;
-        // else
-        //     return Math.max(m1, m2) + 1;
  
         //方法三
         if (root == null)

@@ -50,25 +50,21 @@ class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
         if (matrix.length == 0)
             return false;
-        int row_num = matrix.length;
-        int col_num = matrix[0].length;
+        int rownum = matrix.length;
+        int colnum = matrix[0].length;
 
-        int begin = 0, end = row_num * col_num - 1;
-        while (begin <= end) {
-            int mid = (begin + end) / 2;
-            int mid_value = matrix[mid / col_num][mid % col_num];
-
-            if (mid_value == target) {
+        int left = 0;
+        int right = rownum * colnum - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            int midVal = matrix[mid / colnum][mid % colnum];
+            if (midVal == target)
                 return true;
-
-            } else if (mid_value < target) {
-                //Should move a bit further, otherwise dead loop.
-                begin = mid + 1;
-            } else {
-                end = mid - 1;
-            }
+            else if (midVal > target)
+                right = mid - 1;
+            else
+                left = mid + 1;
         }
-
         return false;
     }
 }

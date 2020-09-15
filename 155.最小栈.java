@@ -44,7 +44,7 @@ class MinStack {
 
     public void push(int x) {
         if (head == null)
-            head = new Node(x, x);
+            head = new Node(x, x,null);
         else
             head = new Node(x, Math.min(x, head.min), head);
     }
@@ -65,10 +65,6 @@ class MinStack {
         int val;
         int min;
         Node next;
-
-        private Node(int val, int min) {
-            this(val, min, null);
-        }
 
         private Node(int val, int min, Node next) {
             this.val = val;

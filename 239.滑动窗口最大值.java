@@ -61,24 +61,28 @@ class Solution {
 
     public int[] maxSlidingWindow(int[] nums, int k) {
 
-        // 解法3：queue https://leetcode.com/problems/sliding-window-maximum/discuss/65884/Java-O(n)-solution-using-deque-with-explanation
+        // 解法2：queue https://leetcode.com/problems/sliding-window-maximum/discuss/65884/Java-O(n)-solution-using-deque-with-explanation
         if (nums == null || k <= 0)
             return null;
         int n = nums.length;
         int[] res = new int[n - k + 1];
         Deque<Integer> queue = new ArrayDeque();//store index
         for (int i = 0; i < n; i++) {
+            // remove numbers out of range k
+            //i=4 k=3
             while (!queue.isEmpty() && queue.peek() < i - k + 1)
                 queue.poll();
+            // remove smaller numbers in k range as they are useless
             while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i])
                 queue.pollLast();
+            // q contains index... r contains content
             queue.offer(i);
             if (i - k + 1 >= 0)
                 res[i - k + 1] = nums[queue.peek()];
         }
         return res;
 
-        // // 解法2：queue
+        // // 解法2：queue 忽略
         // MonotonicQueue window = new MonotonicQueue();
         // int n = nums.length;
         // List<Integer> res = new ArrayList();

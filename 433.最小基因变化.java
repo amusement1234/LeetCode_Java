@@ -108,22 +108,26 @@ class Solution {
     int min = Integer.MAX_VALUE;
 
     public void dfs(String start, String end, String[] bank, int step, HashSet<String> set) {
-        if (set.contains(end))
+        if (set.contains(end)) {
             min = Math.min(step, min);
-        for (String str : bank) {
-            int diff = 0;
-            for (int i = 0; i < str.length(); i++) {
-                if (start.charAt(i) != str.charAt(i))
-                    diff++;
-            }
-
-            if (diff == 1 && !set.contains(str)) {
-                set.add(str);
-                dfs(str, end, bank, step + 1, set);
-                set.remove(str);
-            }
+            return;
         }
+        for (int i = 0; i < bank.length; i++) {
+            if (!valid(start, bank[i]) || set.contains(bank[i]))
+                continue;
+            set.add(bank[i]);
+            dfs(bank[i], end, bank, step + 1, set);
+            set.remove(bank[i]);
+        }
+    }
 
+    public boolean validate(String a, String b) {
+        int diff = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i))
+                diff++;
+        }
+        return diff == 1;
     }
 }
 // @lc code=end

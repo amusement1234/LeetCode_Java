@@ -88,27 +88,19 @@ class Solution {
         // }
         // return max;
 
-        // // 方法1
+        // // 解法1：
         // int max = 0;
         // for (int i = 0; i < s.length(); i++) {
-        //     int count = 0;
+        //     int count = 0;//左括号数量
         //     for (int j = i; j < s.length(); j++) {
-        //         if (s.charAt(j) == '(') {
+        //         if (s.charAt(j) == '(')
         //             count++;
-        //         } else {
+        //         else
         //             count--;
-        //         }
-        //         // count < 0 说明右括号多了，此时无论后边是什么，一定是非法字符串了，所以可以提前结束循环
-        //         if (count < 0) {
+        //         if (count < 0)
         //             break;
-
-        //         }
-        //         // 当前是合法序列，更新最长长度
-        //         if (count == 0) {
-        //             if (j - i + 1 > max) {
-        //                 max = j - i + 1;
-        //             }
-        //         }
+        //         if (count == 0 && j - i + 1 > max)
+        //             max = j - i + 1;
         //     }
         // }
         // return max;

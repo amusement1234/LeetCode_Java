@@ -70,45 +70,29 @@ class Solution {
         HashMap<String, ArrayList<String>> map = new HashMap<>();
         bfs(beginWord, endWord, wordList, map);
 
-        ArrayList<String> temp = new ArrayList<String>();
         // temp 用来保存当前的路径
+        ArrayList<String> temp = new ArrayList<String>();
         temp.add(beginWord);
         findLaddersHelper(beginWord, endWord, map, temp, ans);
         return ans;
-    }
-
-    private void findLaddersHelper(String beginWord, String endWord, HashMap<String, ArrayList<String>> map,
-            ArrayList<String> temp, List<List<String>> ans) {
-        if (beginWord.equals(endWord)) {
-            ans.add(new ArrayList<String>(temp));
-            return;
-        }
-        // 得到所有的下一个的节点
-        ArrayList<String> neighbors = map.getOrDefault(beginWord, new ArrayList<String>());
-        for (String neighbor : neighbors) {
-            temp.add(neighbor);
-            findLaddersHelper(neighbor, endWord, map, temp, ans);
-            temp.remove(temp.size() - 1);
-
-        }
     }
 
     public void bfs(String beginWord, String endWord, List<String> wordList, HashMap<String, ArrayList<String>> map) {
         Queue<String> queue = new LinkedList<>();
         queue.offer(beginWord);
 
+        Set<String> visited = new HashSet<>();
+        visited.add(beginWord);
+
         boolean isFound = false;
         int depth = 0;
         Set<String> dict = new HashSet<>(wordList);
 
-        Set<String> visited = new HashSet<>();
-        visited.add(beginWord);
-        
         while (!queue.isEmpty()) {
             int size = queue.size();
             depth++;
             Set<String> subVisited = new HashSet<>();
-            
+
             for (int j = 0; j < size; j++) {
                 String temp = queue.poll();
 
@@ -154,6 +138,22 @@ class Solution {
 
         }
         return res;
+    }
+
+    private void findLaddersHelper(String beginWord, String endWord, HashMap<String, ArrayList<String>> map,
+            ArrayList<String> temp, List<List<String>> ans) {
+        if (beginWord.equals(endWord)) {
+            ans.add(new ArrayList<String>(temp));
+            return;
+        }
+        // 得到所有的下一个的节点
+        ArrayList<String> neighbors = map.getOrDefault(beginWord, new ArrayList<String>());
+        for (String neighbor : neighbors) {
+            temp.add(neighbor);
+            findLaddersHelper(neighbor, endWord, map, temp, ans);
+            temp.remove(temp.size() - 1);
+
+        }
     }
 
 }

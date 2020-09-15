@@ -46,29 +46,10 @@ import java.util.Map;
 class Solution {
 
     public int climbStairs(int n) {
-        // // 方法一：暴力法
-        // return climb_Stairs(0, n);
 
-        // // 方法二：记忆化递归
-        // int memo[] = new int[n + 1];
-        // return climb_Stairs(0, n, memo);
-
-        // // 方法三：动态规划
-        // if (n == 1) {
-        //     return 1;
-        // }
-        // int[] dp = new int[n + 1];
-        // dp[1] = 1;
-        // dp[2] = 2;
-        // for (int i = 3; i <= n; i++) {
-        //     dp[i] = dp[i - 1] + dp[i - 2];
-        // }
-        // return dp[n];
-
-        //方法四：斐波那契数
-        if (n == 1) {
+        // 解法3：斐波那契数
+        if (n == 1)
             return 1;
-        }
         int first = 1;
         int second = 2;
         for (int i = 3; i <= n; i++) {
@@ -78,48 +59,29 @@ class Solution {
         }
         return second;
 
-        // //1.暴力法，设置map存储
-        // if (n < 3) {
-        //     return n;
-        // }
+        // // 解法2：动态规划
+        // if (n == 1)
+        //     return 1;
+        // int[] dp = new int[n + 1];
+        // dp[1] = 1;
+        // dp[2] = 2;
+        // for (int i = 3; i <= n; i++)
+        //     dp[i] = dp[i - 1] + dp[i - 2];
+        // return dp[n];
 
-        // Map<Integer, Integer> map = new HashMap();
-        // int result1 = 0;
-        // if (map.containsKey(n - 1)) {
-        //     result1 = map.get(n - 1);
-        // } else {
-        //     result1 = climbStairs(n - 1);
-        //     map.put(n - 1, result1);
-        // }
-
-        // int result2 = 0;
-        // if (map.containsKey(n - 2)) {
-        //     result2 = map.get(n - 2);
-        // } else {
-        //     result2 = climbStairs(n - 2);
-        //     map.put(n - 2, result2);
-        // }
-
-        // return result1 + result2;
+        // // 解法1：递归
+        // int[] memo = new int[n + 1];
+        // return helper(n, memo);
     }
 
-    public int climb_Stairs(int i, int n) {
-        if (i > n) {
-            return 0;
-        }
-        if (i == n) {
-            return 1;
-        }
-        return climb_Stairs(i + 1, n) + climb_Stairs(i + 2, n);
+    public int helper(int n, int[] memo) {
+        if (n <= 2)
+            return n;
+        if (memo[n] != 0)
+            return memo[n];
+        memo[n] = helper(n - 1, memo) + helper(n - 2, memo);
+        return memo[n];
     }
 
-    public int climb_Stairs(int i, int n, int[] memo) {
-        if (i > n)
-            return 0;
-        if (i == n)
-            return 1;
-        memo[i] = climb_Stairs(i + 1, n, memo) + climb_Stairs(i + 2, n, memo);
-        return memo[i];
-    }
 }
 // @lc code=end

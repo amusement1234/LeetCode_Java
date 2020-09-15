@@ -61,31 +61,8 @@ class Solution {
     long pre = Long.MIN_VALUE;
 
     public boolean isValidBST(TreeNode root) {
-        // // 方法一: 递归
-        // return helper(root, null, null);
 
-        // // 方法二：中序遍历
-        // if (root == null)
-        //     return true;
-        // if (!isValidBST(root.left))
-        //     return false;
-        // if (root.val <= pre)
-        //     return false;
-        // pre = root.val;
-        // return isValidBST(root.right);
-
-        // //方法三：中序遍历（二叉搜索树中序遍历得到升序）
-        // if (root == null)
-        //     return true;
-        // inOrder(root);
-        // for (int i = 1; i < res.size(); i++) {
-        //     if (res.get(i) <= res.get(i - 1)) {
-        //         return false;
-        //     }
-        // }
-        // return true;
-
-        //方法四：中序遍历 迭代
+        // // 解法3：中序遍历 迭代
         Stack<TreeNode> stack = new Stack<>();
         TreeNode curr = root;
         TreeNode pre = null;
@@ -102,6 +79,20 @@ class Solution {
             curr = curr.right;
         }
         return true;
+
+        // // 解法2：获取中序遍历的数据，判断是否是升序
+        // if (root == null)
+        //     return true;
+        // inOrder(root);
+        // for (int i = 1; i < res.size(); i++) {
+        //     if (res.get(i) <= res.get(i - 1)) {
+        //         return false;
+        //     }
+        // }
+        // return true;
+        
+        // // 解法1：递归
+        // return helper(root, null, null);
     }
 
     public boolean helper(TreeNode node, Integer lower, Integer upper) {
@@ -128,11 +119,11 @@ class Solution {
     List<Integer> res = new ArrayList<>();
 
     private void inOrder(TreeNode root) {
-        if (root != null) {
-            inOrder(root.left);
-            res.add(root.val);
-            inOrder(root.right);
-        }
+        if (root == null)
+            return;
+        inOrder(root.left);
+        res.add(root.val);
+        inOrder(root.right);
     }
 
 }
