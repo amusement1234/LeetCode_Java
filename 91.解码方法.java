@@ -42,7 +42,7 @@
 // @lc code=start
 class Solution {
     public int numDecodings(String s) {
-        //dp
+        // 解法1：dp
         if (s == null || s.length() == 0)
             return 0;
         int n = s.length();
@@ -58,43 +58,6 @@ class Solution {
                 dp[i] += dp[i - 2];
         }
         return dp[n];
-
-        // 方法一
-        // if (s.charAt(0) == '0')
-        //     return 0;
-        // int pre = 1, curr = 1;//dp[-1] = dp[0] = 1
-        // for (int i = 1; i < s.length(); i++) {
-        //     int tmp = curr;
-        //     if (s.charAt(i) == '0')
-        //         if (s.charAt(i - 1) == '1' || s.charAt(i - 1) == '2')
-        //             curr = pre;
-        //         else
-        //             return 0;
-        //     else if (s.charAt(i - 1) == '1' || (s.charAt(i - 1) == '2' && s.charAt(i) >= '1' && s.charAt(i) <= '6'))
-        //         curr = curr + pre;
-        //     pre = tmp;
-        // }
-        // return curr;
-
-        // //方法二
-        // return helper(s, 0);
-
-    }
-
-    private int helper(String s, int start) {
-        if (start == s.length())
-            return 1;
-        if (s.charAt(start) == '0')
-            return 0;
-        int aa = helper(s, start + 1);
-        int bb = 0;
-        if (start < s.length() - 1) {
-            int ten = (s.charAt(start) - '0') * 10;
-            int one = s.charAt(start + 1) - '0';
-            if (ten + one <= 26)
-                bb = helper(s, start + 2);
-        }
-        return aa + bb;
 
     }
 }

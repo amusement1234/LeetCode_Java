@@ -55,18 +55,18 @@
 // @lc code=start
 class Solution {
     public int findCircleNum(int[][] M) {
-        // 方法 1：深度优先搜索
-        int[] visited = new int[M.length];
+        // 解法1：dfs
+        boolean[] visited = new boolean[M.length];
         int count = 0;
         for (int i = 0; i < M.length; i++) {
-            if (visited[i] == 0) {
-                dfs(M, visited, i);
-                count++;
-            }
+            if (visited[i])
+                continue;
+            dfs(M, visited, i);
+            count++;
         }
         return count;
 
-        // // 方法 2：广度优先搜索
+        // // 方法 2：bfs
         // int[] visited = new int[M.length];
         // int count = 0;
         // Queue < Integer > queue = new LinkedList < > ();
@@ -98,12 +98,12 @@ class Solution {
         // return uf.count();
     }
 
-    public void dfs(int[][] M, int[] visited, int i) {
+    public void dfs(int[][] M, boolean[] visited, int i) {
         for (int j = 0; j < M.length; j++) {
-            if (M[i][j] == 1 && visited[j] == 0) {
-                visited[j] = 1;
-                dfs(M, visited, j);
-            }
+            if (M[i][j] == 0 || visited[j])
+                continue;
+            visited[j] = true;
+            dfs(M, visited, j);
         }
     }
 

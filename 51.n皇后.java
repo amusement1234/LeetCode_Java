@@ -46,112 +46,52 @@
 class Solution {
 
     public List<List<String>> solveNQueens(int n) {
-        // 解法1：回溯 https://leetcode.com/problems/n-queens/discuss/19805/My-easy-understanding-Java-Solution
-        char[][] board = new char[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                board[i][j] = '.';
         List<List<String>> res = new ArrayList<List<String>>();
+        if (n <= 0)
+            return res;
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = '.';
+            }
+        }
         dfs(board, 0, res);
         return res;
-
-        // // 解法2：回溯
-        // if (n <= 0)
-        //     return null;
-        // res = new LinkedList<>();
-        // char[][] board = new char[n][n];
-        // for (char[] chars : board)
-        //     Arrays.fill(chars, '.');
-        // backtrack(board, 0);
-        // return res;
     }
 
-    private void dfs(char[][] board, int colIndex, List<List<String>> res) {
-        if (colIndex == board.length) {
-            res.add(construct(board));
-            return;
-        }
-
-        for (int i = 0; i < board.length; i++) {
-            if (validate(board, i, colIndex)) {
-                board[i][colIndex] = 'Q';
-                dfs(board, colIndex + 1, res);
-                board[i][colIndex] = '.';
-            }
-        }
-    }
-
-    private boolean validate(char[][] board, int x, int y) {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < y; j++) {
-                // Math.abs(x-i) == Math.abs(y-j)》》x + j == y + i || x + y == i + j
-                if (board[i][j] == 'Q' && (Math.abs(x-i) == Math.abs(y-j) || x == i))
-                    return false;
-            }
-        }
-
-        return true;
-    }
-
-    private List<String> construct(char[][] board) {
-        List<String> res = new LinkedList<String>();
-        for (int i = 0; i < board.length; i++) {
-            String s = new String(board[i]);
-            res.add(s);
-        }
-        return res;
-    }
-
-    List<List<String>> res;
-
-    /**
-     * 路径：board中小于row的那些行都已经成功放置了皇后
-     * 可选择列表: 第row行的所有列都是放置Q的选择
-     * 结束条件: row超过board的最后一行
-     *
-     * @param board
-     * @param row
-     */
-    private void backtrack(char[][] board, int row) {
+    public void dfs(char[][] board, int row, List<List<String>> res) {
         if (row == board.length) {
             res.add(charToString(board));
             return;
         }
-        int n = board[row].length;
-        for (int col = 0; col < n; col++) {
-            if (!isValid(board, row, col))
+
+        for (int i = 0; i < board.length; i++) {
+            if (!validate(board, row, i))
                 continue;
-            board[row][col] = 'Q';
-            backtrack(board, row + 1);
-            board[row][col] = '.';
+            board[row][i] = 'Q';
+            dfs(board, row + 1, res);
+            board[row][i] = '.';
         }
     }
 
-    private boolean isValid(char[][] board, int row, int col) {
-        int rows = board.length;
-        // check is valid in col
+    public boolean validate(char[][] board, int row, int col) {
         for (char[] chars : board)
             if (chars[col] == 'Q')
                 return false;
-        // check is valide upright
-        for (int i = row - 1, j = col + 1; i >= 0 && j < rows; i--, j++) {
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)//左上
             if (board[i][j] == 'Q')
                 return false;
-        }
-        // check is valide upleft
-        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+        for (int i = row - 1, j = col + 1; i >= 0 && j <= board.length - 1; i--, j++)//右上
             if (board[i][j] == 'Q')
                 return false;
-        }
         return true;
     }
 
-    private static List<String> charToString(char[][] array) {
-        List<String> result = new LinkedList<>();//换成ArrayList也可以
-        for (char[] chars : array) {
-            result.add(String.valueOf(chars));
-        }
-        return result;
+    public List<String> charToString(char[][] board) {
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i < board.length; i++)
+            res.add(new String(board[i]));
+        return res;
     }
 }
 

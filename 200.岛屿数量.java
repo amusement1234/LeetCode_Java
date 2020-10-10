@@ -44,127 +44,58 @@
 class Solution {
 
     public int numIslands(char[][] grid) {
-        // // 解法一 dfs
-        // if (grid == null || grid.length == 0)
-        //     return 0;
-        // int num = 0;
-        // for (int i = 0; i < grid.length; i++) {
-        //     for (int j = 0; j < grid[0].length; j++) {
-        //         if (grid[i][j] == '1') {
-        //             num++;
-        //             dfs(grid, i, j);
-        //         }
-        //     }
-        // }
-        // return num;
-
-        // // 解法2 bfs
-        // int count = 0;
-        // for (int i = 0; i < grid.length; i++) {
-        //     for (int j = 0; j < grid[0].length; j++) {
-        //         if (grid[i][j] == '1') {
-        //             bfs(grid, i, j);
-        //             count++;
-        //         }
-        //     }
-        // }
-        // return count;
-
-        // //方法3 dfs
-        // g = grid;
-        // if (g == null || g.length == 0)
-        //     return 0;
-        // int gridCount = 0;
-        // for (int i = 0; i < g.length; i++) {
-        //     for (int j = 0; j < g[i].length; j++) {
-        //         if (g[i][j] == '1')
-        //             gridCount += helper(i, j);
-        //     }
-
-        // }
-        // return gridCount;
-
-        // // 解法4：并查集
-        if (grid.length == 0) {
+        // 解法1：dfs
+        if (grid == null || grid.length == 0)
             return 0;
-        }
-        int m = grid.length;
-        int n = grid[0].length;
-
-        Union u = new Union(grid);
-        int[] dx = { 1, 0 }; // 向下或向右
-        int[] dy = { 0, 1 };
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] != '1')
-                    continue;
-
-                for (int k = 0; k < 2; k++) {
-                    int x = i + dx[k];
-                    int y = j + dy[k];
-                    // 将该点右边和下面为1的区域连起来
-                    if (x < m && y < n && grid[x][y] == '1') {
-                        u.merge(i * n + j, x * n + y);
-                    }
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    dfs(grid, i, j);
                 }
-
             }
         }
-        return u.getCount();
+        return count;
+
+        // // // 解法2：并查集
+        // if (grid.length == 0) {
+        //     return 0;
+        // }
+        // int m = grid.length;
+        // int n = grid[0].length;
+
+        // Union u = new Union(grid);
+        // int[] dx = { 1, 0 }; // 向下或向右
+        // int[] dy = { 0, 1 };
+        // for (int i = 0; i < m; i++) {
+        //     for (int j = 0; j < n; j++) {
+        //         if (grid[i][j] != '1')
+        //             continue;
+
+        //         for (int k = 0; k < 2; k++) {
+        //             int x = i + dx[k];
+        //             int y = j + dy[k];
+        //             // 将该点右边和下面为1的区域连起来
+        //             if (x < m && y < n && grid[x][y] == '1') {
+        //                 u.merge(i * n + j, x * n + y);
+        //             }
+        //         }
+
+        //     }
+        // }
+        // return u.getCount();
 
     }
 
-    void dfs(char[][] grid, int r, int c) {
-        int nr = grid.length;
-        int nc = grid[0].length;
-
-        if (r < 0 || c < 0 || r >= nr || c >= nc || grid[r][c] == '0') {
+    public void dfs(char[][] grid, int i, int j) {
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0')
             return;
-        }
-
-        grid[r][c] = '0';
-        dfs(grid, r - 1, c);
-        dfs(grid, r + 1, c);
-        dfs(grid, r, c - 1);
-        dfs(grid, r, c + 1);
-    }
-
-    private void bfs(char[][] grid, int i, int j) {
-        Queue<int[]> list = new LinkedList<>();
-        list.add(new int[] { i, j });
-        while (!list.isEmpty()) {
-            int[] cur = list.remove();
-            i = cur[0];
-            j = cur[1];
-            if (0 <= i && i < grid.length && 0 <= j && j < grid[0].length && grid[i][j] == '1') {
-                grid[i][j] = '0';
-                list.add(new int[] { i + 1, j });
-                list.add(new int[] { i - 1, j });
-                list.add(new int[] { i, j + 1 });
-                list.add(new int[] { i, j - 1 });
-            }
-        }
-    }
-
-    int[] dx = { -1, 1, 0, 0 };//下钻，横向的向量
-    int[] dy = { 0, 0, -1, 1 };//下钻，纵向的向量
-    char[][] g;//全局变量，方便调用
-
-    private int helper(int i, int j) {
-        if (g[i][j] == '0')
-            return 0;
-        g[i][j] = '0';
-        for (int k = 0; i < dx.length; ++k) {
-            int x = i + dx[k];
-            int y = j + dy[k];
-
-            if (x < 0 || y < 0 || x >= g.length || y >= g[i].length)
-                continue;
-            if (g[x][y] == '0')
-                continue;
-            helper(x, y);
-        }
-        return 1;
+        grid[i][j] = '0';
+        dfs(grid, i - 1, j);
+        dfs(grid, i + 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
     }
 
 }

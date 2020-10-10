@@ -41,26 +41,48 @@
 class Solution {
 
     public int maxCoins(int[] nums) {
-        int n = nums.length;
-        int[] points = new int[n + 2];
-        points[0] = points[n + 1] = 1;
-        for (int i = 1; i <= n; i++) {
-            points[i] = nums[i - 1];
-        }
+        // 解法1：递归
+        int[] arr = new int[nums.length + 2];//arr:nums首尾加上1
+        int n = 1;
+        for (int x : nums)
+            if (x > 0)
+                arr[n++] = x;
+        arr[0] = arr[n++] = 1;
 
-        int[][] dp = new int[n + 2][n + 2];
-        //i[n,0]
-        for (int i = n; i >= 0; i--) {
-            //j[i+1,n+2)
-            for (int j = i + 1; j < n + 2; j++) {
-                //k[i+1,j)
-                for (int k = i + 1; k < j; k++) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i][k] + dp[k][j] + points[i] * points[j] * points[k]);
-                }
-            }
-        }
+        int[][] memo = new int[n][n];
+        return helper(memo, arr, 0, n - 1);
 
-        return dp[0][n + 1];
+        // 解法2：dp
+        // int[] arr = new int[nums.length + 2];
+        // int n = 1;
+        // for (int x : nums)
+        //     if (x > 0)
+        //         arr[n++] = x;
+        // arr[0] = arr[n++] = 1;
+
+        // int[][] dp = new int[n][n];
+        // for (int k = 2; k < n; k++)//k[2,n)
+        //     for (int left = 0; left < n - k; left++) {//left[0,n-k)
+        //         int right = left + k;
+        //         for (int i = left + 1; i < right; i++)//i[left+1,left + k]
+        //             dp[left][right] = Math.max(dp[left][right],
+        //                     arr[left] * arr[i] * arr[right] + dp[left][i] + dp[i][right]);
+        //     }
+
+        // return dp[0][n - 1];
+    }
+
+    public int helper(int[][] memo, int[] nums, int left, int right) {
+        if (left + 1 == right)
+            return 0;
+        if (memo[left][right] > 0)
+            return memo[left][right];
+        int ans = 0;
+        for (int i = left + 1; i < right; ++i)
+            ans = Math.max(ans,
+                    nums[left] * nums[i] * nums[right] + helper(memo, nums, left, i) + helper(memo, nums, i, right));
+        memo[left][right] = ans;
+        return ans;
     }
 
 }

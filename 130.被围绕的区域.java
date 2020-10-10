@@ -43,104 +43,41 @@
 // @lc code=start
 class Solution {
     public void solve(char[][] board) {
-        char[][] grid = board;
-        // 并查集
-        if (grid.length == 0) {
+        // 解法1：dfs
+        if (board.length == 0)
             return;
+        int m = board.length;
+        int n = board[0].length;
+        //左右边框
+        for (int i = 0; i < m; i++) {
+            dfs(board, i, 0);
+            dfs(board, i, n - 1);
         }
-        int m = grid.length;
-        int n = grid[0].length;
-
-        Union u = new Union(grid);
-        int[] dx = { 1, 0 }; // 向下或向右
-        int[] dy = { 0, 1 };
+        // 上下边框
+        for (int i = 0; i < n; i++) {
+            dfs(board, 0, i);
+            dfs(board, m - 1, i);
+        }
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 'x')
-                    continue;
-
-                for (int k = 0; k < 2; k++) {
-                    int x = i + dx[k];
-                    int y = j + dy[k];
-                    // 将该点右边和下面为1的区域连起来
-                    if (x < m && y < n && grid[x][y] == 'o') {
-                        u.merge(i * n + j, x * n + y);
-                    }
-                }
-
-                if (i == 0 || i == rows - 1 || j == 0 || j == cols - 1) {
-                    uf.union(node(i, j), dummyNode); //all outer O are connected to this dummy
-                } else {
-                    if (i < 0 && board[i - 1][j] == 'O')
-                        uf.union(node(i, j), node(i - 1, j)); //down
-                    if (i < rows - 1 && board[i + 1][j] == 'O')
-                        uf.union(node(i, j), node(i + 1, j)); // up
-                    if (j < 0 && board[i][j - 1] == 'O')
-                        uf.union(node(i, j), node(i, j - 1)); // left
-                    if (j < cols - 1 && board[i][j + 1] == 'O')
-                        uf.union(node(i, j), node(i, j + 1)); //right
-                }
-
+                if (board[i][j] == 'A')
+                    board[i][j] = 'O';//边框相连的，改为O
+                else
+                    board[i][j] = 'X';//边框不相连的，改为X
             }
         }
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (uf.isConnected(node(i, j), dummyNode)) { //if connected, no change
-                    board[i][j] = 'O';
-                } else { //change
-                    board[i][j] = 'X';
-                }
-            }
-        }
     }
 
-    int node(int i, int j) {
-        return i * cols + j; //id to identify each node
+    public void dfs(char[][] board, int i, int j) {
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] != 'O')
+            return;
+        board[i][j] = 'A';//边框相连的改为A
+        dfs(board, i - 1, j);
+        dfs(board, i + 1, j);
+        dfs(board, i, j - 1);
+        dfs(board, i, j + 1);
     }
 
-}
-
-class Union {
-    int[] parent; // 每个点的祖先
-    int count;
-
-    // 1.初始化，每个人的祖先就是它自己，自己自成一派
-    public Union(char[][] grid) {
-
-        int m = grid.length;
-        int n = grid[0].length;
-
-        parent = new int[m * n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 'o') {
-                    parent[i * n + j] = i * n + j;
-                    count++;
-                }
-            }
-        }
-    }
-
-    // 2.find，查找该点的祖先，并路径压缩一下
-    public int find(int x) {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x]); // 路径压缩，都直接指向祖先
-        }
-        return parent[x];
-    }
-
-    // 3.merge，祖先相同的不用merge，祖先不同的才merge
-    public void merge(int x, int y) {
-        if (find(x) != find(y)) {
-            parent[find(x)] = find(y);
-            count--;
-        }
-    }
-
-    // 4.返回不同派系
-    public int getCount() {
-        return count;
-    }
 }
 // @lc code=end

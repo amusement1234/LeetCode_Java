@@ -64,7 +64,7 @@ import java.util.Set;
 // @lc code=start
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        // //解法一
+        // //解法1 bfs
         // int L = beginWord.length();
         // Map<String, List<String>> map = new HashMap();
         // for (int i = 0; i < wordList.size(); i++) {
@@ -103,71 +103,27 @@ class Solution {
         // }
         // return 0;
 
-        //解法2
-        // Set<String> beginSet = new HashSet<String>(), endSet = new HashSet<String>();
-
-        // int len = 1;
-        // HashSet<String> visited = new HashSet<String>();//记录已访问的
-
-        // beginSet.add(beginWord);
-        // endSet.add(endWord);
-        // while (!beginSet.isEmpty() && !endSet.isEmpty()) {
-        //     if (beginSet.size() > endSet.size()) {
-        //         Set<String> set = beginSet;
-        //         beginSet = endSet;
-        //         endSet = set;
-        //     }
-
-        //     Set<String> temp = new HashSet<String>();
-        //     for (String word : beginSet) {
-        //         char[] thisWorld = word.toCharArray();
-
-        //         for (int i = 0; i < thisWorld.length; i++) {
-        //             for (char c = 'a'; c <= 'z'; c++) {
-        //                 char old = thisWorld[i];
-        //                 thisWorld[i] = c;
-        //                 String target = String.valueOf(thisWorld);
-
-        //                 if (endSet.contains(target)) {
-        //                     return len + 1;
-        //                 }
-
-        //                 if (!visited.contains(target) && wordList.contains(target)) {
-        //                     temp.add(target);
-        //                     visited.add(target);
-        //                 }
-        //                 thisWorld[i] = old;
-        //             }
-        //         }
-        //     }
-
-        //     beginSet = temp;
-        //     len++;
-        // }
-
-        // return 0;
-
-        // 解法三
+        // 解法2
         if (beginWord.length() == 0 || endWord.length() == 0 || wordList.size() == 0)
             return 0;
+        Queue<Pair> queue = new LinkedList<>();
+        queue.offer(new Pair(1, beginWord));
 
-        Queue<Pair> q = new LinkedList<>();
-        q.offer(new Pair(1, beginWord));
-
-        while (!q.isEmpty()) {
-            Pair cur = q.poll();
-            Iterator<String> itr = wordList.iterator();
-            while (itr.hasNext()) {
-                String b = itr.next();
-                if (checkNext(cur.str, b)) {
-                    itr.remove();
-                    if (b.equals(endWord))
-                        return cur.len + 1;
-                    q.offer(new Pair(cur.len + 1, b));
+        while (!queue.isEmpty()) {
+            Pair curr = queue.poll();
+            Iterator<String> iterator = wordList.iterator();
+            while (iterator.hasNext()) {
+                String word = iterator.next();
+                if (checkNext(curr.str, word)) {
+                    iterator.remove();
+                    if (word.equals(endWord))
+                        return curr.len + 1;
+                    queue.offer(new Pair(curr.len + 1, word));
                 }
             }
         }
         return 0;
+
     }
 
     private boolean checkNext(String a, String b) {
@@ -177,7 +133,6 @@ class Solution {
                 count++;
                 if (count > 1)
                     return false;
-
             }
         }
         return count <= 1;

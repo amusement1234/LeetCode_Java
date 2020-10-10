@@ -205,7 +205,99 @@ public class App {
 
     }
 
+    public static TrieNode buildTrie(String[] words) {
+        TrieNode root = new TrieNode();
+        for (int i = 0; i < words.length; i++) {
+            TrieNode p = root;
+            for (int j = 0; j < words[i].length(); j++) {
+                if (p.children[words[i].charAt(j) - 'a'] == null)
+                    p.children[words[i].charAt(j) - 'a'] = new TrieNode();
+                p = p.children[words[i].charAt(j) - 'a'];
+            }
+            p.word = words[i];
+        }
+        return root;
+    }
+
+    public static void sss2() {
+        int[][] dir = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 1, -1 }, { -1, 1 }, { -1, -1 },
+                { 1, 1 } };
+        for (int k = 0; k < 8; k++) {
+            int x = dir[k][0] + 0;
+            int y = dir[k][1] + 0;
+            System.out.println("k:" + k + ",x:" + x + ",y:" + y);
+        }
+    }
+
+    public static int reverseBits(int n) {
+        int res = 0;
+        for (int i = 0; i < 32; i++) {
+            int digit = n & 1;
+            res += digit;
+            n >>= 1;
+            if (i < 31)
+                res <<= 1;
+        }
+        return res;
+    }
+
+    public static int[] relativeSortArray(int[] arr1, int[] arr2) {
+        Map<Integer, Integer> map = new TreeMap();
+        for (int n : arr1)
+            map.put(n, map.getOrDefault(n, 0) + 1);
+
+        int i = 0;
+        for (int n : arr2) {
+            for (int j = 0; j < map.get(n); j++)
+                arr1[i++] = n;
+            map.remove(n);
+        }
+
+        for (int n : map.keySet()) {
+            for (int j = 0; j < map.get(n); j++)
+                arr1[i++] = n;
+        }
+        return arr1;
+    }
+
+    public static int lengthOfLIS(int[] nums, int pre, int cur, int[][] memo) {
+        if (cur == nums.length)
+            return 0;
+
+        if (memo[pre + 1][cur] >= 0)
+            return memo[pre + 1][cur];
+
+        int taken = 0;
+        if (pre < 0 || nums[cur] > nums[pre])
+            taken = 1 + lengthOfLIS(nums, cur, cur + 1, memo);
+
+        int nottaken = lengthOfLIS(nums, pre, cur + 1, memo);
+        memo[pre + 1][cur] = Math.max(taken, nottaken);
+        return memo[pre + 1][cur];
+    }
+
     public static void main(String[] args) throws Exception {
+        // 解法1：递归
+        int[] nums = new int[] { 10, 9, 2, 5, 3, 7, 101, 18 };
+        int[][] memo = new int[nums.length + 1][nums.length];
+        for (int[] item : memo) {
+            Arrays.fill(item, -1);
+        }
+        int t_5 = lengthOfLIS(nums, -1, 0, memo);
+
+        int[] t_4 = relativeSortArray(new int[] { 2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19 }, new int[] { 2, 1, 4, 3, 9, 6 });
+        int t_3 = reverseBits(43261596);
+        sss2();
+
+        int t_23 = 1 / 3;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                int box = (i / 3) * 3 + j / 3;
+                System.out.println("i:" + i + ",j:" + j + ",box:" + box);
+            }
+        }
+        TrieNode trie2 = buildTrie(new String[] { "oath", "pea", "eat", "rain" });
+
         int r_4 = leastInterval(new char[] { 'A', 'A', 'A', 'B', 'B', 'B' }, 2);
         int r_3 = numDecodings("12");
 
@@ -1113,4 +1205,12 @@ public class App {
     //          ListNode next;
     //          ListNode(int x) { val = x; }
     //     }    
+}
+
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    String word;
+
+    TrieNode() {
+    }
 }

@@ -56,9 +56,6 @@ class Solution {
 
         //解法三：位运算
         return n > 0 && (n & (n - 1)) == 0;
-
-        // // 解法四：
-        // return n > 0 && Integer.bitCount(n) == 1;
     }
 }
 // @lc code=end

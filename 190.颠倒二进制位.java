@@ -53,7 +53,7 @@
 public class Solution {
     // you need treat n as an unsigned value
     public int reverseBits(int n) {
-
+        // 解法1：
         int res = 0;
         for (int i = 0; i < 32; i++) {
             int digit = n & 1;//n的最后一位
@@ -63,14 +63,6 @@ public class Solution {
                 res <<= 1;//res左移一位
         }
         return res;
-
-        // int reverse = 0;
-        // for (int i = 0; i < 32; i++) {
-        //     reverse = reverse << 1;
-        //     reverse = reverse + (n & 1);
-        //     n >>= 1;
-        // }
-        // return reverse;
     }
 }
 // @lc code=end

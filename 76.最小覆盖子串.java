@@ -35,51 +35,72 @@ import java.util.Map;
 // @lc code=start
 class Solution {
     public String minWindow(String s, String t) {
+
+        //// 解法2：滑动窗口 https://leetcode.com/problems/minimum-window-substring/discuss/26808/Here-is-a-10-line-template-that-can-solve-most-'substring'-problems
+        // int[] map = new int[128];
+        // for (char c : t.toCharArray()) {
+        //     map[c]++;
+        // }
+        // int start = 0, end = 0, minStart = 0, minLen = Integer.MAX_VALUE, counter = t.length();
+        // while (end < s.length()) {
+        //     final char c1 = s.charAt(end);
+        //     if (map[c1] > 0)
+        //         counter--;
+        //     map[c1]--;
+        //     end++;
+        //     while (counter == 0) {
+        //         if (minLen > end - start) {
+        //             minLen = end - start;
+        //             minStart = start;
+        //         }
+        //         final char c2 = s.charAt(start);
+        //         map[c2]++;
+        //         if (map[c2] > 0)
+        //             counter++;
+        //         start++;
+        //     }
+        // }
+
+        // return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
+
+        // 解法1：滑动窗口
         Map<Character, Integer> needs = new HashMap<>();
         Map<Character, Integer> window = new HashMap<>();
-
         for (int i = 0; i < t.length(); i++) {
-            Character character = t.charAt(i);
-            int thisVal = needs.getOrDefault(character, 0) + 1;
-            needs.put(character, thisVal);
+            Character c = t.charAt(i);
+            needs.put(c, needs.getOrDefault(c, 0) + 1);
         }
 
-        int left = 0;
-        int right = 0;
-        int match = 0;
-        int start = 0;
-        int end = 0;
-        int minLen = Integer.MAX_VALUE;
+        int left = 0, right = 0, start = 0, end = 0;
+        int match = 0, minLen = Integer.MAX_VALUE;
 
         while (right < s.length()) {
-            char temp = s.charAt(right);
-            if (needs.containsKey(temp)) {
-                window.put(temp, window.getOrDefault(temp, 0) + 1);
-                if (window.get(temp).compareTo(needs.get(temp)) == 0) {
+            char c = s.charAt(right);
+            if (needs.containsKey(c)) {
+                window.put(c, window.getOrDefault(c, 0) + 1);
+                if (window.get(c).compareTo(needs.get(c)) == 0)
                     match++;
-                }
             }
 
             right++;
 
             while (match == needs.size()) {
-                if (right-left < minLen) {
+                if (right - left < minLen) {
                     start = left;
                     end = right;
                     minLen = end - start;
                 }
 
-                char c = s.charAt(left);
-                if (needs.containsKey(c)) {
-                    window.put(c, window.getOrDefault(c, 1) - 1);
-                    if (window.get(c) < needs.get(c))
+                char c2 = s.charAt(left);
+                if (needs.containsKey(c2)) {
+                    window.put(c2, window.getOrDefault(c2, 1) - 1);
+                    if (window.get(c2) < needs.get(c2))
                         match--;
                 }
 
                 left++;
             }
         }
-
         return minLen == Integer.MAX_VALUE ? "" : s.substring(start, end);
 
     }

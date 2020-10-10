@@ -77,7 +77,7 @@
 class Solution {
     public boolean isValidSudoku(char[][] board) {
 
-        // //解法一：哈希
+        // //解法1：哈希
         // HashMap<Integer, Integer>[] rows = new HashMap[9];
         // HashMap<Integer, Integer>[] cols = new HashMap[9];
         // HashMap<Integer, Integer>[] boxs = new HashMap[9];
@@ -104,7 +104,21 @@ class Solution {
         // }
         // return true;
 
-        // 解法二
+        // // 解法2： set
+        // Set seen = new HashSet();
+        // for (int i = 0; i < 9; i++) {
+        //     for (int j = 0; j < 9; j++) {
+        //         char c = board[i][j];
+        //         if (c == '.')
+        //             continue;
+        //         if (!seen.add(c + " in row " + i) || !seen.add(c + " in column " + j)
+        //                 || !seen.add(c + " in block " + i / 3 + "-" + j / 3))
+        //             return false;
+        //     }
+        // }
+        // return true;
+
+        // 解法3：dp
         char[][][] arr = new char[9][9][3];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -122,6 +136,7 @@ class Solution {
             }
         }
         return true;
+
     }
 }
 // @lc code=end

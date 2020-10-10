@@ -58,45 +58,39 @@
 // @lc code=start
 class Solution {
     public int shortestPathBinaryMatrix(int[][] grid) {
-
-        int dir[][] = new int[][]{{0,1},{0,-1},{1,0},{-1,0},{1,-1},{-1,1},{-1,-1},{1,1}};
-
         int m = grid.length;
         int n = grid[0].length;
-
-        if(grid[0][0]==1 || grid[m-1][n-1]==1) 
+        int[][] dir = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, -1 },
+                { 1, 1 } };
+        if (grid[0][0] == 1 || grid[m - 1][n - 1] == 1)
             return -1;
-        
+
         boolean[][] visited = new boolean[m][n];
         visited[0][0] = true;
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{0,0});
 
-        int ans=0;
+        Queue<int[]> queue = new LinkedList<int[]>();
+        queue.offer(new int[] { 0, 0 });
+
+        int res = 0;
         while (!queue.isEmpty()) {
             int size = queue.size();
-            for(int i=0;i<size;i++) {
-                int[] pop = queue.remove();
-                if(pop[0]==m-1 && pop[1]==n-1) {
-                    return ans+1;
-                }
-                
-                for (int k=0;k<8;k++) {
-                    int nextX = dir[k][0]+pop[0];
-                    int nextY = dir[k][1]+pop[1];
+            for (int i = 0; i < size; i++) {
+                int[] curr = queue.poll();
+                if (curr[0] == m - 1 && curr[1] == n - 1)
+                    return res + 1;
 
-                    if(nextX>=0 && nextX<m && nextY>=0 && nextY<n && !visited[nextX][nextY] && grid[nextX][nextY]==0) {
-                        queue.add(new int[]{nextX,nextY});
-                        visited[nextX][nextY]=true;
+                for (int k = 0; k < 8; k++) {
+                    int x = curr[0] + dir[k][0];
+                    int y = curr[1] + dir[k][1];
+                    if (x >= 0 && x < m && y >= 0 && y < n && !visited[x][y] && grid[x][y] == 0) {
+                        queue.offer(new int[] { x, y });
+                        visited[x][y] = true;
                     }
-
                 }
             }
-            ans++;
+            res++;
         }
-
         return -1;
     }
 }
 // @lc code=end
-
