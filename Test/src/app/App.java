@@ -25,7 +25,6 @@ import huihui.sort.countSort;
 import huihui.sort.quickSort;
 import labuladong.kmp;
 import labuladong.feibolaqie;
-import oop.temp_test;
 import queue.MonotonicQueue;
 import huihui.MyBinaryTree;
 import huihui.MyLinkedList;
@@ -276,7 +275,29 @@ public class App {
         return memo[pre + 1][cur];
     }
 
+    public static int longestValidParentheses2(String s) {
+        // 解法2：stack
+        int max = 0;
+        Deque<Integer> stack = new LinkedList<Integer>();
+        stack.push(-1);
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(')
+                stack.push(i);
+            else {
+                stack.pop();
+                if (stack.isEmpty())
+                    stack.push(i);
+                else
+                    max = Math.max(max, i - stack.peek());
+            }
+        }
+        return max;
+    }
+
     public static void main(String[] args) throws Exception {
+
+        int t_6 = longestValidParentheses2("()");
+
         // 解法1：递归
         int[] nums = new int[] { 10, 9, 2, 5, 3, 7, 101, 18 };
         int[][] memo = new int[nums.length + 1][nums.length];
@@ -440,9 +461,6 @@ public class App {
         int sum4 = new feibolaqie().feb4(10);
 
         int searIndex = new kmp("cab").search("abcabc");
-
-        int[] coins = new int[] { 1, 2, 5 };
-        int coin = new temp_test().coinChange(coins, 11);
 
         double[] tte2 = bucketSort.bucketSort2(new double[] { 1.3, 23, 55, 2.4, 3 });
         int[] ttt = countSort.countSort2(new int[] { 1, 23, 55, 2, 3 });

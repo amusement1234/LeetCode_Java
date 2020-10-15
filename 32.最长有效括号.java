@@ -37,70 +37,48 @@ import java.util.Stack;
 class Solution {
     public int longestValidParentheses(String s) {
 
-        //方法4：dp
-        int[] dp = new int[s.length()];
+        // //方法3：dp
+        // int[] dp = new int[s.length()];
+        // int max = 0;
+        // int leftCount = 0;
+        // for (int i = 0; i < s.length(); i++) {
+        //     if (s.charAt(i) == '(')
+        //         leftCount++;
+        //     else if (leftCount > 0) {
+        //         dp[i] = dp[i - 1] + 2;
+        //         dp[i] += (i - dp[i]) >= 0 ? dp[i - dp[i]] : 0;
+        //         max = Math.max(max, dp[i]);
+        //         leftCount--;
+        //     }
+        // }
+        // return max;
+
+        // 解法2：stack
         int max = 0;
-        int leftCount = 0;
+        Deque<Integer> stack = new LinkedList<Integer>();
+        stack.push(-1);
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == '(')
-                leftCount++;
-            else if (leftCount > 0) {
-                dp[i] = dp[i - 1] + 2;
-                dp[i] += (i - dp[i]) >= 0 ? dp[i - dp[i]] : 0;
-                max = Math.max(max, dp[i]);
-                leftCount--;
+                stack.push(i);
+            else {
+                stack.pop();
+                if (stack.isEmpty())
+                    stack.push(i);
+                else
+                    max = Math.max(max, i - stack.peek());
             }
         }
         return max;
 
-        // // 方法3：栈
-        // Stack<Integer> stack = new Stack();
-        // stack.push(-1);
-        // int max = 0;
-        // for (int i = 0; i < s.length(); i++) {
-        //     if (s.charAt(i) == ')' && stack.size() > 1 && s.charAt(stack.peek()) == '(') {
-        //         stack.pop();
-        //         max = Math.max(max, i - stack.peek());
-        //     } else
-        //         stack.push(i);
-        // }
-        // return max;
-
-        // 方法2：栈
-        // Stack<Integer> stack = new Stack<Integer>();
-        // int max = 0;
-        // int left = -1;
-        // for (int i = 0; i < s.length(); i++) {
-        //     if (s.charAt(i) == '(') {
-        //         stack.push(i);
-        //         continue;
-        //     }
-
-        //     if (stack.isEmpty())
-        //         left = i;
-        //     else {
-        //         stack.pop();
-        //         if (stack.isEmpty())
-        //             max = Math.max(max, i - left);
-        //         else
-        //             max = Math.max(max, i - stack.peek());
-        //     }
-        // }
-        // return max;
-
         // // 解法1：
-        // int max = 0;
+        // int max=0;
         // for (int i = 0; i < s.length(); i++) {
-        //     int count = 0;//左括号数量
+        //     int leftCount=0;
         //     for (int j = i; j < s.length(); j++) {
-        //         if (s.charAt(j) == '(')
-        //             count++;
-        //         else
-        //             count--;
-        //         if (count < 0)
-        //             break;
-        //         if (count == 0 && j - i + 1 > max)
-        //             max = j - i + 1;
+        //         if(s.charAt(j)=='(') leftCount++;
+        //         else leftCount--;
+        //         if(leftCount<0) break;
+        //         if(leftCount==0 && j-i+1>max) max=j-i+1;
         //     }
         // }
         // return max;
