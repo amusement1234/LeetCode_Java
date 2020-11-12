@@ -294,7 +294,31 @@ public class App {
         return max;
     }
 
+    public static String reverseStr(String s, int k) {
+        char[] arr = s.toCharArray();
+        int n = arr.length;
+        int i = 0;
+        while (i < n) {
+            System.out.println("i:" + i + ",k:" + k);
+            int j = Math.min(i + k - 1, n - 1);
+            swap(arr, i, j);
+            i +=  k;
+        }
+        return String.valueOf(arr);
+    }
+
+    public static void swap(char[] arr, int l, int r) {
+        while (l < r) {
+            char temp = arr[l];
+            arr[l++] = arr[r];
+            arr[r--] = temp;
+        }
+    }
+
     public static void main(String[] args) throws Exception {
+
+        String s22 = "abcdefg";
+        String temp33 = reverseStr(s22, 2);
 
         int t_6 = longestValidParentheses2("()");
 
@@ -376,9 +400,6 @@ public class App {
         List<Integer> i233 = findAnagrams(s_1, s_2);
 
         String s33 = reverseWords("Let's take LeetCode contest");
-
-        String s22 = "abcdefg";
-        String temp33 = reverseStr(s22, 2);
 
         int ssfs = longestValidParentheses("()");
 
@@ -1126,26 +1147,6 @@ public class App {
             }
         }
         return result;
-    }
-
-    public static String reverseStr(String s, int k) {
-        char[] arr = s.toCharArray();
-        int n = arr.length;
-        int i = 0;
-        while (i < n) {
-            int j = Math.min(i + k - 1, n - 1);
-            swap(arr, i, j);
-            i += 2 * k;
-        }
-        return String.valueOf(arr);
-    }
-
-    private static void swap(char[] arr, int l, int r) {
-        while (l < r) {
-            char temp = arr[l];
-            arr[l++] = arr[r];
-            arr[r--] = temp;
-        }
     }
 
     public static String reverseWords(String s) {

@@ -72,34 +72,56 @@
 // @lc code=start
 class Solution {
     public int myAtoi(String str) {
+        // 解法1：
+        int sign = 1, i = 0, count = 0;
+        int m = str.length();
 
-        int index = 0, sign = 1, total = 0;
-        if (str.length() == 0)
+        // 处理空格
+        while (i < m && str.charAt(i) == ' ')
+            i++;
+        if (i == m)
             return 0;
-        while (index < str.length() && str.charAt(index) == ' ')
-            index++;
 
-        if (index == str.length())
-            return 0;
+        // 处理正负
+        if (str.charAt(i) == '-' || str.charAt(i) == '+')
+            sign = str.charAt(i++) == '-' ? -1 : 1;
 
-        if (str.charAt(index) == '+' || str.charAt(index) == '-') {
-            sign = str.charAt(index) == '+' ? 1 : -1;
-            index++;
+        while (i < m && str.charAt(i) >= '0' && str.charAt(i) <= '9') {
+            if (count > Integer.MAX_VALUE / 10 || count == Integer.MAX_VALUE / 10 && str.charAt(i) - '0' > 7)
+                return sign == -1 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+            count = count * 10 + (str.charAt(i++) - '0');
         }
+        return count * sign;
 
-        while (index < str.length()) {
-            int digit = str.charAt(index) - '0';
-            if (digit < 0 || digit > 9)
-                break;
-            if (Integer.MAX_VALUE / 10 < total || 
-            Integer.MAX_VALUE / 10 == total && Integer.MAX_VALUE % 10 < digit)
-                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        // // 解法2：
+        // int index = 0, sign = 1, total = 0;
+        // if (str.length() == 0)
+        //     return 0;
+        // while (index < str.length() && str.charAt(index) == ' ')
+        //     index++;
 
-            total = 10 * total + digit;
-            index++;
-        }
-        return total * sign;
+        // if (index == str.length())
+        //     return 0;
 
+        // if (str.charAt(index) == '+' || str.charAt(index) == '-') {
+        //     sign = str.charAt(index) == '+' ? 1 : -1;
+        //     index++;
+        // }
+
+        // while (index < str.length()) {
+        //     int digit = str.charAt(index) - '0';
+        //     if (digit < 0 || digit > 9)
+        //         break;
+        //     if (Integer.MAX_VALUE / 10 < total || 
+        //     Integer.MAX_VALUE / 10 == total && Integer.MAX_VALUE % 10 < digit)
+        //         return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+
+        //     total = 10 * total + digit;
+        //     index++;
+        // }
+        // return total * sign;
+
+        // // 解法3：
         // if (str.isEmpty())
         //     return 0;
         // char[] mychar = str.toCharArray();
