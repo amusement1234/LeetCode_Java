@@ -65,13 +65,13 @@ class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         Map<Character, Integer> needs = new HashMap<>();
         Map<Character, Integer> window = new HashMap<>();
+
         for (int i = 0; i < p.length(); i++)
             needs.put(p.charAt(i), needs.getOrDefault(p.charAt(i), 0) + 1);
 
         List<Integer> res = new ArrayList();
-        int right = 0;
-        int match = 0;
-        int left = 0;
+        int left = 0, right = 0, match = 0;
+
         while (right < s.length()) {
             char temp = s.charAt(right);
             if (needs.containsKey(temp)) {

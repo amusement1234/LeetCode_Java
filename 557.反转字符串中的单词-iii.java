@@ -13,7 +13,7 @@ import sun.security.util.Length;
  * Dislikes: 0
  * Total Accepted:    65.1K
  * Total Submissions: 91.5K
- * Testcase Example:  `"Let's take LeetCode contest"`
+ * Testarrse Example:  `"Let's take LeetCode contest"`
  *
  * 给定一个字符串，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。
  * 
@@ -31,18 +31,18 @@ import sun.security.util.Length;
 // @lc code=start
 class Solution {
     public String reverseWords(String s) {
-        char[] ca = s.toCharArray();
-        for (int i = 0; i < ca.length; i++) {
-            if (ca[i] == ' ')
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == ' ')
                 continue;
             int j = i;
-            while (j + 1 < ca.length && ca[j + 1] != ' ')
+            while (j + 1 < arr.length && arr[j + 1] != ' ')
                 j++; // move j to the end of the word
-            reverse(ca, i, j);
+            reverse(arr, i, j);
             i = j;
 
         }
-        return new String(ca);
+        return new String(arr);
 
         // 解法一
         // StringBuilder sb = new StringBuilder();
@@ -60,11 +60,11 @@ class Solution {
         // return sb.toString().trim();
     }
 
-    private void reverse(char[] ca, int i, int j) {
+    private void reverse(char[] arr, int i, int j) {
         for (; i < j; i++, j--) {
-            char tmp = ca[i];
-            ca[i] = ca[j];
-            ca[j] = tmp;
+            char tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
         }
     }
 
@@ -74,10 +74,8 @@ class Solution {
         char[] chars = s.toCharArray();
         while (left < right) {
             char c = chars[left];
-            chars[left] = chars[right];
-            chars[right] = c;
-            left++;
-            right--;
+            chars[left++] = chars[right];
+            chars[right--] = c;
         }
         return String.valueOf(chars);
     }

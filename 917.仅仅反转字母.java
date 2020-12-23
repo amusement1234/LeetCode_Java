@@ -56,37 +56,20 @@ import java.util.Stack;
 // @lc code=start
 class Solution {
     public String reverseOnlyLetters(String S) {
-        // Stack<Character> stack = new Stack<>();
-        // char[] chars = S.toCharArray();
-        // for (int i = 0; i < chars.length; i++) {
-        //     if (Character.isLetter(chars[i])) {
-        //         stack.push(chars[i]);
-        //     }
-        // }
-
-        // StringBuilder sb = new StringBuilder();
-        // for (int i = 0; i < chars.length; i++) {
-        //     if (Character.isLetter(chars[i])) {
-        //         sb.append(stack.pop());
-        //     } else {
-        //         sb.append(chars[i]);
-        //     }
-        // }
-        // return sb.toString();
-
-        StringBuilder ans = new StringBuilder();
-        int j = S.length() - 1;
-        for (int i = 0; i < S.length(); ++i) {
-            if (Character.isLetter(S.charAt(i))) {
-                while (!Character.isLetter(S.charAt(j)))
-                    j--;
-                ans.append(S.charAt(j--));
-            } else {
-                ans.append(S.charAt(i));
+        // 解法1：
+        StringBuilder sb = new StringBuilder();
+        int end = S.length() - 1;
+        for (int i = 0; i < S.length(); i++) {
+            if (!Character.isLetter(S.charAt(i))) {
+                sb.append(S.charAt(i));
+                continue;
             }
-        }
 
-        return ans.toString();
+            while (!Character.isLetter(S.charAt(end)))
+                end--;
+            sb.append(S.charAt(end--));
+        }
+        return sb.toString();
 
     }
 }
