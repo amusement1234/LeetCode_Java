@@ -315,8 +315,23 @@ public class App {
         }
     }
 
+    public static String reverseWords2(String s) {
+        s=s.trim();
+        int i=s.length()-1;
+        int j=i;
+        StringBuilder sb=new StringBuilder();
+        while(i>=0){
+            while(i>=0 && s.charAt(i)!=' ') i--;
+            sb.append(s.substring(i+1,j+1)+ " ");
+            while(i>=0 && s.charAt(i)==' ') i--;
+            j=i;
+        }
+        return sb.toString().trim();
+    }
+    
     public static void main(String[] args) throws Exception {
 
+        String s33 = reverseWords2("Let's take LeetCode contest");
         String s22 = "abcdefg";
         String temp33 = reverseStr(s22, 2);
 
@@ -399,7 +414,6 @@ public class App {
         String s_2 = "ab";
         List<Integer> i233 = findAnagrams(s_1, s_2);
 
-        String s33 = reverseWords("Let's take LeetCode contest");
 
         int ssfs = longestValidParentheses("()");
 
@@ -1174,10 +1188,8 @@ public class App {
         char[] chars = s.toCharArray();
         while (left < right) {
             char c = chars[left];
-            chars[left] = chars[right];
-            chars[right] = c;
-            left++;
-            right--;
+            chars[left++] = chars[right];
+            chars[right--] = c;
         }
         return String.valueOf(chars);
     }
