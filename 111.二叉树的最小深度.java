@@ -1,3 +1,8 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+import javax.swing.tree.TreeNode;
+
 /*
  * @lc app=leetcode.cn id=111 lang=java
  *
@@ -46,45 +51,37 @@
 class Solution {
     public int minDepth(TreeNode root) {
 
-        // // 方法一：递归
+        // 解法1：递归
         // if (root == null)
         //     return 0;
-        // int m1 = minDepth(root.left);
-        // int m2 = minDepth(root.right);
-        // //1.如果左孩子和右孩子有为空的情况，直接返回m1+m2+1
+        // int r1 = minDepth(root.left);
+        // int r2 = minDepth(root.right);
         // if (root.left == null || root.right == null)
-        //     return m1 + m2 + 1;
-        // else
-        //     //2.如果都不为空，返回较小深度+1 
-        //     return Math.min(m1, m2) + 1;
+        //     return r1 + r2 + 1;
+        // return Math.min(r1, r2) + 1;
 
-        //方法二
+        // 解法2：迭代
         if (root == null)
             return 0;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         int depth = 0;
         while (!queue.isEmpty()) {
-            ++depth;
-            int levelSize = queue.size();
-            for (int i = 0; i < levelSize; i++) {
+            depth++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
-                if (node != null) {
-                    //如果左右都没有 返回
-                    if (node.left == null && node.right == null)
-                        return depth;
-
-                    if (node.left != null)
-                        queue.offer(node.left);
-
-                    if (node.right != null)
-                        queue.offer(node.right);
-
-                }
+                if (node == null)
+                    continue;
+                if (node.left == null && node.right == null)
+                    return depth;
+                if (node.left != null)
+                    queue.offer(node.left);
+                if (node.right != null)
+                    queue.offer(node.right);
             }
         }
         return depth;
-
     }
 }
 // @lc code=end
