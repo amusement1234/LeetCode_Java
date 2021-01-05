@@ -26,17 +26,15 @@ class Solution {
     int ans = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {
-        maxPath(root);
+        helper(root);
         return ans;
-
     }
 
-    public int maxPath(TreeNode root) {
+    public int helper(TreeNode root) {
         if (root == null)
             return 0;
-        int left = Math.max(maxPath(root.left), 0);
-        int right = Math.max(maxPath(root.right), 0);
-
+        int left = Math.max(0, helper(root.left));
+        int right = Math.max(0, helper(root.right));
         ans = Math.max(ans, left + right + root.val);
         return Math.max(left, right) + root.val;
     }
