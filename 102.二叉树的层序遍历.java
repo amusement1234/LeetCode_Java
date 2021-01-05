@@ -1,4 +1,9 @@
 import java.util.ArrayList;
+import java.util.Queue;
+
+import javax.swing.tree.TreeNode;
+
+import apple.laf.JRSUIUtils.Tree;
 
 /*
  * @lc app=leetcode.cn id=102 lang=java
@@ -50,14 +55,15 @@ import java.util.ArrayList;
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
+
         // // 解法1：递归
-        // List<List<Integer>> res = new ArrayList<List<Integer>>();
+        // List<List<Integer>> res = new ArrayList<>();
         // if (root == null)
         //     return res;
         // backtrack(root, 0, res);
         // return res;
 
-        // 解法2：迭代
+        // // 解法2：迭代
         List<List<Integer>> res = new ArrayList<>();
         if (root == null)
             return res;
@@ -66,16 +72,16 @@ class Solution {
         queue.offer(root);
         while (!queue.isEmpty()) {
             int size = queue.size();
-            List<Integer> level = new ArrayList<>();
+            List<Integer> listLevel = new ArrayList<>();
             for (int i = 0; i < size; i++) {
                 TreeNode curr = queue.poll();
-                level.add(curr.val);
+                listLevel.add(curr.val);
                 if (curr.left != null)
                     queue.offer(curr.left);
                 if (curr.right != null)
                     queue.offer(curr.right);
             }
-            res.add(level);
+            res.add(listLevel);
         }
         return res;
 
