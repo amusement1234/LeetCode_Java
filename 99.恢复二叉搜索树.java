@@ -24,7 +24,6 @@ import java.util.Deque;
  */
 class Solution {
     public void recoverTree(TreeNode root) {
-
         Deque<TreeNode> stack = new ArrayDeque<TreeNode>();
         TreeNode x = null, y = null, pre = null;
         while (!stack.isEmpty() || root != null) {

@@ -46,36 +46,31 @@ class Solution {
     public int maxDepth(TreeNode root) {
 
         // // 解法1：递归
-        // if (root == null) {
+        // if (root == null)
         //     return 0;
-        // }
-        // int left_height = maxDepth(root.left);
-        // int right_height = maxDepth(root.right);
-        // int max = Math.max(left_height, right_height) + 1;
+        // int left = maxDepth(root.left);
+        // int right = maxDepth(root.right);
+        // int max = Math.max(left, right) + 1;
         // return max;
- 
-        //方法三
+
+        // 解法2：迭代
         if (root == null)
             return 0;
         LinkedList<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
-        int maxDepth = 0;
+        int max = 0;
         while (!queue.isEmpty()) {
-            ++maxDepth;
-            int levelSize = queue.size();
-            for (int i = 0; i < levelSize; i++) {
-
+            max++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
-                if (node.left != null) {
+                if (node.left != null)
                     queue.offer(node.left);
-                }
-                if (node.right != null) {
+                if (node.right != null)
                     queue.offer(node.right);
-                }
             }
         }
-        return maxDepth;
-
+        return max;
     }
 }
 // @lc code=end
