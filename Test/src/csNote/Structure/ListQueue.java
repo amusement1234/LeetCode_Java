@@ -1,5 +1,7 @@
 package csNote.Structure;
 
+import java.util.Iterator;
+
 public class ListQueue<Item> implements MyQueue<Item> {
 
     private Node first;

@@ -1,5 +1,7 @@
 package csNote.Structure;
 
+import java.util.Iterator;
+
 public class ListStack<Item> implements MyStack<Item> {
 
     private Node top = null;

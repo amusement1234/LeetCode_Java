@@ -4,32 +4,12 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
             "type": "java",
-            "name": "CodeLens (Launch) - Demo",
+            "name": "Launch App",
             "request": "launch",
-            "mainClass": "oop.Demo",
+            "mainClass": "app.App",
             "projectName": "Test"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - LRUCache",
-            "request": "launch",
-            "mainClass": "LRUCache.LRUCache",
-            "projectName": "Test"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch) - Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-App",
-            "request": "launch",
-            "mainClass": "app.App"
         }
     ]
 }

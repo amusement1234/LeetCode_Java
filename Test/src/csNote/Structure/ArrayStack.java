@@ -1,5 +1,7 @@
 package csNote.Structure;
 
+import java.util.Iterator;
+
 public class ArrayStack<Item> implements MyStack<Item> {
 
     // 栈元素数组，只能通过转型来创建泛型数组
