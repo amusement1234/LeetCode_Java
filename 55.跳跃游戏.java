@@ -38,33 +38,20 @@
 // @lc code=start
 class Solution {
 
-  public boolean canJump(int[] nums) {
-    // // 解法1：贪心
-    // int n = nums.length;
-    // int max = 0;
-    // for (int i = 0; i < n; i++) {
-    //   if (max >= i) {
-    //     max = Math.max(max, i + nums[i]);
-    //     if (max >= n - 1) {
-    //       return true;
-    //     }
-    //   }
-    // }
-    // return false;
-
-    // 方法二
-            if (nums == null)
-                return false;
-            int endReachable = nums.length - 1;
-            for (int i = 0; i < nums.length; i++) {
-                int thisIndex = nums.length - 1 - i;
-                int thisNum = nums[thisIndex];
-                if (thisNum + thisIndex >= endReachable) {
-                    endReachable = thisIndex;
-                }
-
+    public boolean canJump(int[] nums) {
+        // 解法1：贪心
+        int n = nums.length;
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+          if (max >= i) {
+            max = Math.max(max, i + nums[i]);//能跳到的最远位置
+            if (max >= n - 1) {
+              return true;
             }
-            return endReachable == 0;
-  }
+          }
+        }
+        return false;
+
+    }
 }
 // @lc code=end

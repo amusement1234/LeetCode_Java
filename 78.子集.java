@@ -39,44 +39,25 @@ import java.util.List;
 
 // @lc code=start
 class Solution {
-
-    List<List<Integer>> output = new ArrayList();
+    List<Integer> t = new ArrayList();
+    List<List<Integer>> res = new ArrayList<>();
 
     public List<List<Integer>> subsets(int[] nums) {
-
-        // // 方法一：递归
-        // List<List<Integer>> output = new ArrayList<>();
-        // output.add(new ArrayList<Integer>());
-
-        // for (int num : nums) {
-        //     List<List<Integer>> newSubsets = new ArrayList<>();
-        //     for (List<Integer> list : output) {
-        //         List<Integer> curr = new ArrayList<Integer>(list);
-        //         curr.add(num);
-        //         newSubsets.add(curr);
-        //     }
-
-        //     output.addAll(newSubsets);
-        // }
-        // return output;
-
-        // 方法二：回溯
-
-        List<List<Integer>> res = new ArrayList();
-        Arrays.sort(nums);
-        backtrack(nums, 0, new ArrayList(), res);
+        // 解法1：回溯
+        dfs(nums, 0);
         return res;
-
     }
 
-    public void backtrack(int[] nums, int start, List<Integer> list, List<List<Integer>> res) {
-        res.add(new ArrayList(list));
-        for (int i = start; i < nums.length; i++) {
-            list.add(nums[i]);
-            backtrack(nums, i + 1, list, res);
-            list.remove(list.size() - 1);
+    public void dfs(int[] nums, int cur) {
+        if (cur == nums.length) {
+            res.add(new ArrayList<Integer>(t));
+            return;
         }
-    }
+        t.add(nums[cur]);
+        dfs(nums, cur + 1);
+        t.remove(t.size() - 1);
 
+        dfs(nums, cur + 1);
+    }
 }
 // @lc code=end

@@ -42,34 +42,43 @@ import java.util.Arrays;
 // @lc code=start
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-
-        // 解法2：双指针,从后往前 https://leetcode.com/problems/merge-sorted-array/discuss/29522/This-is-my-AC-code-may-help-you
-        int i = m - 1;
-        int j = n - 1;
-        int k = m + n - 1;
-        while (i >= 0 && j >= 0) {
-            if (nums1[i] > nums2[j])
-                nums1[k--] = nums1[i--];
-            else
-                nums1[k--] = nums2[j--];
-        }
-        while (j >= 0)
-            nums1[k--] = nums2[j--];
-
-        // // 解法1：双指针,从后往前
-        // int index1 = m - 1;
-        // int index2 = n - 1;
-        // int mergeIndex = m + n - 1;
-        // while (index1 >= 0 || index2 >= 0) {
-        //     if (index1 < 0)
-        //         nums1[mergeIndex--] = nums2[index2--];
-        //     else if (index2 < 0)
-        //         nums1[mergeIndex--] = nums1[index1--];
-        //     else if (nums1[index1] > nums2[index2])
-        //         nums1[mergeIndex--] = nums1[index1--];
-        //     else
-        //         nums1[mergeIndex--] = nums2[index2--];
+        // // 解法1：直接合并后排序
+        // for (int i = 0; i < n; i++) {
+        //     nums1[m + i] = nums2[i];
         // }
+        // Arrays.sort(nums1);
+
+        // // 解法2：双指针，从前往后
+        // int[] nums = new int[m + n];
+        // int p = 0, p1 = 0, p2 = 0;
+        // while (p1 < m || p2 < n) {
+        //     if (p1 == m) {
+        //         nums[p++] = nums2[p2++];
+        //     } else if (p2 == n) {
+        //         nums[p++] = nums1[p1++];
+        //     } else if (nums1[p1] > nums2[p2]) {
+        //         nums[p++] = nums2[p2++];
+        //     } else {
+        //         nums[p++] = nums1[p1++];
+        //     }
+        // }
+        // for (int i = 0; i < m + n; i++) {
+        //     nums1[i] = nums[i];
+        // }
+
+        // 解法3：双指针,从后往前 https://leetcode.com/problems/merge-sorted-array/discuss/29522/This-is-my-AC-code-may-help-you
+        int i = m - 1, j = n - 1, k = m + n - 1;
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] < nums2[j]) {
+                nums1[k--] = nums2[j--];
+            } else {
+                nums1[k--] = nums1[i--];
+            }
+        }
+
+        while (j >= 0) {
+            nums1[k--] = nums2[j--];
+        }
 
     }
 }

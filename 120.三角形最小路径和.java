@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /*
  * @lc app=leetcode.cn id=120 lang=java
  *
@@ -35,34 +37,50 @@
 
 // @lc code=start
 class Solution {
-    int row;
-    Integer[][] memo;
+    int[][] memo;
 
     public int minimumTotal(List<List<Integer>> triangle) {
-        //方法2：DP
-        int row = triangle.size();
-        int[] minlen = new int[row + 1];
-        for (int level = row - 1; level >= 0; level--) {
-            for (int i = 0; i <= level; i++) { //第i行有i+1个数字
-                minlen[i] = Math.min(minlen[i], minlen[i + 1]) + triangle.get(level).get(i);
+        // // 解法1：记忆化递归 
+        // int n = triangle.size();
+        // memo = new int[n][n];
+        // for (int i = 0; i < n; i++) {
+        //     Arrays.fill(memo[i], -1);
+        // }
+        // return dfs(triangle, 0, 0);
+
+        // 解法2：dp
+        int n = triangle.size();
+        int[][] f = new int[n][n];
+        f[0][0] = triangle.get(0).get(0);
+        for (int i = 1; i < n; i++) {
+            f[i][0] = f[i - 1][0] + triangle.get(i).get(0);
+            for (int j = 1; j < i; j++) {
+                f[i][j] = Math.min(f[i - 1][j - 1], f[i - 1][j]) + triangle.get(i).get(j);
             }
+            f[i][i] = f[i - 1][i - 1] + triangle.get(i).get(i);
         }
-        return minlen[0];
-
-        //方法1：记忆化递归
-        // row = triangle.size();
-        // memo = new Integer[row][row];
-        // return helper(0, 0, triangle);
+        int res = f[n - 1][0];
+        for (int i = 1; i < n; i++) {
+            res = Math.min(res, f[n - 1][i]);
+        }
+        return res;
+    
     }
 
-    private int helper(int level, int c, List<List<Integer>> triangle) {
-        if (memo[level][c] != null)
-            return memo[level][c];
-        if (level == row - 1)
-            return memo[level][c] = triangle.get(level).get(c);
-        int left = helper(level + 1, c, triangle);
-        int right = helper(level + 1, c + 1, triangle);
-        return memo[level][c] = Math.min(left, right) + triangle.get(level).get(c);
+    public int dfs(List<List<Integer>> triangle, int i, int j) {
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+        if (i == triangle.size() - 1) {
+            memo[i][j] = triangle.get(i).get(j);
+            return memo[i][j];
+        }
+        int left = dfs(triangle, i + 1, j);
+        int right = dfs(triangle, i + 1, j + 1);
+        memo[i][j] = Math.min(left, right) + triangle.get(i).get(j);
+        return memo[i][j];
     }
+     
+
 }
 // @lc code=end

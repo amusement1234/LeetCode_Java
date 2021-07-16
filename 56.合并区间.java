@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 /*
  * @lc app=leetcode.cn id=56 lang=java
  *
@@ -33,51 +37,54 @@
 // @lc code=start
 class Solution {
     public int[][] merge(int[][] intervals) {
-        // 解法1：
-        if(intervals.length==0) return new int[0][2];
-        Arrays.sort(intervals,new Comparator<int[]>(){
-            public int compare(int[] interval1,int[] interval2){
-                return interval1[0]-interval2[0];
-            }
-        });
-
-        List<int[]> merged=new ArrayList<int[]>();
-        for(int i=0;i<intervals.length;i++){
-            int left=intervals[i][0];
-            int right=intervals[i][1];
-            if(merged.size()==0 || merged.get(merged.size()-1)[1]<left){
-                merged.add(new int[]{left,right});
-            }else{
-                merged.get(merged.size()-1)[1]=Math.max(merged.get(merged.size()-1)[1],right);
-            }
-        }
-        return merged.toArray(new int[merged.size()][]);
-
-        // // 解法2：
-        // int length = intervals.length;
-        // if (length <= 1)
-        //     return intervals;
-
-        // int[] start = new int[length];
-        // int[] end = new int[length];
-        // for (int i = 0; i < length; i++) {
-        //     start[i] = intervals[i][0];
-        //     end[i] = intervals[i][1];
+        // // 解法1：
+        // if (intervals.length == 0) {
+        //     return new int[0][2];
         // }
-        // Arrays.sort(start);
-        // Arrays.sort(end);
-        // int startIndex = 0;
-        // int endIndex = 0;
-        // List<int[]> result = new LinkedList<>();
-        // while (endIndex < length) {
-        //     //as endIndex==length-1 is evaluated first, start[endIndex+1] will never hit out of index
-        //     if (endIndex == length - 1 || start[endIndex + 1] > end[endIndex]) {
-        //         result.add(new int[] { start[startIndex], end[endIndex] });
-        //         startIndex = endIndex + 1;
+        // Arrays.sort(intervals,new Comparator<int[]>(){
+        //     public int compare(int[] r1, int[] r2) {
+        //         return r1[0] - r2[0];
         //     }
-        //     endIndex++;
+        // });
+
+        // List<int[]> merged = new ArrayList<>();
+        // for (int i = 0; i < intervals.length; i++) {
+        //     int left = intervals[i][0];
+        //     int right = intervals[i][1];
+        //     if (merged.size() == 0 || merged.get(merged.size() - 1)[1] < left) {
+        //         merged.add(new int[] { left, right });
+        //     } else {
+        //         merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], right);
+        //     }
+
         // }
-        // return result.toArray(new int[result.size()][]);
+        // return merged.toArray(new int[merged.size()][]);
+
+        // 解法2：
+        int n = intervals.length;
+        if (n == 0) {
+            return intervals;
+        }
+        int[] start = new int[n];
+        int[] end = new int[n];
+        for (int i = 0; i < n; i++) {
+            start[i] = intervals[i][0];
+            end[i] = intervals[i][1];
+        }
+
+        Arrays.sort(start);
+        Arrays.sort(end);
+        int startIndex = 0;
+        int endIndex = 0;
+        List<int[]> res = new ArrayList<>();
+        while (endIndex < n) {
+            if (endIndex == n - 1 || start[endIndex + 1] > end[endIndex]) {
+                res.add(new int[] { start[startIndex], end[endIndex] });
+                startIndex = endIndex + 1;
+            }
+            endIndex++;
+        }
+        return res.toArray(new int[res.size()][]);
     }
 }
 // @lc code=end

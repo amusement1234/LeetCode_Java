@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /*
  * @lc app=leetcode.cn id=84 lang=java
  *
@@ -42,47 +44,36 @@
 class Solution {
 
     public int largestRectangleArea(int[] heights) {
-
-        // 解法3：stack 来自：https://leetcode.com/problems/largest-rectangle-in-histogram/discuss/28900/Short-and-Clean-O(n)-stack-based-JAVA-solution
+        // 解法1：单调栈
+        int n = heights.length;
+        int[] left = new int[n];
+        int[] right = new int[n];
         Stack<Integer> stack = new Stack<>();
-        int maxArea = 0;
-        for (int i = 0; i <= heights.length; i++) {
-            int height = (i == heights.length ? 0 : heights[i]);
-            if (stack.isEmpty() || height >= heights[stack.peek()]) {
-                stack.push(i);
-            } else {
-                int pop = stack.pop();
-                int width = stack.isEmpty() ? i : (i - 1 - stack.peek());
-                int thisArea = heights[pop] * width;
-                maxArea = Math.max(maxArea, thisArea);
-                i--;
+
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && heights[i] <= heights[stack.peek()]) {
+                stack.pop();
             }
+
+            left[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
         }
-        return maxArea;
+        stack.clear();
 
-        // // 解法2：stack 难
-        // Stack<Integer> stack = new Stack<>();
-        // stack.push(-1);
-        // int maxArea = 0;
-        // for (int i = 0; i < heights.length; ++i) {
-        //     while (stack.peek() != -1 && heights[stack.peek()] >= heights[i])
-        //         maxArea = Math.max(maxArea, heights[stack.pop()] * (i - stack.peek() - 1));
-        //     stack.push(i);
-        // }
-        // while (stack.peek() != -1)
-        //     maxArea = Math.max(maxArea, heights[stack.pop()] * (heights.length - stack.peek() - 1));
-        // return maxArea;
+        for (int i = n - 1; i >= 0;i--) {
+            while (!stack.isEmpty() && heights[i]  <= heights[stack.peek()]) {
+                stack.pop();
+            }
 
-        // 解法1：优化的暴力法
-        // int maxArea = 0;
-        // for (int i = 0; i < heights.length; i++) {
-        //     int minheight = Integer.MAX_VALUE;
-        //     for (int j = i; j < heights.length; j++) {
-        //         minheight = Math.min(minheight, heights[j]);
-        //         maxArea = Math.max(maxArea, minheight * (j - i + 1));
-        //     }
-        // }
-        // return maxArea;
+            right[i] = stack.isEmpty() ? n : stack.peek();
+            stack.push(i);
+        }
+
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            res = Math.max(res, (right[i] - left[i] - 1) * heights[i]);
+        }
+        return res;
     }
 }
 // @lc code=end

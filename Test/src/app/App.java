@@ -75,10 +75,197 @@ public class App {
     return res;
   }
 
+  
+  public int binarySearchFirstColumn(int[][] matrix, int target) {
+    int low = -1, high = matrix.length - 1;
+    while (low < high) {
+      int mid = (high - low + 1) / 2 + low;
+      if (matrix[mid][0] <= target) {
+        low = mid;
+      } else {
+        high = mid - 1;
+      }
+    }
+    return low;
+  }
+
+  public void sortColors(int[] nums) {
+    // 解法1：单指针
+    int n = nums.length;
+    int ptr = 0;
+    for (int i = 0; i < n; i++) {
+      if (nums[i] == 0) {
+        int temp = nums[i];
+        nums[i] = nums[ptr];
+        nums[ptr] = temp;
+        ptr++;
+      }
+    }
+
+    for (int i = ptr; i < n; i++) {
+      if (nums[i] == 1) {
+        int temp = nums[i];
+        nums[i] = nums[ptr];
+        nums[ptr] = temp;
+        ptr++;
+      }
+    }
+  }
+
+  public int largestRectangleArea2(int[] heights) {
+    // 解法1：单调栈
+    int n = heights.length;
+    int[] left = new int[n];
+    int[] right = new int[n];
+
+    Stack<Integer> stack = new Stack<Integer>();
+    for (int i = 0; i < n; i++) {
+      while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+        stack.pop();
+      }
+      left[i] = stack.isEmpty() ? -1 : stack.peek();
+      stack.push(i);
+    }
+
+    stack.clear();
+    for (int i = n - 1; i >= 0; i--) {
+      while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+        stack.pop();
+      }
+      right[i] = stack.isEmpty() ? n : stack.peek();
+      stack.push(i);
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+      int r = right[i];
+      int l = left[i];
+      System.out.println(r + "," + (l + 1) + " > " + (r - l - 1));
+      int width = (right[i] - left[i] - 1);
+      ans = Math.max(ans, width * heights[i]);
+    }
+    return ans;
+  }
+
+  public int maximalRectangle(char[][] matrix) {
+
+    // 解法2：单调栈
+    int m = matrix.length;
+    if (m == 0) {
+      return 0;
+    }
+    int n = matrix[0].length;
+    int[][] left = new int[m][n];
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (matrix[i][j] == '1') {
+          left[i][j] = (j == 0) ? 1 : left[i][j - 1] + 1;
+        }
+
+      }
+    }
+
+    int res = 0;
+    for (int j = 0; j < n; j++) {
+      int[] up = new int[m], down = new int[m];
+      Deque<Integer> stack = new LinkedList<>();
+      for (int i = 0; i < m; i++) {
+        while (!stack.isEmpty() && left[i][j] <= left[stack.peek()][j]) {
+          stack.pop();
+        }
+        up[i] = stack.isEmpty() ? -1 : stack.peek();
+        stack.push(i);
+      }
+
+      stack.clear();
+      for (int i = m - 1; i >= 0; i--) {
+        while (!stack.isEmpty() && left[i][j] <= left[stack.peek()][j]) {
+          stack.pop();
+        }
+        down[i] = stack.isEmpty() ? m : stack.peek();
+        stack.push(i);
+      }
+
+      for (int i = 0; i < m; i++) {
+        int height = down[i] - up[i] - 1;
+        int area = height * left[i][j];
+        res = Math.max(res, area);
+      }
+
+    }
+    return res;
+
+  }
+
+
+  public void merge(int[] nums1, int m, int[] nums2, int n) {
+    // 解法3：双指针,从后往前 https://leetcode.com/problems/merge-sorted-array/discuss/29522/This-is-my-AC-code-may-help-you
+    int i = m - 1, j = n - 1, k = m + n - 1;
+    while (i >= 0 && j >= 0) {
+      if (nums1[i] < nums2[j]) {
+        nums1[k--] = nums2[j--];
+      } else {
+        nums1[k--] = nums1[i--];
+      }
+    }
+
+  }
+
+
+  public int minimumTotal(List<List<Integer>> triangle) {
+    // 解法2：dp
+    int n = triangle.size();
+    int[][] f = new int[n][n];
+    f[0][0] = triangle.get(0).get(0);
+    for (int i = 1; i < n; i++) {
+      f[i][0] = f[i - 1][0] + triangle.get(i).get(0);
+      for (int j = 1; j < i; j++) {
+        f[i][j] = Math.min(f[i - 1][j - 1], f[i - 1][j]) + triangle.get(i).get(j);
+      }
+      f[i][i] = f[i - 1][i - 1] + triangle.get(i).get(i);
+    }
+    int res = f[n - 1][0];
+    for (int i = 1; i < n; i++) {
+      res = Math.min(res, f[n - 1][i]);
+    }
+    return res;
+
+  }
+
   public static void main(String[] args) throws Exception {
     // int r232 = new App().jump(new int[] { 2, 3, 1, 1, 4 });
-    int r233 = new App()
-    .maxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 });
+    // int r233 = new App()
+    //     .maxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 });
+
+    
+    // int[][] matrix = new int[][] { {1,3,5,7 }, { 10,11,16,20}, { 23,30,34,60} };
+    // int rowIndex = new App().binarySearchFirstColumn(matrix, 3);
+        
+    // new App().sortColors(new int[] { 2, 0, 2, 1, 1, 0 });
+
+    // new App().largestRectangleArea2(new int[] { 2, 1, 5, 6, 2, 3 });
+
+    // char[][] matrix = {
+    //     { '1', '0', '1', '0', '0' },
+    //     { '1', '0', '1', '1', '1' }, 
+    //     { '1', '1', '1', '1', '1' }, 
+    //     { '1', '0', '0', '1', '0' } ,
+    // };
+    // new App().maximalRectangle(matrix);
+
+
+    // new App().merge(new int[0], 0, new int[] { 1 }, 1);
+
+    List<List<Integer>> triangle = new ArrayList<>();
+    List<Integer> row1=new ArrayList<Integer>(Arrays.asList(new Integer[]{2}));
+    List<Integer> row2=new ArrayList<Integer>(Arrays.asList(new Integer[]{3,4}));
+    List<Integer> row3=new ArrayList<Integer>(Arrays.asList(new Integer[]{6,5,7}));
+    List<Integer> row4 = new ArrayList<Integer>(Arrays.asList(new Integer[] { 4, 1, 8, 3 }));
+    triangle.add(row1);
+    triangle.add(row2);
+    triangle.add(row3);
+    triangle.add(row4);
+    int r334 = new App().minimumTotal(triangle);
 
     // new csNote.Sort.SelectionSort()
     // .sort(new Integer[] { 10, 9, 2, 5, 3, 7, 101, 18 });
@@ -369,7 +556,7 @@ public class App {
     // int[] fun = { 0, 1, 2, 3, 4, 5, 6 };
     // System.arraycopy(fun, 0, fun, 2, 4);
 
-    int a = (~5);
+    // int a = (~5);
     // int b = (456 >> 1) & 1;
     // boolean b1 = (12 & 1) == 1;
 

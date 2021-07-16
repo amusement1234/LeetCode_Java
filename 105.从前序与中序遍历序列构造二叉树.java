@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.tree.TreeNode;
 
@@ -51,31 +52,31 @@ import jdk.nashorn.api.tree.Tree;
  */
 class Solution {
 
-    HashMap<Integer, Integer> map = new HashMap<>();
-    int[] pre;
-
+    Map<Integer, Integer> map;
+    
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        for (int i = 0; i < inorder.length; i++)
+        // 解法1：递归
+        map = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
             map.put(inorder[i], i);
-        pre = preorder;
-
-        return buildTree(0, preorder.length, 0, inorder.length);
+        }
+        return buildTree(preorder, 0, preorder.length - 1, 0, inorder.length - 1);
     }
-
-    public TreeNode buildTree(int preStart, int preEnd, int inStart, int inEnd) {
-        if (preStart == preEnd)
+    
+    public TreeNode buildTree(int[] preorder, int preorder_left, int preorder_right, int inorder_left,
+            int inorder_right) {
+        if (preorder_left > preorder_right) {
             return null;
-        TreeNode root = new TreeNode(pre[preStart]);
-        int inRoot = map.get(root.val);
-        int numsLeft = inRoot - inStart;
+        }
+        TreeNode root = new TreeNode(preorder[preorder_left]);
+        int inorder_root = map.get(preorder[preorder_left]);
+        int leftsize_subtree = inorder_root - inorder_left;
 
-        // [preStart + 1, preStart + numsLeft + 1] [inStart, inRoot - 1]
-        root.left = buildTree(preStart + 1, preStart + numsLeft + 1, inStart, inRoot - 1);
-        // [preStart + numsLeft + 1, preEnd] [inRoot + 1, inEnd]
-        root.right = buildTree(preStart + numsLeft + 1, preEnd, inRoot + 1, inEnd);
+        root.left = buildTree(preorder, preorder_left + 1, preorder_left + leftsize_subtree, inorder_left,
+                inorder_root - 1);
+        root.right = buildTree(preorder, preorder_left + leftsize_subtree + 1, preorder_right, inorder_root + 1,
+                inorder_right);
         return root;
-
     }
-
 }
 // @lc code=end

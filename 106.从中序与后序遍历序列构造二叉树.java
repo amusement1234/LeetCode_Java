@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  * @lc app=leetcode.cn id=106 lang=java
  *
@@ -16,32 +19,31 @@
  */
 class Solution {
 
-    HashMap<Integer, Integer> map = new HashMap<>();
-    int[] post;
+    Map<Integer, Integer> map;
 
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        // https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/solution/tu-jie-gou-zao-er-cha-shu-wei-wan-dai-xu-by-user72/
-        
-        // 在后序遍历序列中,最后一个元素为树的根节点
-        // 在中序遍历序列中,根节点的左边为左子树，根节点的右边为右子树
-
-        for (int i = 0; i < inorder.length; i++)
+        map = new HashMap<>();
+        // 解法1：递归
+        for (int i = 0; i < inorder.length; i++) {
             map.put(inorder[i], i);
-        post = postorder;
-        return buildTree(0, postorder.length - 1, 0, inorder.length - 1);
+        }
+        return buildTree(postorder, 0, postorder.length - 1, 0, inorder.length);
     }
 
-    public TreeNode buildTree(int posStart, int posEnd, int inStart, int inEnd) {
-        if (inEnd < inStart || posEnd < posStart)
+    public TreeNode buildTree(int[] postorder, int postorder_left, int postorder_right, int inorder_left,
+            int inorder_right) {
+        if (postorder_left > postorder_right || inorder_left > inorder_right) {
             return null;
-        TreeNode root = new TreeNode(post[posEnd]);
-        int inRoot = map.get(root.val);
-        int numsLeft = inRoot - inStart;
+        }
 
-        // [posStart, posStart + numsLeft - 1] [inStart, inRoot - 1]
-        root.left = buildTree(posStart, posStart + numsLeft - 1, inStart, inRoot - 1);
-        // [posStart + numsLeft, posEnd - 1] [inRoot + 1, inEnd]
-        root.right = buildTree(posStart + numsLeft, posEnd - 1, inRoot + 1, inEnd);
+        TreeNode root = new TreeNode(postorder[postorder_right]);
+        int inorder_root = map.get(postorder[postorder_right]);
+        int leftsize_subtree = inorder_root - inorder_left;
+
+        root.left = buildTree(postorder, postorder_left, postorder_left + leftsize_subtree - 1, inorder_left,
+                inorder_root - 1);
+        root.right = buildTree(postorder, postorder_left + leftsize_subtree, postorder_right - 1, inorder_root + 1,
+                inorder_right);
         return root;
     }
 }

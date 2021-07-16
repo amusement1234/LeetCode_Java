@@ -48,22 +48,54 @@
 // @lc code=start
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        if (matrix.length == 0)
-            return false;
-        int rownum = matrix.length;
-        int colnum = matrix[0].length;
+        // // 解法1：两次二分查找
+        // int rowIndex = findFirstRow(matrix, target);
+        // if (rowIndex < 0) {
+        //     return false;
+        // }
+        // return findRow(matrix[rowIndex], target);
 
-        int left = 0;
-        int right = rownum * colnum - 1;
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            int midVal = matrix[mid / colnum][mid % colnum];
-            if (midVal == target)
+        // 解法2：一次二分查找
+        int m = matrix.length, n = matrix[0].length;
+        int low = 0, high = m * n - 1;
+        while (low <= high) {
+            int mid = (high - low) / 2 + low;
+            int x = matrix[mid / n][mid % n];
+            if (x < target) {
+                low = mid + 1;
+            } else if (x > target) {
+                high = mid - 1;
+            } else {
                 return true;
-            else if (midVal > target)
-                right = mid - 1;
-            else
-                left = mid + 1;
+            }
+        }
+        return false;
+    }
+    
+    public int findFirstRow(int[][] matrix, int target) {
+        int low = -1, high = matrix.length - 1;
+        while (low < high) {
+            int mid = (high - low + 1) / 2 + low;
+            if (matrix[mid][0] <= target) {
+                low = mid;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return low;
+    }
+
+    public boolean findRow(int[] row, int target) {
+        int low = 0, high = row.length - 1;
+        while (low <= high) {
+            int mid = (high - low) / 2 + low;
+            if (row[mid] == target) {
+                return true;
+            } else if (row[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
         }
         return false;
     }
