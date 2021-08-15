@@ -38,37 +38,37 @@ class Solution {
     List<List<Integer>> result = new ArrayList();
 
     public List<List<Integer>> combine(int n, int k) {
-        //// 解法1：回溯
-        // List<List<Integer>> res = new ArrayList();
-        // helper(n, k, 1, new ArrayList<Integer>(), res);
-        // return res;
+        // 解法1：回溯
+        List<List<Integer>> res = new ArrayList();
+        helper(n, k, 1, new ArrayList<Integer>(), res);
+        return res;
 
-        // 解法2：
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
-        int i = 0;
-        int[] p = new int[k];
-        while (i >= 0) {
-            p[i]++;
-            if (p[i] > n) --i;
-            else if (i == k - 1) result.add(Arrays.stream(p).boxed().collect(Collectors.toList()));
-            else {
-                ++i;
-                p[i] = p[i - 1];
-            }
-        }
-        return result;
+        // // 解法2：
+        // List<List<Integer>> result = new ArrayList<List<Integer>>();
+        // int i = 0;
+        // int[] p = new int[k];
+        // while (i >= 0) {
+        //     p[i]++;
+        //     if (p[i] > n) --i;
+        //     else if (i == k - 1) result.add(Arrays.stream(p).boxed().collect(Collectors.toList()));
+        //     else {
+        //         ++i;
+        //         p[i] = p[i - 1];
+        //     }
+        // }
+        // return result;
     }
 
-    public void helper(int n, int k, int start, List<Integer> val, List<List<Integer>> res) {
+    public void helper(int n, int k, int start, List<Integer> list, List<List<Integer>> res) {
         if (k == 0) {
-            res.add(new ArrayList<Integer>(val));
+            res.add(new ArrayList<Integer>(list));
             return;
         }
 
         for (int i = start; i <= n; i++) {
-            val.add(i);
-            helper(n, k - 1, i + 1, val, res);
-            val.remove(val.size() - 1);
+            list.add(i);
+            helper(n, k - 1, i + 1, list, res);
+            list.remove(list.size() - 1);
         }
     }
 }

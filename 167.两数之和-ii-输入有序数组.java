@@ -35,8 +35,16 @@
 // @lc code=start
 class Solution {
     public int[] twoSum(int[] numbers, int target) {
-        // 解法3：二分查找
-        // 待定
+
+        // //解法1：暴力法
+        // for (int i = 0; i < numbers.length - 1; i++) {
+        //     for (int j = i + 1; j < numbers.length; j++) {
+        //         int sum = numbers[i] + numbers[j];
+        //         if (sum == target)
+        //             return new int[] { i + 1, j + 1 };
+        //     }
+        // }
+        // return new int[] { -1, -1 };
 
         // 解法2：双指针
         int left = 0;
@@ -52,15 +60,6 @@ class Solution {
         }
         return new int[] { -1, -1 };
 
-        // //解法1：暴力法
-        // for (int i = 0; i < numbers.length - 1; i++) {
-        //     for (int j = i + 1; j < numbers.length; j++) {
-        //         int sum = numbers[i] + numbers[j];
-        //         if (sum == target)
-        //             return new int[] { i + 1, j + 1 };
-        //     }
-        // }
-        // return new int[] { -1, -1 };
     }
 }
 // @lc code=end

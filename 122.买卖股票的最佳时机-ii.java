@@ -48,54 +48,17 @@
 // @lc code=start
 class Solution {
     public int maxProfit(int[] prices) {
-        // // 方法一：暴力法 会超时
-        // return calculate(prices, 0);
-
-        // // 方法二：峰谷法
-        // if (prices == null || prices.length == 0)
-        //     return 0;
-        // int i = 0;
-        // int valley = prices[0];//山谷
-        // int peak = prices[0];//山顶
-        // int maxprofit = 0;
-        // while (i < prices.length - 1) {
-        //     while (i < prices.length - 1 && prices[i] >= prices[i + 1])
-        //         i++;
-        //     valley = prices[i];
-        //     while (i < prices.length - 1 && prices[i] <= prices[i + 1])
-        //         i++;
-        //     peak = prices[i];
-        //     maxprofit += peak - valley;
-        // }
-        // return maxprofit;
-
-        // 方法三
-        int max = 0;
-        for (int i = 1; i < prices.length; i++) {
-            if (prices[i] > prices[i - 1])
-                max += prices[i] - prices[i - 1];
+        //解法1:dp
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][0] - prices[i], dp[i - 1][1]);
         }
-        return max;
+        return dp[n - 1][0];
 
-    }
-
-    public int calculate(int prices[], int s) {
-        if (s >= prices.length)
-            return 0;
-        int max = 0;
-        for (int start = s; start < prices.length; start++) {
-            int maxprofit = 0;
-            for (int i = start + 1; i < prices.length; i++) {
-                if (prices[start] < prices[i]) {
-                    int profit = calculate(prices, i + 1) + prices[i] - prices[start];
-                    if (profit > maxprofit)
-                        maxprofit = profit;
-                }
-            }
-            if (maxprofit > max)
-                max = maxprofit;
-        }
-        return max;
     }
 
 }

@@ -40,26 +40,28 @@ class Solution {
         helper(0, 0, n, "", res);
         return res;
 
-        // // 解法2：dp
-        // List<List<String>> lists = new ArrayList<>();
-        // lists.add(Collections.singletonList(""));
+        // 解法2：dp
+        List<List<String>> lists = new ArrayList<>();
+        lists.add(Collections.singletonList(""));
 
-        // for (int i = 1; i <= n; ++i) {
-        //     List<String> list = new ArrayList<>();
-        //     for (int j = 0; j < i; ++j) {
-        //         for (String first : lists.get(j)) {
-        //             for (String second : lists.get(i - 1 - j))
-        //                 list.add("(" + first + ")" + second);
-        //         }
-        //     }
-        //     lists.add(list);
-        // }
+        for (int i = 1; i <= n; ++i) {
+            List<String> list = new ArrayList<>();
+            for (int j = 0; j < i; ++j) {
+                for (String first : lists.get(j)) {
+                    for (String second : lists.get(i - 1 - j)) {
+                        list.add("(" + first + ")" + second);
+                    }
+                }
+            }
+            lists.add(list);
+        }
 
-        // return lists.get(lists.size() - 1);
+        return lists.get(lists.size() - 1);
 
     }
 
-    public void helper(int left, int right, int n, String str, List<String> res) {//teminator
+    public void helper(int left, int right, int n, String str, List<String> res) {
+        //teminator
         if (left >= n && right >= n) {
             res.add(str);
             return;
@@ -67,10 +69,12 @@ class Solution {
         //process result
 
         //drill down 
-        if (left < n)
+        if (left < n) {
             helper(left + 1, right, n, str + "(", res);
-        if (right < left)
+        }
+        if (right < left) {
             helper(left, right + 1, n, str + ")", res);
+        }
         //restore current status
 
     }

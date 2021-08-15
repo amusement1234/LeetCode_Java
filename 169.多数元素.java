@@ -40,12 +40,13 @@ import java.util.Map;
 class Solution {
     public int majorityElement(int[] nums) {
 
-        // // 解法2：排序
-        // if(nums.length==0) return 0;
+        // // 解法1：排序
+        // if (nums.length == 0)
+        //     return 0;
         // Arrays.sort(nums);
-        // return nums[nums.length/2];
+        // return nums[nums.length / 2];
 
-        // 解法1：hash
+        // 解法2：hash
         Map<Integer, Integer> map = new HashMap();
         int maxCount = 0;
         int val = 0;
@@ -59,7 +60,7 @@ class Solution {
         }
         return val;
 
-        // //方法四：栈
+        // //解法3：栈
         // Stack<Integer> stack = new Stack<>();
         // for (int i : nums) {
         //     if (stack.empty() || i == stack.peek())

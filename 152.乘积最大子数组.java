@@ -8,8 +8,6 @@
  * algorithms
  * Medium (39.71%)
  * Likes:    658
- * Dislikes: 0
- * Total Accepted:    79.1K
  * Total Submissions: 198.2K
  * Testcase Example:  '[2,3,-2,4]'
  *

@@ -53,11 +53,15 @@ class Solution {
             res.add(new ArrayList<Integer>(t));
             return;
         }
+
+        //不选
+        dfs(nums, cur + 1);
+
+        //选
         t.add(nums[cur]);
         dfs(nums, cur + 1);
         t.remove(t.size() - 1);
 
-        dfs(nums, cur + 1);
     }
 }
 // @lc code=end

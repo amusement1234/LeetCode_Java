@@ -45,25 +45,7 @@
 // @lc code=start
 class Solution {
     public void rotate(int[] nums, int k) {
-
-        // //解法3：使用反转
-        // k = k % nums.length;
-        // reverse(nums, 0, nums.length - 1);
-        // reverse(nums, 0, k - 1);
-        // reverse(nums, k, nums.length - 1);
-
-        // //解法2：使用额外的数组
-        // int[] arr = new int[nums.length];
-        // for (int i = 0; i < nums.length; i++) {
-        //     arr[(k + i) % nums.length] = nums[i];
-        // }
-
-        // for (int i = 0; i < nums.length; i++) {
-        //     nums[i] = arr[i];
-
-        // }
-
-        // //解法1：暴力
+        // //解法1：暴力 超时
         // k = k % nums.length;
         // for (int i = 0; i < k; i++) {
         //     int end = nums[nums.length - 1];
@@ -73,6 +55,23 @@ class Solution {
         //         end = temp;
         //     }
         // }
+
+        // //解法2：使用额外的数组
+        // int[] arr = new int[nums.length];
+        // for (int i = 0; i < nums.length; i++) {
+        //     arr[(k + i) % nums.length] = nums[i];
+        // }
+
+        // for (int i = 0; i < nums.length; i++) {
+        //     nums[i] = arr[i];
+        // }
+
+        //解法3：使用反转
+        k = k % nums.length;
+        reverse(nums, 0, nums.length - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, nums.length - 1);
+
     }
 
     public void reverse(int[] nums, int start, int end) {

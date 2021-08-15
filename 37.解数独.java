@@ -48,25 +48,32 @@ import java.util.Arrays;
 // @lc code=start
 class Solution {
     public void solveSudoku(char[][] board) {
-        if (board.length == 0)
+        if (board.length == 0) {
             return;
+        }
         backtrack(board, 0, 0);
     }
 
     public boolean backtrack(char[][] board, int i, int j) {
         int m = 9, n = 9;
-        if (j == n)//最后一列，跳到下一行
+        if (j == n) {
+            //最后一列，跳到下一行
             return backtrack(board, i + 1, 0);
-        if (i == m)
+        }
+        if (i == m) {
             return true;
-        if (board[i][j] != '.')
+        }
+        if (board[i][j] != '.') {
             return backtrack(board, i, j + 1);
+        }
         for (char c = '1'; c <= '9'; c++) {
-            if (!isValid(board, i, j, c))
+            if (!isValid(board, i, j, c)) {
                 continue;
+            }
             board[i][j] = c;
-            if (backtrack(board, i, j + 1))
+            if (backtrack(board, i, j + 1)) {
                 return true;
+            }
             board[i][j] = '.';
         }
         return false;
@@ -74,12 +81,15 @@ class Solution {
 
     public boolean isValid(char[][] board, int row, int col, char c) {
         for (int i = 0; i < 9; i++) {
-            if (board[row][i] == c)
+            if (board[row][i] == c) {
                 return false;
-            if (board[i][col] == c)
+            }
+            if (board[i][col] == c) {
                 return false;
-            if (board[(row / 3) * 3 + i / 3][(col / 3) * 3 + i % 3] == c)
+            }
+            if (board[(row / 3) * 3 + i / 3][(col / 3) * 3 + i % 3] == c) {
                 return false;
+            }
         }
         return true;
     }

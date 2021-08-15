@@ -14,12 +14,7 @@ class Solution {
     return res;
   }
 
-  private void dfs(
-    int[] candidates,
-    int target,
-    List<Integer> combine,
-    int index
-  ) {
+  private void dfs(int[] candidates, int target, List<Integer> combine, int index) {
     if (target < 0) {
       return;
     }

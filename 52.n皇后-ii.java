@@ -62,7 +62,7 @@ class Solution {
                 board[i][j] = '.';
             }
         }
-        dfs(board, 0, res);
+        dfs(board, 0);
         return count;
     }
 
@@ -84,16 +84,25 @@ class Solution {
     }
 
     public boolean validate(char[][] board, int row, int col) {
-        for (char[] chars : board)
-            if (chars[col] == 'Q')
+        for (char[] chars : board) {
+            if (chars[col] == 'Q') {
                 return false;
-        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)//左上
-            if (board[i][j] == 'Q')
+            }
+        }
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            //左上        
+            if (board[i][j] == 'Q') {
                 return false;
-        for (int i = row - 1, j = col + 1; i >= 0 && j <= board.length - 1; i--, j++)//右上
-            if (board[i][j] == 'Q')
+            }
+        }
+        for (int i = row - 1, j = col + 1; i >= 0 && j <= board.length - 1; i--, j++) {
+            //右上
+            if (board[i][j] == 'Q') {
                 return false;
+            }
+        }
         return true;
+
     }
 }
 // @lc code=end
