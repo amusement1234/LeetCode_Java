@@ -50,18 +50,21 @@ class Solution {
         List<String> res = new ArrayList<>();
         TrieNode root = buildTrie(words);
         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++)
+            for (int j = 0; j < board[0].length; j++) {
                 dfs(board, i, j, root, res);
+            }
         }
         return res;
     }
 
     public void dfs(char[][] board, int i, int j, TrieNode trie, List<String> res) {
-        if (i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1)
+        if (i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1) {
             return;
+        }
         char c = board[i][j];
-        if (c == '#' || trie.next[c - 'a'] == null)
+        if (c == '#' || trie.next[c - 'a'] == null) {
             return;
+        }
         trie = trie.next[c - 'a'];
 
         if (trie.word != null) {
@@ -82,8 +85,9 @@ class Solution {
         for (String w : words) {
             TrieNode p = root;
             for (char c : w.toCharArray()) {
-                if (p.next[c - 'a'] == null)
+                if (p.next[c - 'a'] == null) {
                     p.next[c - 'a'] = new TrieNode();
+                }
                 p = p.next[c - 'a'];
             }
             p.word = w;

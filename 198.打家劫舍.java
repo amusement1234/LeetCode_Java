@@ -38,22 +38,9 @@
 // @lc code=start
 class Solution {
     public int rob(int[] nums) {
-        //解法2：
-        if (nums == null || nums.length == 0)
-            return 0;
-        if (nums.length == 1)
-            return nums[0];
-
-        int n = nums.length;
-        int[] arr = new int[n];
-        arr[0] = nums[0];
-        arr[1] = Math.max(nums[0], nums[1]);
-        int res = arr[1];
-        for (int i = 2; i < nums.length; i++) {
-            arr[i] = Math.max(arr[i - 1], arr[i - 2] + nums[i]);
-            res = Math.max(res, arr[i]);
-        }
-        return res;
+        //不偷 dp[i][0]=Max(dp[i-1][0],dp[i-1][1])
+        //偷 dp[i][1]=dp[i-1][0]+nums[i];
+       
         // //解法1：DP方程 用二维数组
         // if (nums == null || nums.length == 0)
         //     return 0;
@@ -67,6 +54,27 @@ class Solution {
         //     arr[i][1] = arr[i - 1][0] + nums[i];
         // }
         // return Math.max(arr[count - 1][0], arr[count - 1][1]);
+
+        //  //解法2：
+        //dp方程：0...i天 且nums[i]必偷的最大值 dp[i]=max(dp[i-1]+0,dp[i-2]+nums[i]);
+
+        // if (nums == null || nums.length == 0)
+        //     return 0;
+        // if (nums.length == 1)
+        //     return nums[0];
+
+        // int n = nums.length;
+        // int[] arr = new int[n];
+        // arr[0] = nums[0];
+        // arr[1] = Math.max(nums[0], nums[1]);
+        // int res = arr[1];
+        // for (int i = 2; i < nums.length; i++) {
+        //     arr[i] = Math.max(arr[i - 1], arr[i - 2] + nums[i]);
+        //     res = Math.max(res, arr[i]);
+        // }
+        // return res;
+
+        
     }
 }
 // @lc code=end

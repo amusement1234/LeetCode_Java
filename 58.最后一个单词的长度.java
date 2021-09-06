@@ -43,7 +43,6 @@ class Solution {
         while (start >= 0 && s.charAt(start) != ' ')
             start--;
         return end - start;
-
     }
 }
 // @lc code=end

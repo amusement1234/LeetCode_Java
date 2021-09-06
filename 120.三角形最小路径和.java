@@ -37,28 +37,37 @@ import java.util.Arrays;
 
 // @lc code=start
 class Solution {
-
-  int[][] memo;
-
   public int minimumTotal(List<List<Integer>> triangle) {
-    int n = triangle.size();
-    int[][] dp = new int[n][n];
-    dp[0][0] = triangle.get(0).get(0);
+    // // 解法1：递归 从顶到下
+    // row=triangle.size();
+    // memo=new Integer[row][row];
+    // return helper(0,0,triangle);
 
-    for (int i = 1; i < n; i++) {
-      dp[i][0] = dp[i - 1][0] + triangle.get(i).get(0);
-      for (int j = 1; j < i; j++) {
-        dp[i][j] =
-          Math.min(dp[i - 1][j], dp[i - 1][j - 1]) + triangle.get(i).get(j);
+    // 解法2：dp 自底向上
+    int row=triangle.size();
+    int[] minLen=new int[row+1];
+    for(int level=row-1;level>=0;level--){
+      for(int i=0;i<=level;i++){
+        minLen[i]=Math.min(minLen[i],minLen[i+1])+triangle.get(level).get(i);
       }
-      dp[i][i] = dp[i - 1][i - 1] + triangle.get(i).get(i);
     }
-
-    int minTotal = dp[n - 1][0];
-    for (int i = 1; i < n; i++) {
-      minTotal = Math.min(minTotal, dp[n - 1][i]);
-    }
-    return minTotal;
+    return minLen[0];
   }
+
+  int row;
+  Integer[][] memo;
+
+  private int helper(int level,int c,List<List<Integer>> triangle){
+    if(memo[level][c]!=null){
+      return memo[level][c];
+    }
+    if(level==row-1){
+      return memo[level][c]=triangle.get(level).get(c);
+    }
+    int left=helper(level+1,c,triangle);
+    int right=helper(level+1,c+1,triangle);
+    return memo[level][c]=Math.min(left,right)+triangle.get(level).get(c);
+  }
+
 }
 // @lc code=end

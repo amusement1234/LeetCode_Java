@@ -39,18 +39,33 @@
 class Solution {
 
     public boolean canJump(int[] nums) {
-        // 解法1：贪心
-        int n = nums.length;
-        int max = 0;
-        for (int i = 0; i < n; i++) {
-          if (max >= i) {
-            max = Math.max(max, i + nums[i]);//能跳到的最远位置
-            if (max >= n - 1) {
-              return true;
-            }
-          }
-        }
+      // 解法2：贪心
+      if(nums==null){
         return false;
+      }
+
+      int endReachable=nums.length-1;
+      for(int i=nums.length-1;i>=0;i--){
+        if(nums[i]+i>=endReachable){
+          endReachable=i;
+        }
+      }
+      return endReachable==0;
+
+
+
+        // // 解法1：贪心
+        // int n = nums.length;
+        // int max = 0;
+        // for (int i = 0; i < n; i++) {
+        //   if (max >= i) {
+        //     max = Math.max(max, i + nums[i]);//能跳到的最远位置
+        //     if (max >= n - 1) {
+        //       return true;
+        //     }
+        //   }
+        // }
+        // return false;
 
     }
 }
