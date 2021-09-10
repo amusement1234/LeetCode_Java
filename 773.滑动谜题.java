@@ -66,50 +66,58 @@
 // @lc code=start
 class Solution {
     public int slidingPuzzle(int[][] board) {
-        String target = "123450";
-        String start = "";
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                start += board[i][j];
+        int m=board.length;
+        int n=board[0].length;
+        String target="123450";
+        String str="";
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                str+=board[i][j];
             }
         }
-
-        HashSet<String> visited = new HashSet<>();
-        visited.add(start);
-
-        // 0 1 2
-        // 3 4 5 --> 0 can go to {1, 3}
-        int[][] dirs = new int[][] { { 1, 3 }, { 0, 2, 4 }, { 1, 5 }, { 0, 4 }, { 1, 3, 5 }, { 2, 4 } };
+        if(target==str){
+            return 0;
+        }
+        //012
+        //345
+        int[][] dir=new int[][]{{1,3},{0,2,4},{1,5},{0,4},{1,3,5},{2,4}};
+        Queue<String> queue=new LinkedList();
+        queue.offer(str);
         
-        Queue<String> queue = new LinkedList<>();
-        queue.offer(start);
+        List<String> visited=new ArrayList();
+        visited.add(str);
 
-        int res = 0;
-        while (!queue.isEmpty()) {
-            int size = queue.size();
+        int res=0;
+        while(!queue.isEmpty()){
+            int size=queue.size();
             for (int i = 0; i < size; i++) {
-                String curr = queue.poll();
-                if (curr.equals(target))
+                String cur=queue.poll();
+                if(cur.equals(target)){
                     return res;
-                int zero = curr.indexOf('0');//找到0，只有0可以替换
-                for (int dir : dirs[zero]) {
-                    String next = swap(curr, zero, dir);
-                    if (visited.contains(next))
+                }
+                int zeroIndex=cur.indexOf('0');
+                int[] arr=dir[zeroIndex];
+                for (int j = 0; j < arr.length; j++) {
+                    String newWord=swap(cur,zeroIndex,arr[j]);
+
+                    if(visited.contains(newWord)){
                         continue;
-                    visited.add(next);
-                    queue.offer(next);
+                    }
+                    queue.offer(newWord);
+                    visited.add(newWord);
                 }
             }
             res++;
         }
+
         return -1;
 
     }
 
-    public String swap(String str, int i, int j) {
-        StringBuilder sb = new StringBuilder(str);
-        sb.setCharAt(i, str.charAt(j));
-        sb.setCharAt(j, str.charAt(i));
+    public String swap(String str,int i,int j){
+        StringBuilder sb=new StringBuilder(str);
+        sb.setCharAt(i,str.charAt(j));
+        sb.setCharAt(j,str.charAt(i));
         return sb.toString();
     }
 }

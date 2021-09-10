@@ -42,35 +42,36 @@ import java.util.HashMap;
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
 
-        // 解法2：字符数组计数
+        // 解法1：字符串排序
         if (strs == null || strs.length == 0)
             return null;
-        Map<String, List<String>> map = new HashMap();
-        for (String s : strs) {
-            char[] ca = new char[26];
-            for (char c : s.toCharArray())
-                ca[c - 'a']++;
+
+        Map<String, List> map = new HashMap();
+        for (int i = 0; i < strs.length; i++) {
+            char[] ca = strs[i].toCharArray();
+            Arrays.sort(ca);
             String key = String.valueOf(ca);
             if (!map.containsKey(key))
                 map.put(key, new ArrayList());
-            map.get(key).add(s);
+            map.get(key).add(strs[i]);
         }
         return new ArrayList(map.values());
 
-        // // 解法1：字符串排序
+        // // 解法2：字符数组计数
         // if (strs == null || strs.length == 0)
         //     return null;
-
-        // Map<String, List> map = new HashMap();
-        // for (int i = 0; i < strs.length; i++) {
-        //     char[] ca = strs[i].toCharArray();
-        //     Arrays.sort(ca);
+        // Map<String, List<String>> map = new HashMap();
+        // for (String s : strs) {
+        //     char[] ca = new char[26];
+        //     for (char c : s.toCharArray())
+        //         ca[c - 'a']++;
         //     String key = String.valueOf(ca);
         //     if (!map.containsKey(key))
         //         map.put(key, new ArrayList());
-        //     map.get(key).add(strs[i]);
+        //     map.get(key).add(s);
         // }
         // return new ArrayList(map.values());
+
     }
 }
 // @lc code=end

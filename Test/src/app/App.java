@@ -37,6 +37,48 @@ import tree.wordTrie;
 
 public class App {
 
+  public String reverseWords2(String s) {
+    s = s.trim();
+    // 解法1：stack
+    List<String> list = Arrays.asList(s.split(" "));
+    Stack<String> stack = new Stack<>();
+
+    for (String str : list) {
+      if (str == null || str == " ") {
+        continue;
+      }
+      stack.push(str.trim());
+    }
+
+    list = new ArrayList();
+    while (!stack.empty()) {
+      list.add(stack.pop().trim());
+    }
+    return String.join(" ", list);
+  }
+
+  public int compareVersion(String version1, String version2) {
+    String[] v1 = version1.split(".");
+    String[] v2 = version2.split(".");
+    for (int i = 0; i < v1.length || i < v2.length; ++i) {
+      int x = 0, y = 0;
+      if (i < v1.length) {
+        x = Integer.parseInt(v1[i]);
+      }
+      if (i < v2.length) {
+        y = Integer.parseInt(v2[i]);
+      }
+      if (x > y) {
+        return 1;
+      }
+      if (x < y) {
+        return -1;
+      }
+    }
+    return 0;
+
+  }
+
   public int jump(int[] nums) {
     int end = 0;
     int maxPosition = 0;
@@ -75,7 +117,6 @@ public class App {
     return res;
   }
 
-  
   public int binarySearchFirstColumn(int[][] matrix, int target) {
     int low = -1, high = matrix.length - 1;
     while (low < high) {
@@ -197,7 +238,6 @@ public class App {
 
   }
 
-
   public void merge(int[] nums1, int m, int[] nums2, int n) {
     // 解法3：双指针,从后往前 https://leetcode.com/problems/merge-sorted-array/discuss/29522/This-is-my-AC-code-may-help-you
     int i = m - 1, j = n - 1, k = m + n - 1;
@@ -210,7 +250,6 @@ public class App {
     }
 
   }
-
 
   public int minimumTotal(List<List<Integer>> triangle) {
     // 解法2：dp
@@ -232,15 +271,39 @@ public class App {
 
   }
 
+  public static int strStr(String haystack, String needle) {
+    if (haystack == "" && needle == "") {
+      return 0;
+    }
+    if (haystack == null || needle == null) {
+      return -1;
+    }
+    if (haystack.length() < needle.length()) {
+      return -1;
+    }
+    int m = haystack.length();
+    int n = needle.length();
+    for (int i = 0; i < m - n; i++) {
+      if (haystack.substring(i, i + n).equals(needle)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   public static void main(String[] args) throws Exception {
+    //strStr("", "");
+
+    String r345 = new App().reverseWords2("a good   example");
+    //int res3 = new App().compareVersion("0.1", "1.1");
+
     // int r232 = new App().jump(new int[] { 2, 3, 1, 1, 4 });
     // int r233 = new App()
     //     .maxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 });
 
-    
     // int[][] matrix = new int[][] { {1,3,5,7 }, { 10,11,16,20}, { 23,30,34,60} };
     // int rowIndex = new App().binarySearchFirstColumn(matrix, 3);
-        
+
     // new App().sortColors(new int[] { 2, 0, 2, 1, 1, 0 });
 
     // new App().largestRectangleArea2(new int[] { 2, 1, 5, 6, 2, 3 });
@@ -253,13 +316,12 @@ public class App {
     // };
     // new App().maximalRectangle(matrix);
 
-
     // new App().merge(new int[0], 0, new int[] { 1 }, 1);
 
     List<List<Integer>> triangle = new ArrayList<>();
-    List<Integer> row1=new ArrayList<Integer>(Arrays.asList(new Integer[]{2}));
-    List<Integer> row2=new ArrayList<Integer>(Arrays.asList(new Integer[]{3,4}));
-    List<Integer> row3=new ArrayList<Integer>(Arrays.asList(new Integer[]{6,5,7}));
+    List<Integer> row1 = new ArrayList<Integer>(Arrays.asList(new Integer[] { 2 }));
+    List<Integer> row2 = new ArrayList<Integer>(Arrays.asList(new Integer[] { 3, 4 }));
+    List<Integer> row3 = new ArrayList<Integer>(Arrays.asList(new Integer[] { 6, 5, 7 }));
     List<Integer> row4 = new ArrayList<Integer>(Arrays.asList(new Integer[] { 4, 1, 8, 3 }));
     triangle.add(row1);
     triangle.add(row2);
@@ -712,13 +774,18 @@ public class App {
     int[] preResults = new int[w];
     int[] results = new int[w];
     for (int i = 0; i < w; i++) {
-      if (i < p[0]) preResults[i] = 0; else preResults[i] = g[0];
+      if (i < p[0])
+        preResults[i] = 0;
+      else
+        preResults[i] = g[0];
     }
 
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < w; j++) {
-        if (j < p[i]) results[j] = preResults[j]; else results[j] =
-          Math.max(preResults[j], preResults[j - p[i]] + g[i]);
+        if (j < p[i])
+          results[j] = preResults[j];
+        else
+          results[j] = Math.max(preResults[j], preResults[j - p[i]] + g[i]);
       }
       preResults = results;
     }
@@ -728,38 +795,41 @@ public class App {
   public static int getGreatestCommonDivisor(int numberA, int numberB) {
     int smallNumber = numberA < numberB ? numberA : numberB;
     int bigNumber = numberA >= numberB ? numberA : numberB;
-    if (bigNumber % smallNumber == 0) return smallNumber;
+    if (bigNumber % smallNumber == 0)
+      return smallNumber;
     for (int i = 2; i <= smallNumber / 2; i++) {
-      if (numberA % i == 0 && numberB % i == 0) return i;
+      if (numberA % i == 0 && numberB % i == 0)
+        return i;
     }
     return 1;
   }
 
   public static int getGreatestCommonDivisor2(int numberA, int numberB) {
     int result = 1;
-    if (numberA > numberB) result = gcd(numberA, numberB); else result =
-      gcd(numberB, numberA);
+    if (numberA > numberB)
+      result = gcd(numberA, numberB);
+    else
+      result = gcd(numberB, numberA);
     return result;
   }
 
   private static int gcd(int a, int b) {
-    if (a % b == 0) return b; else return gcd(b, a % b);
+    if (a % b == 0)
+      return b;
+    else
+      return gcd(b, a % b);
   }
 
   public List<List<Integer>> subsets(int[] nums) {
     List<List<Integer>> list = new ArrayList<>();
-    if (nums == null) return list;
+    if (nums == null)
+      return list;
 
     dfs(list, nums, new ArrayList<Integer>(), 0);
     return list;
   }
 
-  public void dfs(
-    List<List<Integer>> result,
-    int[] nums,
-    List<Integer> thisList,
-    int index
-  ) {
+  public void dfs(List<List<Integer>> result, int[] nums, List<Integer> thisList, int index) {
     if (nums.length == index) {
       result.add(new ArrayList<>(thisList));
       return;
@@ -799,19 +869,25 @@ public class App {
   }
 
   public boolean helper2(TreeNode node, Integer lower, Integer upper) {
-    if (node == null) return true;
+    if (node == null)
+      return true;
 
     int val = node.val;
-    if (lower != null && val <= lower) return false;
-    if (upper != null && val >= upper) return false;
+    if (lower != null && val <= lower)
+      return false;
+    if (upper != null && val >= upper)
+      return false;
 
-    if (!helper2(node.right, val, upper)) return false;
-    if (!helper2(node.left, lower, val)) return false;
+    if (!helper2(node.right, val, upper))
+      return false;
+    if (!helper2(node.left, lower, val))
+      return false;
     return true;
   }
 
   public List<Integer> inorderTraversal(TreeNode root) {
-    if (root == null) return new ArrayList<Integer>();
+    if (root == null)
+      return new ArrayList<Integer>();
 
     List<Integer> res = new ArrayList<>();
     Stack<ColorNode> stack = new Stack<>();
@@ -821,13 +897,11 @@ public class App {
       ColorNode cn = stack.pop();
 
       if (cn.color.equals("white")) {
-        if (cn.node.right != null) stack.push(
-          new ColorNode(cn.node.right, "white")
-        );
+        if (cn.node.right != null)
+          stack.push(new ColorNode(cn.node.right, "white"));
         stack.push(new ColorNode(cn.node, "gray"));
-        if (cn.node.left != null) stack.push(
-          new ColorNode(cn.node.left, "white")
-        );
+        if (cn.node.left != null)
+          stack.push(new ColorNode(cn.node.left, "white"));
       } else {
         res.add(cn.node.val);
       }
@@ -839,11 +913,14 @@ public class App {
   public boolean isValid(String s) {
     Stack<Character> stack = new Stack<Character>();
     for (char c : s.toCharArray()) {
-      if (c == '(') stack.push(')'); else if (c == '{') stack.push(
-        '}'
-      ); else if (c == '[') stack.push(']'); else if (
-        stack.isEmpty() || stack.pop() != c
-      ) return false;
+      if (c == '(')
+        stack.push(')');
+      else if (c == '{')
+        stack.push('}');
+      else if (c == '[')
+        stack.push(']');
+      else if (stack.isEmpty() || stack.pop() != c)
+        return false;
     }
     return stack.isEmpty();
   }
@@ -916,10 +993,12 @@ public class App {
     for (int i = 0; i < s.length(); i++) {
       char c = s.charAt(i);
       if (this.mappings.containsKey(c)) {
-        if (stack.isEmpty()) return false;
+        if (stack.isEmpty())
+          return false;
 
         Character cc = stack.pop();
-        if (this.mappings.get(c) != cc) return false;
+        if (this.mappings.get(c) != cc)
+          return false;
       } else {
         stack.push(c);
       }
@@ -992,16 +1071,15 @@ public class App {
     for (int c : commands) {
       if (c == -1) {
         d++;
-        if (d == 4) d = 0;
+        if (d == 4)
+          d = 0;
       } else if (c == -2) {
         d--;
         if (d == -1) {
           d = 3;
         }
       } else {
-        while (
-          c-- > 0 && !set.contains((x + dirs[d][0]) + " " + (y + dirs[d][1]))
-        ) {
+        while (c-- > 0 && !set.contains((x + dirs[d][0]) + " " + (y + dirs[d][1]))) {
           x += dirs[d][0];
           y += dirs[d][1];
         }
@@ -1022,7 +1100,8 @@ public class App {
   }
 
   public static ListNode reverseBetween(ListNode head, int m, int n) {
-    if (m == 1) return reverseN(head, n);
+    if (m == 1)
+      return reverseN(head, n);
     head.next = reverseBetween(head.next, m - 1, n - 1);
     return head;
   }
@@ -1046,16 +1125,16 @@ public class App {
 
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
-        if (board[i][j] == '.') continue;
+        if (board[i][j] == '.')
+          continue;
         int box = (i / 3) * 3 + j / 3;
         int val = (int) board[i][j];
         arr[i][val][0] += 1;
         arr[j][val][1] += 1;
         arr[box][val][2] += 1;
 
-        if (
-          arr[i][val][0] > 1 || arr[j][val][1] > 1 || arr[box][val][2] > 1
-        ) return false;
+        if (arr[i][val][0] > 1 || arr[j][val][1] > 1 || arr[box][val][2] > 1)
+          return false;
       }
     }
     return true;
@@ -1091,7 +1170,8 @@ public class App {
     char[] chars_p = p.toCharArray();
     List<Integer> res = new ArrayList<>();
     for (int i = 0; i < chars_s.length - chars_p.length + 1; i++) {
-      if (isContain(chars_s, chars_p, i)) res.add(i);
+      if (isContain(chars_s, chars_p, i))
+        res.add(i);
     }
     return res;
   }
@@ -1103,7 +1183,8 @@ public class App {
     }
 
     for (int i = index; i < index + c2.length; i++) {
-      if (!map.containsKey(c1[i])) return false;
+      if (!map.containsKey(c1[i]))
+        return false;
       map.remove(c1[i]);
     }
 
@@ -1115,7 +1196,8 @@ public class App {
     PriorityQueue<Integer> queue = new PriorityQueue<>(); //小顶堆
     for (int val : nums) {
       queue.offer(val);
-      if (queue.size() > k) queue.poll();
+      if (queue.size() > k)
+        queue.poll();
     }
     return queue.peek();
   }
@@ -1135,7 +1217,8 @@ public class App {
       if (arr[j] == ' ') {
         j++;
       }
-      while (j < n && arr[j] != ' ') j++;
+      while (j < n && arr[j] != ' ')
+        j++;
       reverse(arr, i, j);
       i = j;
     }
@@ -1152,8 +1235,10 @@ public class App {
 
   public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     // 解法1：递归
-    if (l1 == null) return l2;
-    if (l2 == null) return l1;
+    if (l1 == null)
+      return l2;
+    if (l2 == null)
+      return l1;
     if (l1.val < l2.val) {
       l1.next = mergeTwoLists(l1.next, l2);
       return l1;
@@ -1168,7 +1253,8 @@ public class App {
     ListNode node = head;
     int count = 0;
     while (count < k) {
-      if (node == null) return head;
+      if (node == null)
+        return head;
       node = node.next;
       count++;
     }
@@ -1195,19 +1281,7 @@ public class App {
         for (String first : lists.get(j)) {
           for (String second : lists.get(i - 1 - j)) {
             System.out.println(
-              "(" +
-              first +
-              ")" +
-              second +
-              "—————first:" +
-              first +
-              ",second:" +
-              second +
-              ",i:" +
-              i +
-              ",j:" +
-              j
-            );
+                "(" + first + ")" + second + "—————first:" + first + ",second:" + second + ",i:" + i + ",j:" + j);
             list.add("(" + first + ")" + second);
           }
         }
@@ -1239,21 +1313,23 @@ public class App {
 
   public static int[] maxSlidingWindow(int[] nums, int k) {
     // 解法3：queue https://leetcode.com/problems/sliding-window-maximum/discuss/65884/Java-O(n)-solution-using-deque-with-explanation
-    if (nums == null || k <= 0) return null;
+    if (nums == null || k <= 0)
+      return null;
     int n = nums.length;
     int[] res = new int[n - k + 1];
     Deque<Integer> queue = new ArrayDeque(); //store index
     for (int i = 0; i < n; i++) {
       // remove numbers out of range k
       //i=4 k=3
-      while (!queue.isEmpty() && queue.peek() < i - k + 1) queue.poll();
+      while (!queue.isEmpty() && queue.peek() < i - k + 1)
+        queue.poll();
       // remove smaller numbers in k range as they are useless
-      while (
-        !queue.isEmpty() && nums[queue.peekLast()] < nums[i]
-      ) queue.pollLast();
+      while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i])
+        queue.pollLast();
       // q contains index... r contains content
       queue.offer(i);
-      if (i - k + 1 >= 0) res[i - k + 1] = nums[queue.peek()];
+      if (i - k + 1 >= 0)
+        res[i - k + 1] = nums[queue.peek()];
     }
     return res;
   }
@@ -1262,21 +1338,25 @@ public class App {
     int m = word1.length();
     int n = word2.length();
     int[][] dp = new int[m + 1][n + 1];
-    for (int i = 1; i <= m; i++) dp[i][0] = i;
-    for (int i = 1; i <= n; i++) dp[0][i] = i;
+    for (int i = 1; i <= m; i++)
+      dp[i][0] = i;
+    for (int i = 1; i <= n; i++)
+      dp[0][i] = i;
 
     for (int i = 1; i <= m; i++) {
       for (int j = 1; j <= n; j++) {
-        if (word1.charAt(i - 1) == word2.charAt(j - 1)) dp[i][j] =
-          dp[i - 1][j - 1]; else dp[i][j] =
-          Math.min(dp[i - 1][j], Math.min(dp[i][j - 1], dp[i - 1][j - 1])) + 1;
+        if (word1.charAt(i - 1) == word2.charAt(j - 1))
+          dp[i][j] = dp[i - 1][j - 1];
+        else
+          dp[i][j] = Math.min(dp[i - 1][j], Math.min(dp[i][j - 1], dp[i - 1][j - 1])) + 1;
       }
     }
     return dp[m][n];
   }
 
   public static int numDecodings(String s) {
-    if (s.length() == 0) return 0;
+    if (s.length() == 0)
+      return 0;
     int n = s.length();
     int[] dp = new int[n + 1];
     dp[0] = 1;
@@ -1284,8 +1364,10 @@ public class App {
     for (int i = 2; i <= n; i++) {
       int first = Integer.valueOf(s.substring(i - 1, i));
       int second = Integer.valueOf(s.substring(i - 2, i));
-      if (first >= 1 && first <= 9) dp[i] += dp[i - 1];
-      if (second >= 10 && second <= 26) dp[i] += dp[i - 2];
+      if (first >= 1 && first <= 9)
+        dp[i] += dp[i - 1];
+      if (second >= 10 && second <= 26)
+        dp[i] += dp[i - 2];
     }
     return dp[n];
   }
@@ -1293,14 +1375,17 @@ public class App {
   public static int leastInterval(char[] tasks, int n) {
     // 解法1：排序
     int[] map = new int[26];
-    for (char c : tasks) map[c - 'A']++;
+    for (char c : tasks)
+      map[c - 'A']++;
     Arrays.sort(map);
     int time = 0;
     while (map[25] > 0) {
       int i = 0;
       while (i <= n) {
-        if (map[25] == 0) break;
-        if (i < 26 && map[25 - i] > 0) map[25 - i]--;
+        if (map[25] == 0)
+          break;
+        if (i < 26 && map[25 - i] > 0)
+          map[25 - i]--;
         time++;
         i++;
       }
@@ -1314,9 +1399,8 @@ public class App {
     for (int i = 0; i < words.length; i++) {
       TrieNode p = root;
       for (int j = 0; j < words[i].length(); j++) {
-        if (
-          p.children[words[i].charAt(j) - 'a'] == null
-        ) p.children[words[i].charAt(j) - 'a'] = new TrieNode();
+        if (p.children[words[i].charAt(j) - 'a'] == null)
+          p.children[words[i].charAt(j) - 'a'] = new TrieNode();
         p = p.children[words[i].charAt(j) - 'a'];
       }
       p.word = words[i];
@@ -1325,16 +1409,7 @@ public class App {
   }
 
   public static void sss2() {
-    int[][] dir = new int[][] {
-      { 0, 1 },
-      { 0, -1 },
-      { 1, 0 },
-      { -1, 0 },
-      { 1, -1 },
-      { -1, 1 },
-      { -1, -1 },
-      { 1, 1 },
-    };
+    int[][] dir = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 1, -1 }, { -1, 1 }, { -1, -1 }, { 1, 1 }, };
     for (int k = 0; k < 8; k++) {
       int x = dir[k][0] + 0;
       int y = dir[k][1] + 0;
@@ -1348,35 +1423,41 @@ public class App {
       int digit = n & 1;
       res += digit;
       n >>= 1;
-      if (i < 31) res <<= 1;
+      if (i < 31)
+        res <<= 1;
     }
     return res;
   }
 
   public static int[] relativeSortArray(int[] arr1, int[] arr2) {
     Map<Integer, Integer> map = new TreeMap();
-    for (int n : arr1) map.put(n, map.getOrDefault(n, 0) + 1);
+    for (int n : arr1)
+      map.put(n, map.getOrDefault(n, 0) + 1);
 
     int i = 0;
     for (int n : arr2) {
-      for (int j = 0; j < map.get(n); j++) arr1[i++] = n;
+      for (int j = 0; j < map.get(n); j++)
+        arr1[i++] = n;
       map.remove(n);
     }
 
     for (int n : map.keySet()) {
-      for (int j = 0; j < map.get(n); j++) arr1[i++] = n;
+      for (int j = 0; j < map.get(n); j++)
+        arr1[i++] = n;
     }
     return arr1;
   }
 
   public static int lengthOfLIS(int[] nums, int pre, int cur, int[][] memo) {
-    if (cur == nums.length) return 0;
+    if (cur == nums.length)
+      return 0;
 
-    if (memo[pre + 1][cur] >= 0) return memo[pre + 1][cur];
+    if (memo[pre + 1][cur] >= 0)
+      return memo[pre + 1][cur];
 
     int taken = 0;
-    if (pre < 0 || nums[cur] > nums[pre]) taken =
-      1 + lengthOfLIS(nums, cur, cur + 1, memo);
+    if (pre < 0 || nums[cur] > nums[pre])
+      taken = 1 + lengthOfLIS(nums, cur, cur + 1, memo);
 
     int nottaken = lengthOfLIS(nums, pre, cur + 1, memo);
     memo[pre + 1][cur] = Math.max(taken, nottaken);
@@ -1389,10 +1470,14 @@ public class App {
     Deque<Integer> stack = new LinkedList<Integer>();
     stack.push(-1);
     for (int i = 0; i < s.length(); i++) {
-      if (s.charAt(i) == '(') stack.push(i); else {
+      if (s.charAt(i) == '(')
+        stack.push(i);
+      else {
         stack.pop();
-        if (stack.isEmpty()) stack.push(i); else max =
-          Math.max(max, i - stack.peek());
+        if (stack.isEmpty())
+          stack.push(i);
+        else
+          max = Math.max(max, i - stack.peek());
       }
     }
     return max;
@@ -1419,19 +1504,6 @@ public class App {
     }
   }
 
-  public static String reverseWords2(String s) {
-    s = s.trim();
-    int i = s.length() - 1;
-    int j = i;
-    StringBuilder sb = new StringBuilder();
-    while (i >= 0) {
-      while (i >= 0 && s.charAt(i) != ' ') i--;
-      sb.append(s.substring(i + 1, j + 1) + " ");
-      while (i >= 0 && s.charAt(i) == ' ') i--;
-      j = i;
-    }
-    return sb.toString().trim();
-  }
 }
 
 class TrieNode {
@@ -1439,5 +1511,6 @@ class TrieNode {
   TrieNode[] children = new TrieNode[26];
   String word;
 
-  TrieNode() {}
+  TrieNode() {
+  }
 }

@@ -60,13 +60,7 @@ class Solution {
     return res;
   }
 
-  private void search(
-    String s,
-    String digits,
-    int i,
-    List<String> res,
-    Map<Character, String> map
-  ) {
+  private void search(String s, String digits, int i, List<String> res, Map<Character, String> map) {
     //terminator
     if (i == digits.length()) {
       res.add(s);

@@ -62,20 +62,38 @@ import java.util.Collections;
 // @lc code=start
 class Solution {
     public String reverseWords(String s) {
-        s = s.trim();
-        int j = s.length() - 1;
-        int i = j;
-        StringBuilder sb = new StringBuilder();
-        while (i >= 0) {
-            while (i >= 0 && s.charAt(i) != ' ')
-                i--;//找到空格
-            sb.append(s.substring(i + 1, j + 1) + " ");
-            while (i >= 0 && s.charAt(i) == ' ')
-                i--;
-            j = i;
+        s=s.trim();
+         // 解法1：stack
+        List<String> list=Arrays.asList(s.split(" "));
+        Stack<String> stack=new Stack<>();
 
+        for(String str : list){
+            if (str.trim().equals("")) {
+                continue;
+            }
+            stack.push(str.trim());
         }
-        return sb.toString().trim();
+
+        list=new ArrayList();
+        while(!stack.empty()){
+            list.add(stack.pop());
+        }
+        return String.join(" ",list);
+
+        // s = s.trim();
+        // int j = s.length() - 1;
+        // int i = j;
+        // StringBuilder sb = new StringBuilder();
+        // while (i >= 0) {
+        //     while (i >= 0 && s.charAt(i) != ' ')
+        //         i--;//找到空格
+        //     sb.append(s.substring(i + 1, j + 1) + " ");
+        //     while (i >= 0 && s.charAt(i) == ' ')
+        //         i--;
+        //     j = i;
+
+        // }
+        // return sb.toString().trim();
 
         // 解法一：
         // s = s.trim();

@@ -46,10 +46,9 @@ import java.util.Map;
 class Solution {
 
     public int climbStairs(int n) {
-
-        // 解法3：斐波那契数
-        if (n == 1)
+        if (n == 1) {
             return 1;
+        }
         int first = 1;
         int second = 2;
         for (int i = 3; i <= n; i++) {
@@ -58,6 +57,18 @@ class Solution {
             second = third;
         }
         return second;
+
+        // // 解法3：斐波那契数
+        // if (n == 1)
+        //     return 1;
+        // int first = 1;
+        // int second = 2;
+        // for (int i = 3; i <= n; i++) {
+        //     int third = first + second;
+        //     first = second;
+        //     second = third;
+        // }
+        // return second;
 
         // // 解法2：动态规划
         // if (n == 1)

@@ -51,34 +51,31 @@ class Solution {
         if (board.length == 0) {
             return;
         }
-        backtrack(board, 0, 0);
+        backtrack(board);
     }
 
-    public boolean backtrack(char[][] board, int i, int j) {
-        int m = 9, n = 9;
-        if (j == n) {
-            //最后一列，跳到下一行
-            return backtrack(board, i + 1, 0);
-        }
-        if (i == m) {
-            return true;
-        }
-        if (board[i][j] != '.') {
-            return backtrack(board, i, j + 1);
-        }
-        for (char c = '1'; c <= '9'; c++) {
-            if (!isValid(board, i, j, c)) {
-                continue;
+    public boolean backtrack(char[][] board) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] != '.') {
+                    continue;
+                }
+                for (char k = '1'; k <= '9'; k++) {
+                    if (!isValid(board, i, j, k)) {
+                        continue;
+                    }
+                    board[i][j] = k;
+                    if (backtrack(board)) {
+                        return true;
+                    }
+                    board[i][j] = '.';
+                }
+                return false;
             }
-            board[i][j] = c;
-            if (backtrack(board, i, j + 1)) {
-                return true;
-            }
-            board[i][j] = '.';
         }
-        return false;
+        return true;
     }
-
+    
     public boolean isValid(char[][] board, int row, int col, char c) {
         for (int i = 0; i < 9; i++) {
             if (board[row][i] == c) {

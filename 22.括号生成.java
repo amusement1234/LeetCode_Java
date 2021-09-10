@@ -35,49 +35,68 @@ import java.util.List;
 
 class Solution {
     public List<String> generateParenthesis(int n) {
-        // 解法1：递归
-        List<String> res = new ArrayList();
-        helper(0, 0, n, "", res);
+        // 解法1： 递归
+        List<String> res = new ArrayList<>();
+        dfs(0, 0, n, "", res);
         return res;
 
-        // 解法2：dp
-        List<List<String>> lists = new ArrayList<>();
-        lists.add(Collections.singletonList(""));
+        // // 解法1：递归
+        // List<String> res = new ArrayList();
+        // helper(0, 0, n, "", res);
+        // return res;
 
-        for (int i = 1; i <= n; ++i) {
-            List<String> list = new ArrayList<>();
-            for (int j = 0; j < i; ++j) {
-                for (String first : lists.get(j)) {
-                    for (String second : lists.get(i - 1 - j)) {
-                        list.add("(" + first + ")" + second);
-                    }
-                }
-            }
-            lists.add(list);
-        }
+        // // 解法2：dp
+        // List<List<String>> lists = new ArrayList<>();
+        // lists.add(Collections.singletonList(""));
 
-        return lists.get(lists.size() - 1);
+        // for (int i = 1; i <= n; ++i) {
+        //     List<String> list = new ArrayList<>();
+        //     for (int j = 0; j < i; ++j) {
+        //         for (String first : lists.get(j)) {
+        //             for (String second : lists.get(i - 1 - j)) {
+        //                 list.add("(" + first + ")" + second);
+        //             }
+        //         }
+        //     }
+        //     lists.add(list);
+        // }
+
+        // return lists.get(lists.size() - 1);
 
     }
 
-    public void helper(int left, int right, int n, String str, List<String> res) {
-        //teminator
-        if (left >= n && right >= n) {
+    public void dfs(int left, int right, int n, String str, List<String> res) {
+        if (left == n && right == n) {
             res.add(str);
             return;
         }
-        //process result
-
-        //drill down 
         if (left < n) {
-            helper(left + 1, right, n, str + "(", res);
+            dfs(left + 1, right, n, str + "(", res);
         }
         if (right < left) {
-            helper(left, right + 1, n, str + ")", res);
+            dfs(left, right + 1, n, str + ")", res);
         }
-        //restore current status
 
     }
+
+    // public void helper(int left, int right, int n, String str, List<String> res) {
+    //     //teminator
+    //     if (left >= n && right >= n) {
+    //         res.add(str);
+    //         return;
+    //     }
+    //     //process result
+
+    //     //drill down 
+    //     if (left < n) {
+    //         helper(left + 1, right, n, str + "(", res);
+    //     }
+    //     if (right < left) {
+    //         helper(left, right + 1, n, str + ")", res);
+    //     }
+    //     //restore current status
+
+    // }
 
 }
 // @lc code=end

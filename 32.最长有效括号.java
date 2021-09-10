@@ -37,6 +37,44 @@ import java.util.Stack;
 class Solution {
     public int longestValidParentheses(String s) {
 
+        // // 解法1：
+        // int max = 0;
+        // for (int i = 0; i < s.length(); i++) {
+        //     int leftCount = 0;
+        //     for (int j = i; j < s.length(); j++) {
+        //         if (s.charAt(j) == '(') {
+        //             leftCount++;
+        //         } else {
+        //             leftCount--;
+        //         }
+        //         if (leftCount < 0) {
+        //             break;
+        //         }
+        //         if (leftCount == 0 && j - i + 1 > max) {
+        //             max = j - i + 1;
+        //         }
+        //     }
+        // }
+        // return max;
+
+        // 解法2：stack
+        int max = 0;
+        Deque<Integer> stack = new LinkedList<Integer>();
+        stack.push(-1);
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                stack.push(i);
+            } else {
+                stack.pop();
+                if (stack.isEmpty()) {
+                    stack.push(i);
+                } else {
+                    max = Math.max(max, i - stack.peek());
+                }
+            }
+        }
+        return max;
+
         // //方法3：dp
         // int[] dp = new int[s.length()];
         // int max = 0;
@@ -49,36 +87,6 @@ class Solution {
         //         dp[i] += (i - dp[i]) >= 0 ? dp[i - dp[i]] : 0;
         //         max = Math.max(max, dp[i]);
         //         leftCount--;
-        //     }
-        // }
-        // return max;
-
-        // 解法2：stack
-        int max = 0;
-        Deque<Integer> stack = new LinkedList<Integer>();
-        stack.push(-1);
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(')
-                stack.push(i);
-            else {
-                stack.pop();
-                if (stack.isEmpty())
-                    stack.push(i);
-                else
-                    max = Math.max(max, i - stack.peek());
-            }
-        }
-        return max;
-
-        // // 解法1：
-        // int max=0;
-        // for (int i = 0; i < s.length(); i++) {
-        //     int leftCount=0;
-        //     for (int j = i; j < s.length(); j++) {
-        //         if(s.charAt(j)=='(') leftCount++;
-        //         else leftCount--;
-        //         if(leftCount<0) break;
-        //         if(leftCount==0 && j-i+1>max) max=j-i+1;
         //     }
         // }
         // return max;
